@@ -10,8 +10,18 @@ export const EmbedUrls: QuartzTransformerPlugin = () => {
         () => {
           return (tree: Root, _file) => {
             visit(tree, "paragraph", (node) => {
-              if (node.children.length === 1 && node.children[0].type === "text") {
-                const text = node.children[0].value.trim()
+              // Check if paragraph has a single child that's either text or link
+              if (node.children.length === 1) {
+                let text = ""
+
+                if (node.children[0].type === "text") {
+                  text = node.children[0].value.trim()
+                } else if (node.children[0].type === "link") {
+                  // If it's a link, get the URL
+                  text = (node.children[0] as any).url
+                }
+
+                if (!text) return
 
                 // YouTube URL detection
                 const youtubeMatch = text.match(
