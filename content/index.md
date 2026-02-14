@@ -4,17 +4,22 @@ title: Scrap Notes
 
 # Scrap Notes 📝
 
-Obsidianで書いたメモを公開しています。
+日々の学びや気づきをスクラップ的にメモしていく場所です。
+
+## 📚 メモ一覧
+
+- [[git-memo|Gitメモ]] - Git、GitHub、複数アカウント管理など
+- [[setup-guide|Scrap Notes 構築手順]] - このサイトの構築方法
 
 ## 使い方
 
 Obsidianの `publish` フォルダに書いたメモが自動的にここに公開されます。
 
-## コマンド
+### コマンド
 
 - `make serve` - ローカルでプレビュー
 - `make publish` - GitHubに公開
 
 ---
 
-Built with [Quartz](https://quartz.jzhao.xyz/) • Generated from Obsidian Vault
+Built with [Quartz](https://quartz.jzhao.xyz/)
