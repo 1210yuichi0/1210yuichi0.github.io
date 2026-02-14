@@ -6,6 +6,8 @@ title: Scrap Notes
 
 日々の学びや気づきをスクラップ的にメモしていく場所です。
 
+[[about|About →]]
+
 ## 📚 メモ一覧
 
 - [[git-memo|Gitメモ]] - Git、GitHub、複数アカウント管理など
