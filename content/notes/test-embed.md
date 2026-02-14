@@ -17,23 +17,21 @@ URL埋め込みと画像生成のテストページです。
 
 ![テスト画像](https://placehold.co/600x400/3ea8ff/white?text=Test+Image)
 
-## YouTube埋め込み
+## YouTube埋め込み（自動）
 
-通常のリンク形式:
 https://www.youtube.com/watch?v=dQw4w9WgXcQ
 
-iframe埋め込み:
-<iframe width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+## Twitter (X) 埋め込み（自動）
 
-## Twitter (X) 埋め込み
+https://x.com/jack/status/20
 
-通常のリンク:
-https://x.com/1210yuichi0
+## GitHub埋め込み（自動）
 
-## GitHub埋め込み
-
-通常のリンク:
 https://github.com/1210yuichi0/1210yuichi0.github.io
+
+## Zenn埋め込み（自動）
+
+https://zenn.dev/yuichi_dev/scraps/7add0603f32d4f
 
 ## OGP画像テスト
 
