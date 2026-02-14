@@ -1,9 +1,8 @@
 @use "./base.scss";
 
 /*
-Minimal Publish adapted for Quartz
-Original: https://github.com/kepano/obsidian-minimal-publish
-MIT License - Copyright (c) 2020-2024 Steph Ango (@kepano)
+Minimal.guide inspired design
+Ultra-simple, clean aesthetic with system fonts and minimal colors
 */
 
 // Hide footer
@@ -11,188 +10,128 @@ footer {
   display: none !important;
 }
 
-// Graph view styling - always show labels
-.graph {
-  canvas {
-    opacity: 1 !important;
-  }
-}
-
-// Typography variables
-body {
-  --font-text-size: 16px;
-  --font-small: 13px;
-  --font-smaller: 11px;
-  --font-smallest: 10px;
-
-  --normal-weight: 400;
-  --bold-weight: 600;
-
-  --h1: 1.25em;
-  --h2: 1.1em;
-  --h3: 1.05em;
-  --h4: 1em;
-  --h5: 0.85em;
-  --h6: 0.85em;
-
-  --h1-weight: 600;
-  --h2-weight: 600;
-  --h3-weight: 600;
-  --h4-weight: 500;
-  --h5-weight: 500;
-  --h6-weight: 400;
-
-  --image-radius: 8px;
-  --border-width: 1px;
-}
-
-// Minimal color scheme
+// Simple color scheme - only 2 colors like minimal.guide
 [saved-theme="light"] {
-  --bg1: #FFF;
-  --bg2: #F5F5F5;
-  --bg3: #E5E5E5;
+  --light: #fff;
+  --lightgray: #f5f5f5;
+  --gray: #e0e0e0;
+  --darkgray: #666;
+  --dark: #222;
+  --secondary: #666;
+  --tertiary: #888;
 
-  --ui1: #E6E6E6;
-  --ui2: #D6D6D6;
-  --ui3: #C2C2C2;
-
-  --tx1: #0F0F0F;
-  --tx2: #828282;
-  --tx3: #B5B5B5;
-
-  --ax1: #6A8695;
-  --ax2: #556B77;
-
-  // Apply to Quartz variables
-  color: var(--tx1);
+  color: var(--dark);
+  background: var(--light);
 
   h1, h2, h3, h4, h5, h6 {
-    color: var(--tx1);
+    color: var(--dark);
   }
 
-  // Code blocks
   pre {
-    background-color: var(--bg2) !important;
+    background-color: #f5f5f5 !important;
   }
 
   :not(pre) > code {
-    background-color: var(--ui1) !important;
-    color: var(--tx1) !important;
+    background-color: #f0f0f0 !important;
+    color: var(--dark) !important;
   }
 }
 
 [saved-theme="dark"] {
-  --bg1: #262626;
-  --bg2: #212121;
-  --bg3: #333333;
+  --light: #1e1e1e;
+  --lightgray: #252525;
+  --gray: #3a3a3a;
+  --darkgray: #aaa;
+  --dark: #dadada;
+  --secondary: #aaa;
+  --tertiary: #888;
 
-  --ui1: #333333;
-  --ui2: #3B3B3B;
-  --ui3: #595959;
-
-  --tx1: #D1D1D1;
-  --tx2: #999999;
-  --tx3: #595959;
-
-  --ax1: #889EAA;
-  --ax2: #ACBBC3;
-
-  color: var(--tx1);
+  color: var(--dark);
+  background: var(--light);
 
   h1, h2, h3, h4, h5, h6 {
-    color: var(--tx1);
+    color: var(--dark);
   }
 
-  // Code blocks
   pre {
-    background-color: var(--bg2) !important;
+    background-color: #252525 !important;
   }
 
   :not(pre) > code {
-    background-color: var(--ui1) !important;
-    color: var(--tx1) !important;
+    background-color: #2a2a2a !important;
+    color: var(--dark) !important;
   }
 }
 
-// Headings
-h1 {
-  font-size: var(--h1);
-  font-weight: var(--h1-weight);
+// Typography - use system fonts only (minimal.guide style)
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  padding: 20px;
 }
 
-h2 {
-  font-size: var(--h2);
-  font-weight: var(--h2-weight);
+// Simple headings
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
 }
 
-h3 {
-  font-size: var(--h3);
-  font-weight: var(--h3-weight);
-}
+h1 { font-size: 1.8em; }
+h2 { font-size: 1.5em; }
+h3 { font-size: 1.3em; }
+h4 { font-size: 1.1em; }
+h5, h6 { font-size: 1em; }
 
-h4 {
-  font-size: var(--h4);
-  font-weight: var(--h4-weight);
-}
-
-h5 {
-  font-size: var(--h5);
-  font-weight: var(--h5-weight);
-}
-
-h6 {
-  font-size: var(--h6);
-  font-weight: var(--h6-weight);
-}
-
-// Images
-img {
-  border-radius: var(--image-radius);
-}
-
-// Links
+// Simple links
 a {
-  font-weight: var(--normal-weight);
+  text-decoration: none;
+  color: var(--dark);
+  border-bottom: 1px solid var(--gray);
+  transition: border-color 0.2s;
 
   &:hover {
-    opacity: 0.8;
+    border-bottom-color: var(--dark);
   }
 }
 
 // Code
 code {
-  font-size: 0.85em;
+  font-family: "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, monospace;
+  font-size: 0.9em;
+  padding: 2px 6px;
+  border-radius: 3px;
 }
 
-// Lists
-ol > li::marker,
-ul > li::marker {
-  color: var(--tx3);
+pre {
+  padding: 1em;
+  border-radius: 5px;
+  overflow-x: auto;
 }
 
-// Tables - clean minimal style
+// Clean tables
 table {
-  border: var(--border-width) solid var(--ui1);
+  width: 100%;
   border-collapse: collapse;
+  margin: 1em 0;
 
   th, td {
-    padding: 4px 10px;
-    border: none;
+    padding: 8px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--gray);
   }
 
-  thead {
-    border-bottom: var(--border-width) solid var(--ui2);
+  th {
+    font-weight: 600;
   }
+}
 
-  tbody tr {
-    border-bottom: var(--border-width) solid var(--ui1);
+// Minimal lists
+ul, ol {
+  padding-left: 2em;
+}
 
-    &:last-child {
-      border-bottom: none;
-    }
-
-    &:hover {
-      background-color: var(--bg2);
-    }
-  }
+li {
+  margin: 0.5em 0;
 }
