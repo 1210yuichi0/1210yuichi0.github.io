@@ -13,3 +13,28 @@ footer {
     opacity: 1 !important;
   }
 }
+
+// Code block backgrounds
+[saved-theme="dark"] {
+  // Code block background
+  pre {
+    background-color: #323e52 !important;
+  }
+
+  // Inline code background
+  :not(pre) > code {
+    background-color: rgba(50, 62, 82, 0.5) !important;
+  }
+}
+
+[saved-theme="light"] {
+  // Code block background
+  pre {
+    background-color: #f6f8fa !important;
+  }
+
+  // Inline code background
+  :not(pre) > code {
+    background-color: rgba(175, 184, 193, 0.2) !important;
+  }
+}
