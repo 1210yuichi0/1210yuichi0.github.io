@@ -3,10 +3,11 @@
 .toc {
   display: flex;
   flex-direction: column;
-  overflow-y: visible;
+  overflow-y: hidden;
   min-height: 1.4rem;
+  flex: 0 0.5 auto;
   &:has(button.toc-header.collapsed) {
-    min-height: 1.4rem;
+    flex: 0 1 1.4rem;
   }
 }
 
@@ -21,7 +22,7 @@ button.toc-header {
   align-items: center;
 
   & h3 {
-    font-size: 0.9rem;
+    font-size: 1rem;
     display: inline-block;
     margin: 0;
   }
@@ -42,19 +43,13 @@ ul.toc-content.overflow {
   position: relative;
   margin: 0.5rem 0;
   padding: 0;
-  overflow-y: visible;
+  max-height: calc(100% - 2rem);
   overscroll-behavior: contain;
-  scrollbar-width: none; // Firefox
-
-  // Chrome, Safari, Edge
-  &::-webkit-scrollbar {
-    display: none;
-  }
+  list-style: none;
 
   & > li > a {
     color: var(--dark);
     opacity: 0.35;
-    font-size: 0.85rem;
     transition:
       0.5s ease opacity,
       0.3s ease color;
