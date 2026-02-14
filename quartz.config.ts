@@ -20,12 +20,12 @@ const config: QuartzConfig = {
     ignorePatterns: ["private", "templates", ".obsidian"],
     defaultDateType: "modified",
     theme: {
-      fontOrigin: "googleFonts",
+      fontOrigin: "local",
       cdnCaching: true,
       typography: {
-        header: "Schibsted Grotesk",
-        body: "Source Sans Pro",
-        code: "IBM Plex Mono",
+        header: "-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif",
+        body: "-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif",
+        code: "Menlo, Monaco, Courier New, monospace",
       },
       colors: {
         lightMode: {
