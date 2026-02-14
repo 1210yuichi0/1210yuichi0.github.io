@@ -22,7 +22,7 @@ button.toc-header {
   align-items: center;
 
   & h3 {
-    font-size: 1rem;
+    font-size: 0.9rem;
     display: inline-block;
     margin: 0;
   }
@@ -50,6 +50,7 @@ ul.toc-content.overflow {
   & > li > a {
     color: var(--dark);
     opacity: 0.35;
+    font-size: 0.85rem;
     transition:
       0.5s ease opacity,
       0.3s ease color;
