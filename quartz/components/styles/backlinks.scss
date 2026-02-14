@@ -18,6 +18,11 @@
     & > li {
       & > a {
         background-color: transparent;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        hyphens: auto;
+        display: block;
+        width: 100%;
       }
     }
   }
