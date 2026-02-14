@@ -8,8 +8,9 @@ export const sharedPageComponents: SharedLayout = {
   afterBody: [],
   footer: Component.Footer({
     links: {
-      GitHub: "https://github.com/jackyzha0/quartz",
-      "Discord Community": "https://discord.gg/cRFFHYye7t",
+      GitHub: "https://github.com/1210yuichi0/1210yuichi0.github.io",
+      Zenn: "https://zenn.dev/yuichi_dev",
+      X: "https://x.com/1210yuichi0",
     },
   }),
 }
@@ -38,7 +39,12 @@ export const defaultContentPageLayout: PageLayout = {
         { Component: Component.ReaderMode() },
       ],
     }),
-    Component.Explorer(),
+    Component.Explorer({
+      title: "Explorer",
+      folderDefaultState: "collapsed",
+      folderClickBehavior: "link",
+      useSavedState: true,
+    }),
   ],
   right: [
     Component.Graph(),
@@ -62,7 +68,12 @@ export const defaultListPageLayout: PageLayout = {
         { Component: Component.Darkmode() },
       ],
     }),
-    Component.Explorer(),
+    Component.Explorer({
+      title: "Explorer",
+      folderDefaultState: "collapsed",
+      folderClickBehavior: "link",
+      useSavedState: true,
+    }),
   ],
   right: [],
 }
