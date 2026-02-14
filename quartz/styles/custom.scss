@@ -33,7 +33,7 @@ footer {
       border: 1px solid #2e445c;
       border-radius: 6px;
       padding: 0.75rem;
-      margin-bottom: 1rem;
+      margin-bottom: 0.75rem;
     }
 
     // Search box - darker background
@@ -42,16 +42,10 @@ footer {
       border-color: #2e445c !important;
     }
 
-    // Graph view - darker background with spacing
+    // Graph view - darker background
     & > .graph {
       background-color: #162c49 !important;
       border-color: #2e445c !important;
-      margin-bottom: 2rem !important;
-    }
-
-    // Table of contents - ensure proper spacing
-    & > .toc {
-      margin-top: 1rem !important;
     }
   }
 
@@ -92,7 +86,7 @@ footer {
       border: 1px solid #edf2f7;
       border-radius: 6px;
       padding: 0.75rem;
-      margin-bottom: 1rem;
+      margin-bottom: 0.75rem;
       box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
     }
 
@@ -102,16 +96,10 @@ footer {
       border-color: #e4edf4 !important;
     }
 
-    // Graph view - lighter background with spacing
+    // Graph view - lighter background
     & > .graph {
       background-color: #f1f5f9 !important;
       border-color: #e4edf4 !important;
-      margin-bottom: 2rem !important;
-    }
-
-    // Table of contents - ensure proper spacing
-    & > .toc {
-      margin-top: 1rem !important;
     }
   }
 
