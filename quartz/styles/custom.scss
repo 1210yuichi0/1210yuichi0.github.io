@@ -1,6 +1,17 @@
 @use "./base.scss";
 
-// Graph labels always visible
+// Module borders - Zenn style
+.left, .right {
+  & > * {
+    border: 1px solid var(--lightgray);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    background-color: var(--light);
+  }
+}
+
+// Graph view styling
 .graph {
   canvas {
     // Force labels to be visible
