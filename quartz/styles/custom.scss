@@ -1,120 +1,13 @@
 @use "./base.scss";
 
+// put your custom CSS here!
+
 // Hide footer
 footer {
   display: none !important;
 }
 
-// Zenn-style layered backgrounds
-
-// Dark mode
-[saved-theme="dark"] {
-  // Body background (darkest - Zenn dark-blue-1100)
-  background-color: #0d223a;
-
-  // Content area background (Zenn dark-blue-1000)
-  .page {
-    background-color: transparent;
-  }
-
-  // Main content block - distinct background
-  .center {
-    background-color: #1b324a;
-    border-radius: 8px;
-    padding: 2rem;
-    border: 1px solid #2e445c;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-
-  // Sidebar modules (Zenn dark-gray-1100) - no borders
-  .left, .right {
-    & > * {
-      background-color: transparent;
-      border: none;
-      border-radius: 0;
-      padding: 0.75rem;
-      margin-bottom: 0.75rem;
-    }
-
-    // Search box - darker background, no border
-    & > .search {
-      background-color: transparent !important;
-      border: none !important;
-    }
-
-    // Graph view - darker background, no border
-    & > .graph {
-      background-color: transparent !important;
-      border: none !important;
-    }
-  }
-
-  // Code block background
-  pre {
-    background-color: #323e52 !important;
-  }
-
-  // Inline code background
-  :not(pre) > code {
-    background-color: rgba(50, 62, 82, 0.5) !important;
-  }
-}
-
-// Light mode
-[saved-theme="light"] {
-  // Body background (Zenn gray-100)
-  background-color: #f5f9fc;
-
-  // Content area background
-  .page {
-    background-color: transparent;
-  }
-
-  // Main content block - distinct white background
-  .center {
-    background-color: #ffffff;
-    border-radius: 8px;
-    padding: 2rem;
-    border: 1px solid #edf2f7;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-  }
-
-  // Sidebar modules - no borders
-  .left, .right {
-    & > * {
-      background-color: transparent;
-      border: none;
-      border-radius: 0;
-      padding: 0.75rem;
-      margin-bottom: 0.75rem;
-      box-shadow: none;
-    }
-
-    // Search box - no background, no border
-    & > .search {
-      background-color: transparent !important;
-      border: none !important;
-    }
-
-    // Graph view - no background, no border
-    & > .graph {
-      background-color: transparent !important;
-      border: none !important;
-    }
-  }
-
-  // Code block background
-  pre {
-    background-color: #f6f8fa !important;
-  }
-
-  // Inline code background
-  :not(pre) > code {
-    background-color: rgba(175, 184, 193, 0.2) !important;
-  }
-}
-
-// Graph view styling
+// Graph view styling - always show labels
 .graph {
   canvas {
     opacity: 1 !important;
