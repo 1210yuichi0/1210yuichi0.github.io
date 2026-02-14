@@ -14,6 +14,17 @@ footer {
   }
 }
 
+// Right sidebar - remove height constraints for backlinks
+.sidebar.right {
+  overflow-y: visible !important;
+  height: auto !important;
+
+  .backlinks {
+    max-height: none !important;
+    overflow: visible !important;
+  }
+}
+
 // Code block backgrounds
 [saved-theme="dark"] {
   // Code block background (Zenn actual color)
