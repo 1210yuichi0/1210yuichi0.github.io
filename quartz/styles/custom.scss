@@ -5,40 +5,30 @@ footer {
   display: none !important;
 }
 
-// Module borders - Zenn style
-.left, .right {
-  & > * {
-    border: 1px solid var(--lightgray);
-    border-radius: 8px;
-    padding: 1rem;
-    margin-bottom: 1rem;
-    background-color: var(--light);
-  }
-}
-
-// Graph view styling
-.graph {
-  canvas {
-    // Force labels to be visible
-    opacity: 1 !important;
-  }
-}
-
 // Zenn-style layered backgrounds
 
 // Dark mode
 [saved-theme="dark"] {
-  // Body background (darkest)
+  // Body background (darkest - Zenn dark-blue-1100)
   background-color: #0d223a;
 
-  // Content area background (lighter)
+  // Content area background (Zenn dark-blue-1000)
   .page {
-    background-color: #1b324a;
-    border-radius: 8px;
-    padding: 1rem;
+    background-color: transparent;
   }
 
-  // Code block background (different tone)
+  // Sidebar modules (Zenn dark-gray-1100)
+  .left, .right {
+    & > * {
+      background-color: #1b324a;
+      border: 1px solid #2e445c;
+      border-radius: 6px;
+      padding: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+  }
+
+  // Code block background
   pre {
     background-color: #323e52 !important;
   }
@@ -51,15 +41,24 @@ footer {
 
 // Light mode
 [saved-theme="light"] {
-  // Body background
+  // Body background (Zenn gray-100)
   background-color: #f5f9fc;
 
   // Content area background
   .page {
-    background-color: #ffffff;
-    border-radius: 8px;
-    padding: 1rem;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    background-color: transparent;
+  }
+
+  // Sidebar modules
+  .left, .right {
+    & > * {
+      background-color: #ffffff;
+      border: 1px solid #edf2f7;
+      border-radius: 6px;
+      padding: 0.75rem;
+      margin-bottom: 0.75rem;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    }
   }
 
   // Code block background
@@ -70,5 +69,12 @@ footer {
   // Inline code background
   :not(pre) > code {
     background-color: rgba(175, 184, 193, 0.2) !important;
+  }
+}
+
+// Graph view styling
+.graph {
+  canvas {
+    opacity: 1 !important;
   }
 }
