@@ -18,6 +18,9 @@
     & > li {
       & > a {
         background-color: transparent;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        display: block;
       }
     }
   }
