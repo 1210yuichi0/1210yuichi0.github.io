@@ -1,5 +1,13 @@
 @use "./base.scss";
 
+// Graph labels always visible
+.graph {
+  canvas {
+    // Force labels to be visible
+    opacity: 1 !important;
+  }
+}
+
 // Zenn-style layered backgrounds
 
 // Dark mode
