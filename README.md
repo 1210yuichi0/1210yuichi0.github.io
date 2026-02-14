@@ -1,17 +1,83 @@
-# Quartz v4
+# Scrap Notes
 
-> “[One] who works with the door open gets all kinds of interruptions, but [they] also occasionally gets clues as to what the world is and what might be important.” — Richard Hamming
+日々の学びや気づきをスクラップ的にメモしていく個人用サイトです。
 
-Quartz is a set of tools that helps you publish your [digital garden](https://jzhao.xyz/posts/networked-thought) and notes as a website for free.
+🔗 **サイトURL**: https://1210yuichi0.github.io/
 
-🔗 Read the documentation and get started: https://quartz.jzhao.xyz/
+## このサイトについて
 
-[Join the Discord Community](https://discord.gg/cRFFHYye7t)
+思いついたことや学んだことを気軽に書き留める**スクラップメモ置き場**です。
+体系的にまとまっていない断片的なメモが中心です。
 
-## Sponsors
+## 技術スタック
 
-<p align="center">
-  <a href="https://github.com/sponsors/jackyzha0">
-    <img src="https://cdn.jsdelivr.net/gh/jackyzha0/jackyzha0/sponsorkit/sponsors.svg" />
-  </a>
-</p>
+- **Quartz v4** - 静的サイトジェネレーター
+- **Obsidian** - メモ作成
+- **GitHub Pages** - ホスティング
+- **GitHub Actions** - 自動デプロイ
+
+## ワークフロー
+
+```
+Obsidianでメモを書く
+    ↓
+make publish
+    ↓
+GitHub Actionsで自動ビルド
+    ↓
+GitHub Pagesに公開
+```
+
+## ローカル開発
+
+### セットアップ
+
+```bash
+npm install
+```
+
+### ローカルサーバー起動
+
+```bash
+make serve
+```
+
+### Obsidianからコンテンツを同期
+
+```bash
+make sync
+```
+
+### 公開
+
+```bash
+make publish
+```
+
+## ディレクトリ構造
+
+```
+.
+├── content/           # 公開コンテンツ（Obsidianから同期）
+├── quartz/           # Quartzコア
+├── public/           # ビルド出力
+└── Makefile          # タスク自動化
+```
+
+## Obsidian連携
+
+Obsidian Vaultの `publish` フォルダから `content` へ自動同期します。
+
+```
+/Users/yada/Documents/ObsidianVault/publish/
+    ↓ make sync
+./content/
+```
+
+## ライセンス
+
+MIT License
+
+---
+
+Generated from [jackyzha0/quartz](https://github.com/jackyzha0/quartz)
