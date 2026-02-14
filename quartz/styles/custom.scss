@@ -17,6 +17,15 @@ footer {
     background-color: transparent;
   }
 
+  // Main content block - distinct background
+  .center {
+    background-color: #1b324a;
+    border-radius: 8px;
+    padding: 2rem;
+    border: 1px solid #2e445c;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
   // Sidebar modules (Zenn dark-gray-1100)
   .left, .right {
     & > * {
@@ -59,6 +68,15 @@ footer {
   // Content area background
   .page {
     background-color: transparent;
+  }
+
+  // Main content block - distinct white background
+  .center {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 2rem;
+    border: 1px solid #edf2f7;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   }
 
   // Sidebar modules
