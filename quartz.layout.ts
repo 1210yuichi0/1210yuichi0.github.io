@@ -46,9 +46,13 @@ export const defaultContentPageLayout: PageLayout = {
     Component.Graph({
       localGraph: {
         showTags: true,
+        fontSize: 1.0,
+        opacityScale: 1,
       },
       globalGraph: {
         showTags: true,
+        fontSize: 1.0,
+        opacityScale: 1,
       },
     }),
     Component.DesktopOnly(Component.TableOfContents()),
