@@ -22,12 +22,17 @@ URL埋め込みと画像生成のテストページです。
 通常のリンク形式:
 https://www.youtube.com/watch?v=dQw4w9WgXcQ
 
+iframe埋め込み:
+<iframe width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 ## Twitter (X) 埋め込み
 
+通常のリンク:
 https://x.com/1210yuichi0
 
 ## GitHub埋め込み
 
+通常のリンク:
 https://github.com/1210yuichi0/1210yuichi0.github.io
 
 ## OGP画像テスト
