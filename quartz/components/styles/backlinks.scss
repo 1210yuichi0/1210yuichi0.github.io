@@ -12,17 +12,12 @@
     list-style: none;
     padding: 0;
     margin: 0.5rem 0;
-    overflow-y: visible;
+    max-height: calc(100% - 2rem);
     overscroll-behavior: contain;
 
     & > li {
       & > a {
         background-color: transparent;
-        word-wrap: break-word;
-        overflow-wrap: break-word;
-        hyphens: auto;
-        display: block;
-        width: 100%;
       }
     }
   }
