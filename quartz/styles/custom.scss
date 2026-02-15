@@ -187,7 +187,60 @@ table {
   }
 }
 
-// Sidebar divider
+// Sidebar styling - minimal.guide style
 .sidebar.left {
   border-right: var(--border-width) solid var(--ui1);
+  background-color: var(--bg2);
+}
+
+// Content max-width - narrower like minimal.guide
+.page {
+  max-width: 1280px !important;
+}
+
+// Line height and spacing
+body {
+  line-height: 1.6;
+}
+
+p, ul, ol {
+  line-height: 1.7;
+  margin-bottom: 1em;
+}
+
+// Tighter heading spacing
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+  line-height: 1.3;
+}
+
+article > h1:first-child {
+  margin-top: 0;
+}
+
+// Links - normal weight like minimal.guide
+a {
+  font-weight: var(--normal-weight) !important;
+}
+
+// List styling
+ol > li::marker,
+ul > li::marker {
+  color: var(--tx3);
+}
+
+// Blockquotes
+blockquote {
+  border-left: 2px solid var(--ui2);
+  padding-left: 1em;
+  margin-left: 0;
+  color: var(--tx2);
+}
+
+// Horizontal rules
+hr {
+  border: none;
+  border-top: 1px solid var(--ui1);
+  margin: 2em 0;
 }
