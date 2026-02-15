@@ -67,7 +67,10 @@ const config: QuartzConfig = {
         keepBackground: true,
       }),
       Plugin.EmbedUrls(),
-      Plugin.ObsidianFlavoredMarkdown({ enableInHtmlEmbed: true }),
+      Plugin.ObsidianFlavoredMarkdown({
+        enableInHtmlEmbed: true,
+        mermaid: true,
+      }),
       Plugin.GitHubFlavoredMarkdown(),
       Plugin.TableOfContents({
         maxDepth: 2,
@@ -75,7 +78,6 @@ const config: QuartzConfig = {
       Plugin.CrawlLinks({ markdownLinkResolution: "shortest" }),
       Plugin.Description(),
       Plugin.Latex({ renderEngine: "katex" }),
-      Plugin.Mermaid(),
     ],
     filters: [Plugin.RemoveDrafts()],
     emitters: [
