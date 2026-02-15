@@ -75,7 +75,7 @@ export default {
       itemsUnderFolder: ({ count }) => `${count}件のページ`,
     },
     tagContent: {
-      tag: "タグ",
+      tag: "",
       tagIndex: "タグ一覧",
       itemsUnderTag: ({ count }) => `${count}件のページ`,
       showingFirst: ({ count }) => `のうち最初の${count}件を表示しています`,
