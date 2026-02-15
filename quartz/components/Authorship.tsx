@@ -12,21 +12,21 @@ export default (() => {
 
     const { type, model, date, reviewed } = authorship
 
-    // アイコンとラベルの設定
+    // Icon and label configuration
     const typeConfig = {
       "ai-generated": {
         icon: "🤖",
-        label: "AI生成",
+        label: "AI Generated",
         className: "ai-generated",
       },
       "human-written": {
         icon: "✍️",
-        label: "人間執筆",
+        label: "Human Written",
         className: "human-written",
       },
       "ai-assisted": {
         icon: "🤝",
-        label: "AI補助",
+        label: "AI Assisted",
         className: "ai-assisted",
       },
     }
@@ -45,7 +45,7 @@ export default (() => {
         {reviewed !== undefined && (
           <span class="authorship-reviewed">
             {" "}
-            | {reviewed ? "✓ レビュー済み" : "未レビュー"}
+            | {reviewed ? "✓ Reviewed" : "Unreviewed"}
           </span>
         )}
       </div>
