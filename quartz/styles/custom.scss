@@ -107,6 +107,8 @@ footer {
 
     @media (max-width: 768px) {
       font-size: 1.6rem;
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
     }
   }
 
@@ -116,6 +118,11 @@ footer {
     font-size: 0.85rem;
     color: var(--tx3);
     margin-bottom: 1rem;
+
+    @media (max-width: 768px) {
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
+    }
   }
 
   // Tags styling - consistent across folder and article pages
@@ -153,6 +160,11 @@ footer {
   .page-header .tags {
     justify-content: flex-start;
     margin-bottom: 1rem;
+
+    @media (max-width: 768px) {
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
+    }
   }
 
   // Article content area - Zenn-style card design
@@ -175,6 +187,19 @@ footer {
     // Headings
     h1, h2, h3, h4, h5, h6 {
       color: var(--tx1) !important;
+    }
+
+    // Mobile: add minimal padding to text elements
+    @media (max-width: 768px) {
+      & > p, & > ul, & > ol, & > blockquote, & > div:not(figure) {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+      }
+
+      h1, h2, h3, h4, h5, h6 {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+      }
     }
 
     // Links - Zenn blue
@@ -380,6 +405,11 @@ table {
     color: var(--tx2);
     font-size: 0.9rem;
     margin-bottom: 1.5rem;
+
+    @media (max-width: 768px) {
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
+    }
   }
 
   // Single column layout
@@ -442,6 +472,11 @@ table {
             }
           }
         }
+
+        @media (max-width: 768px) {
+          padding-left: 0.5rem;
+          padding-right: 0.5rem;
+        }
       }
 
       // Date (row 1, col 2)
@@ -459,6 +494,8 @@ table {
           grid-column: 1;
           grid-row: 2;
           text-align: left;
+          padding-left: 0.5rem;
+          padding-right: 0.5rem;
         }
       }
 
@@ -474,6 +511,8 @@ table {
         @media (max-width: 768px) {
           grid-row: 3;
           grid-column: 1;
+          padding-left: 0.5rem;
+          padding-right: 0.5rem;
         }
       }
     }
