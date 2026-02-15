@@ -144,3 +144,60 @@ fn main() {
 | Python | .py | データ分析 |
 | Go | .go | バックエンド |
 | Rust | .rs | システム |
+
+## Mermaid 図
+
+### フローチャート
+
+```mermaid
+graph TD
+    A[開始] --> B{条件判定}
+    B -->|Yes| C[処理A]
+    B -->|No| D[処理B]
+    C --> E[終了]
+    D --> E
+```
+
+### シーケンス図
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant Browser
+    participant Server
+    User->>Browser: URLを入力
+    Browser->>Server: HTTPリクエスト
+    Server->>Browser: HTMLレスポンス
+    Browser->>User: ページを表示
+```
+
+### ガントチャート
+
+```mermaid
+gantt
+    title プロジェクトスケジュール
+    dateFormat  YYYY-MM-DD
+    section 設計
+    要件定義     :a1, 2026-01-01, 7d
+    基本設計     :a2, after a1, 10d
+    section 開発
+    実装         :b1, after a2, 21d
+    テスト       :b2, after b1, 7d
+```
+
+### クラス図
+
+```mermaid
+classDiagram
+    class User {
+        +String name
+        +String email
+        +login()
+        +logout()
+    }
+    class Admin {
+        +String permissions
+        +manageUsers()
+    }
+    User <|-- Admin
+```
