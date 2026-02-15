@@ -29,22 +29,23 @@ footer {
   }
 }
 
-// Light mode color scheme
+// Light mode color scheme - Zenn inspired
 [saved-theme="light"] {
-  --bg1: #FFF;
-  --bg2: #F5F5F5;
-  --bg3: #E5E5E5;
-  --bg4: #FAFAFA;  // Article content background
-  --ui1: #E6E6E6;
-  --ui2: #D6D6D6;
-  --ui3: #C2C2C2;
-  --tx1: #0F0F0F;
-  --tx2: #767676;
-  --tx3: #B5B5B5;
-  --ax1: #607987;
-  --ax2: #556B77;
-  --ax3: #889EAA;
-  --hl1: hsla(201,50%,40%,30%);
+  --bg1: #FFFFFF;         // Page background (pure white)
+  --bg2: #f6f8fa;         // Code block background (GitHub-style)
+  --bg3: #f3f4f6;         // Card hover/secondary background
+  --bg4: #FFFFFF;         // Article content background (white)
+  --bg5: #f6f8fa;         // Code block background
+  --ui1: #e5e7eb;         // Border light
+  --ui2: #d1d5db;         // Border medium
+  --ui3: #9ca3af;         // Border dark
+  --tx1: #1a1a1a;         // Primary text (dark)
+  --tx2: #6b7280;         // Secondary text (gray)
+  --tx3: #9ca3af;         // Tertiary text (light gray)
+  --ax1: #3ea8ff;         // Zenn blue (primary accent)
+  --ax2: #0f83fd;         // Link hover color
+  --ax3: #0369a1;         // Darker blue accent
+  --hl1: rgba(62, 168, 255, 0.15); // Highlight background (light blue)
 
   color: var(--tx1);
   background: var(--bg1);
@@ -58,7 +59,7 @@ footer {
   }
 
   :not(pre) > code {
-    background-color: var(--ui1) !important;
+    background-color: var(--bg3) !important;
     color: var(--tx1) !important;
   }
 
@@ -99,6 +100,14 @@ footer {
     @media (max-width: 768px) {
       padding-left: 0.5rem;
       padding-right: 0.5rem;
+    }
+  }
+
+  // Center container - remove mobile padding
+  .center {
+    @media (max-width: 768px) {
+      padding-left: 0 !important;
+      padding-right: 0 !important;
     }
   }
 
@@ -285,6 +294,14 @@ footer {
     @media (max-width: 768px) {
       padding-left: 0.5rem;
       padding-right: 0.5rem;
+    }
+  }
+
+  // Center container - remove mobile padding
+  .center {
+    @media (max-width: 768px) {
+      padding-left: 0 !important;
+      padding-right: 0 !important;
     }
   }
 
