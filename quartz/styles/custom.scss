@@ -34,6 +34,7 @@ footer {
   --bg1: #FFF;
   --bg2: #F5F5F5;
   --bg3: #E5E5E5;
+  --bg4: #FAFAFA;  // Article content background
   --ui1: #E6E6E6;
   --ui2: #D6D6D6;
   --ui3: #C2C2C2;
@@ -59,6 +60,126 @@ footer {
   :not(pre) > code {
     background-color: var(--ui1) !important;
     color: var(--tx1) !important;
+  }
+
+  // Article title - centered and large
+  .page-header .article-title {
+    text-align: center;
+    font-size: 2.2rem;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 0.5rem;
+    color: var(--tx1) !important;
+
+    @media (max-width: 768px) {
+      font-size: 1.6rem;
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
+    }
+  }
+
+  // Article metadata - small and centered
+  .page-header .content-meta {
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--tx3);
+    margin-bottom: 1rem;
+
+    @media (max-width: 768px) {
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
+    }
+  }
+
+  // Article page tags - left aligned with bottom margin
+  .page-header .tags {
+    justify-content: flex-start;
+    margin-bottom: 1rem;
+
+    @media (max-width: 768px) {
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
+    }
+  }
+
+  // Article content area - card design
+  .center > article {
+    background-color: var(--bg4) !important;
+    border: 1px solid var(--ui2) !important;
+    border-radius: 8px;
+    padding: 2rem;
+
+    @media (max-width: 768px) {
+      padding: 1rem 0;
+      border-radius: 0;
+      border-left: none;
+      border-right: none;
+    }
+
+    // Main text color
+    & > p, & > ul > li, & > ol > li, & > blockquote, & > div:not(figure) {
+      color: var(--tx1) !important;
+    }
+
+    // Headings
+    h1, h2, h3, h4, h5, h6 {
+      color: var(--tx1) !important;
+    }
+
+    // Links
+    a {
+      color: var(--ax1) !important;
+      text-decoration: none;
+
+      &:hover {
+        color: var(--ax3) !important;
+      }
+    }
+
+    // Mobile: add minimal padding to text elements
+    @media (max-width: 768px) {
+      & > p, & > ul, & > ol, & > blockquote, & > div:not(figure) {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+      }
+
+      h1, h2, h3, h4, h5, h6 {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+      }
+    }
+
+    // Code blocks
+    figure[data-rehype-pretty-code-figure] {
+      border: none !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    pre {
+      border: none !important;
+      border-radius: 0 !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      overflow-x: auto;
+    }
+
+    // Inline code
+    :not(pre) > code {
+      background-color: var(--ui1) !important;
+      color: var(--tx1) !important;
+      padding: 0.2em 0.4em;
+      border-radius: 4px;
+      font-size: 0.9em;
+    }
+  }
+
+  // Graph view - same style as article
+  .graph-outer,
+  .global-graph-container {
+    background-color: var(--bg4) !important;
+    border: 1px solid var(--ui2) !important;
+    border-radius: 8px;
   }
 }
 
