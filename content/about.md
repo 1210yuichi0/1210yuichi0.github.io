@@ -2,8 +2,6 @@
 title: About
 authorship:
   type: human-written
-  date: 2026-02-14
-  reviewed: true
 ---
 
 # About
