@@ -41,8 +41,8 @@ const config: QuartzConfig = {
         },
         darkMode: {
           light: "#081d35",      // Zenn: メイン背景
-          lightgray: "#0d223a",  // Zenn: サイドバー背景
-          gray: "#162c49",       // Zenn: ホバー背景
+          lightgray: "#ecf5ff",  // Graph lines - white
+          gray: "#ecf5ff",       // Graph lines active - white
           darkgray: "#a4bcd5",   // Zenn: セカンダリテキスト
           dark: "#ecf5ff",       // Zenn: メインテキスト
           secondary: "#3ea8ff",  // Zenn: プライマリアクセント
@@ -64,7 +64,7 @@ const config: QuartzConfig = {
           light: "github-light",
           dark: "github-dark",
         },
-        keepBackground: false,
+        keepBackground: true,
       }),
       Plugin.EmbedUrls(),
       Plugin.ObsidianFlavoredMarkdown({ enableInHtmlEmbed: true }),

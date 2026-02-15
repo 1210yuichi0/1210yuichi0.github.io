@@ -1,9 +1,9 @@
 @use "./base.scss";
 
 /*
-Minimal Publish Theme by Steph Ango (@kepano)
-Exact colors and typography from obsidian-minimal-publish
-https://github.com/kepano/obsidian-minimal-publish
+Zenn-inspired Dark Theme for Quartz
+Based on Zenn's dark-blue color scheme
+https://zenn.dev
 */
 
 // Hide footer
@@ -11,7 +11,7 @@ footer {
   display: none !important;
 }
 
-// Color scheme - exact values from publish.css
+// Light mode color scheme
 [saved-theme="light"] {
   --bg1: #FFF;
   --bg2: #F5F5F5;
@@ -45,20 +45,22 @@ footer {
 }
 
 [saved-theme="dark"] {
-  // Zenn dark-blue theme colors
-  --bg1: #081d35;         // c-dark-blue-1200 - メイン背景
-  --bg2: #0d223a;         // c-dark-blue-1100 - サイドバー背景
-  --bg3: #162c49;         // c-dark-blue-1000 - ホバー背景
-  --ui1: #1b324a;         // c-dark-gray-1100 - ボーダー薄
-  --ui2: #2e445c;         // c-dark-gray-1000 - ボーダー
-  --ui3: #344c69;         // c-dark-gray-900 - ボーダー濃
-  --tx1: #ecf5ff;         // c-text-body - メインテキスト
-  --tx2: #a4bcd5;         // c-text-low-priority - セカンダリ
-  --tx3: #7a9cc6;         // c-text-lower-priority - サブテキスト
-  --ax1: #3ea8ff;         // c-blue-500 - プライマリアクセント
-  --ax2: #0f83fd;         // c-blue-600 - リンク
-  --ax3: #0868ce;         // c-blue-700 - ホバー
-  --hl1: rgba(62, 168, 255, 0.2); // ハイライト
+  // Zenn dark-blue theme - color palette
+  --bg1: #081d35;         // Page background (darkest blue)
+  --bg2: #0d223a;         // Unused (reserved)
+  --bg3: #162c49;         // Hover background
+  --bg4: #151e2c;         // Article content background
+  --bg5: #0b2c53;         // Code block background
+  --ui1: #1b324a;         // Border light
+  --ui2: #2e445c;         // Border medium
+  --ui3: #344c69;         // Border dark
+  --tx1: #ecf5ff;         // Primary text
+  --tx2: #a4bcd5;         // Secondary text
+  --tx3: #7a9cc6;         // Tertiary text
+  --ax1: #3ea8ff;         // Zenn blue (primary accent)
+  --ax2: #0f83fd;         // Link color
+  --ax3: #0868ce;         // Hover accent
+  --hl1: rgba(62, 168, 255, 0.2); // Highlight background
 
   color: var(--tx1);
   background: var(--bg1);
@@ -68,16 +70,76 @@ footer {
   }
 
   pre {
-    background-color: #0b2c53 !important; // c-dark-blue-900
+    background-color: var(--bg5) !important;
   }
 
   :not(pre) > code {
     background-color: var(--bg3) !important;
     color: var(--tx1) !important;
   }
+
+  // Article content area - Zenn-style card design
+  .center > article {
+    background-color: var(--bg4) !important;
+    border: 1px solid var(--ui2) !important;
+    border-radius: 8px;
+    padding: 2rem;
+
+    // Main text color - white/light for readability
+    & > p, & > ul > li, & > ol > li, & > blockquote, & > div:not(figure) {
+      color: var(--tx1) !important;
+    }
+
+    // Headings
+    h1, h2, h3, h4, h5, h6 {
+      color: var(--tx1) !important;
+    }
+
+    // Links - Zenn blue
+    a {
+      color: var(--ax1) !important;
+      text-decoration: none;
+
+      &:hover {
+        color: var(--ax3) !important;
+      }
+    }
+
+    // Code blocks - preserve syntax highlighting
+    figure[data-rehype-pretty-code-figure] {
+      border: none !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    pre {
+      border: none !important;
+      border-radius: 0 !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      overflow-x: auto;
+    }
+
+    // Inline code (not in pre blocks)
+    :not(pre) > code {
+      background-color: var(--bg3) !important;
+      color: var(--tx1) !important;
+      padding: 0.2em 0.4em;
+      border-radius: 4px;
+      font-size: 0.9em;
+    }
+  }
+
+  // Graph view - same style as article
+  .graph-outer,
+  .global-graph-container {
+    background-color: var(--bg4) !important;
+    border: 1px solid var(--ui2) !important;
+    border-radius: 8px;
+  }
 }
 
-// Typography - exact values from publish.css
+// Typography settings
 body {
   --font-text-size: 16px;
   --font-small: 13px;
