@@ -71,7 +71,7 @@ export default {
       home: "ホームページに戻る",
     },
     folderContent: {
-      folder: "フォルダ",
+      folder: "",
       itemsUnderFolder: ({ count }) => `${count}件のページ`,
     },
     tagContent: {
