@@ -163,10 +163,8 @@ footer {
     padding: 2rem;
 
     @media (max-width: 768px) {
-      padding: 1rem;
+      padding: 1rem 0;
       border-radius: 0;
-      border-left: none;
-      border-right: none;
     }
 
     // Main text color - white/light for readability
@@ -412,10 +410,8 @@ table {
       @media (max-width: 768px) {
         grid-template-columns: 1fr;
         grid-template-rows: auto auto auto;
-        padding: 1rem;
+        padding: 1rem 0;
         border-radius: 0;
-        border-left: none;
-        border-right: none;
       }
 
       &:hover {
