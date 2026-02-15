@@ -327,6 +327,12 @@ table {
   }
 }
 
+// Explorer title - slightly bigger than TOC, normal weight
+.explorer .title-button h2 {
+  font-size: 0.85rem !important;
+  font-weight: 400 !important;
+}
+
 // Explorer font size - same as TOC (0.75rem)
 .folder-container {
   & div > a {
