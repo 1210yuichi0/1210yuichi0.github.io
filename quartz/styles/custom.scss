@@ -445,9 +445,13 @@ table {
         grid-column: 1 / -1;
         grid-row: 2;
         justify-content: flex-start;
+        display: flex !important;
+        flex-wrap: wrap;
+        gap: 0.5rem;
 
         @media (max-width: 768px) {
           grid-row: 3;
+          grid-column: 1;
         }
       }
     }
