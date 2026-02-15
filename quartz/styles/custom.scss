@@ -20,6 +20,11 @@ footer {
   color: var(--tx1) !important;
   text-transform: none !important;
 
+  // Add spacing on mobile when explorer button is visible
+  @media (max-width: 768px) {
+    margin-left: 0.5rem !important;
+  }
+
   a {
     color: var(--tx1) !important;
 
