@@ -6,6 +6,11 @@ tags:
   - mcp
   - browser-automation
   - playwright
+authorship:
+  type: ai-generated
+  model: Claude Sonnet 4.5
+  date: 2026-02-15
+  reviewed: false
 ---
 
 ## 概要

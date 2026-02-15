@@ -7,6 +7,11 @@ tags:
   - 資格試験
   - 学習ガイド
   - まとめ
+authorship:
+  type: ai-generated
+  model: Claude Sonnet 4.5
+  date: 2026-02-15
+  reviewed: false
 ---
 
 > **生成日**: 2026-02-15

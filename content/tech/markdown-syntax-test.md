@@ -4,6 +4,11 @@ draft: false
 tags:
   - test
   - markdown
+authorship:
+  type: ai-assisted
+  model: Claude Sonnet 4.5
+  date: 2026-02-15
+  reviewed: false
 ---
 
 Zennのマークダウンガイドを参考にしたシンタックステストページです。

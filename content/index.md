@@ -1,5 +1,9 @@
 ---
 title: Scrap Notes
+authorship:
+  type: human-written
+  date: 2026-02-14
+  reviewed: true
 ---
 
 # Scrap Notes 📝
