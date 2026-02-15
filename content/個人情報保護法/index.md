@@ -1,5 +1,5 @@
 ---
-title: 個人情報保護法 全文解析 INDEX
+title: 個人情報保護法
 draft: false
 tags:
   - 個人情報保護法
