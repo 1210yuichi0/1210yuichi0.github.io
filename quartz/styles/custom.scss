@@ -509,6 +509,7 @@ table {
         gap: 0.5rem;
 
         @media (max-width: 768px) {
+          display: flex !important;
           grid-row: 3;
           grid-column: 1;
           padding-left: 0.5rem;
