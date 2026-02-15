@@ -345,17 +345,32 @@ table {
   & div > a {
     font-size: 0.8rem !important; // Folder names
     line-height: 1.3rem !important;
+
+    @media (max-width: 768px) {
+      font-size: 0.9rem !important;
+      line-height: 1.5rem !important;
+    }
   }
 
   & div > button span {
     font-size: 0.8rem !important; // Folder button text
     line-height: 1.3rem !important;
+
+    @media (max-width: 768px) {
+      font-size: 0.9rem !important;
+      line-height: 1.5rem !important;
+    }
   }
 }
 
 .explorer-content ul li > a {
   font-size: 0.8rem !important; // File names
   line-height: 1.3rem !important;
+
+  @media (max-width: 768px) {
+    font-size: 0.9rem !important;
+    line-height: 1.5rem !important;
+  }
 }
 
 // Folder page horizontal card layout
