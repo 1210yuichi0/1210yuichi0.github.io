@@ -40,15 +40,15 @@ const config: QuartzConfig = {
           textHighlight: "#E6E6E6",
         },
         darkMode: {
-          light: "#262626",
-          lightgray: "#212121",
-          gray: "hsla(0,0,55%,0.12)",
-          darkgray: "#999999",
-          dark: "#D1D1D1",
-          secondary: "#889EAA",
-          tertiary: "#ACBBC3",
-          highlight: "hsla(201,70%,40%,30%)",
-          textHighlight: "#333333",
+          light: "#081d35",      // Zenn: メイン背景
+          lightgray: "#0d223a",  // Zenn: サイドバー背景
+          gray: "#162c49",       // Zenn: ホバー背景
+          darkgray: "#a4bcd5",   // Zenn: セカンダリテキスト
+          dark: "#ecf5ff",       // Zenn: メインテキスト
+          secondary: "#3ea8ff",  // Zenn: プライマリアクセント
+          tertiary: "#0f83fd",   // Zenn: リンク
+          highlight: "rgba(62, 168, 255, 0.2)",
+          textHighlight: "#162c49",
         },
       },
     },
