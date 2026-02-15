@@ -55,6 +55,13 @@ footer {
   color: var(--tx1);
   background: var(--bg1);
 
+  // Ensure entire HTML background matches article (mobile only)
+  @media (max-width: 768px) {
+    html, body, #quartz-body {
+      background-color: var(--bg1) !important;
+    }
+  }
+
   h1, h2, h3, h4, h5, h6 {
     color: var(--tx1);
   }
@@ -134,8 +141,8 @@ footer {
     @media (max-width: 768px) {
       padding: 1rem 0;
       border-radius: 0;
-      border-left: none;
-      border-right: none;
+      background-color: var(--bg1) !important;
+      border: 1px solid var(--bg1) !important;
     }
 
     // Main text color
@@ -207,7 +214,7 @@ footer {
 
 [saved-theme="dark"] {
   // Zenn dark-blue theme - color palette
-  --bg1: #081d35;         // Page background (darkest blue)
+  --bg1: #151e2c;         // Page background (same as article)
   --bg2: #0d223a;         // Unused (reserved)
   --bg3: #162c49;         // Hover background
   --bg4: #151e2c;         // Article content background
@@ -225,6 +232,13 @@ footer {
 
   color: var(--tx1);
   background: var(--bg1);
+
+  // Ensure entire HTML background matches article (mobile only)
+  @media (max-width: 768px) {
+    html, body, #quartz-body {
+      background-color: var(--bg1) !important;
+    }
+  }
 
   h1, h2, h3, h4, h5, h6 {
     color: var(--tx1);
@@ -349,8 +363,8 @@ footer {
     @media (max-width: 768px) {
       padding: 1rem 0;
       border-radius: 0;
-      border-left: none;
-      border-right: none;
+      background-color: var(--bg1) !important;
+      border: 1px solid var(--bg1) !important;
     }
 
     // Main text color - white/light for readability
@@ -417,6 +431,29 @@ footer {
     background-color: var(--bg4) !important;
     border: 1px solid var(--ui2) !important;
     border-radius: 8px;
+  }
+}
+
+// Left sidebar and explorer background (mobile only)
+@media (max-width: 768px) {
+  [saved-theme="light"] {
+    .sidebar.left {
+      background-color: var(--bg1) !important;
+    }
+
+    .explorer-content {
+      background-color: var(--bg1) !important;
+    }
+  }
+
+  [saved-theme="dark"] {
+    .sidebar.left {
+      background-color: var(--bg1) !important;
+    }
+
+    .explorer-content {
+      background-color: var(--bg1) !important;
+    }
   }
 }
 
@@ -531,10 +568,39 @@ table {
   }
 }
 
-// Explorer title - slightly bigger than TOC, normal weight
+// Explorer title - smaller size
 .explorer .title-button h2 {
-  font-size: 0.85rem !important;
+  font-size: 0.75rem !important;
   font-weight: 400 !important;
+}
+
+// Backlinks - match TOC format
+.backlinks > ul.overflow {
+  list-style: none !important;
+  padding: 0 !important;
+  overflow-x: hidden !important;
+  overflow-y: visible !important;
+  max-height: none !important;
+
+  // Hide scrollbar for WebKit browsers
+  &::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+  }
+
+  // Hide scrollbar for Firefox
+  scrollbar-width: none !important;
+
+  & > li {
+    list-style: none !important;
+
+    & > a {
+      word-wrap: break-word !important;
+      overflow-wrap: break-word !important;
+      display: block !important;
+    }
+  }
 }
 
 // Explorer font size - slightly larger (0.8rem)
