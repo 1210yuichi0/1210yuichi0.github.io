@@ -188,20 +188,20 @@ table {
   }
 }
 
-// Explorer font size - slightly larger than TOC (0.75rem)
+// Explorer font size - same as TOC (0.75rem)
 .folder-container {
   & div > a {
-    font-size: 0.8rem !important; // Folder names: slightly larger than TOC
-    line-height: 1.3rem !important;
+    font-size: 0.75rem !important; // Folder names: same as TOC
+    line-height: 1.2rem !important;
   }
 
   & div > button span {
-    font-size: 0.8rem !important; // Folder button text
-    line-height: 1.3rem !important;
+    font-size: 0.75rem !important; // Folder button text
+    line-height: 1.2rem !important;
   }
 }
 
 .explorer-content ul li > a {
-  font-size: 0.8rem !important; // File names: same as folders for consistency
-  line-height: 1.3rem !important;
+  font-size: 0.75rem !important; // File names: same as folders
+  line-height: 1.2rem !important;
 }
