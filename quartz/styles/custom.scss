@@ -6,12 +6,167 @@ Based on Zenn's dark-blue color scheme
 https://zenn.dev
 */
 
+// ============================================================================
+// Variables
+// ============================================================================
+
+$mobile-breakpoint: 768px;
+$mobile-padding: 0.5rem;
+
+// ============================================================================
+// Mixins
+// ============================================================================
+
+// Mobile-only styles
+@mixin mobile {
+  @media (max-width: $mobile-breakpoint) {
+    @content;
+  }
+}
+
+// Remove padding/margin on mobile for full-width display
+@mixin mobile-full-width {
+  @include mobile {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+}
+
+// Add horizontal padding on mobile
+@mixin mobile-horizontal-padding {
+  @include mobile {
+    padding-left: $mobile-padding;
+    padding-right: $mobile-padding;
+  }
+}
+
+// Article title styling (shared between themes)
+@mixin article-title-style {
+  text-align: center;
+  font-size: 2.2rem;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 0.5rem;
+  color: var(--tx1) !important;
+
+  @include mobile {
+    font-size: 1.6rem;
+    padding-left: $mobile-padding;
+    padding-right: $mobile-padding;
+  }
+}
+
+// Article metadata styling (shared between themes)
+@mixin article-meta-style {
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--tx3);
+  margin-bottom: 1rem;
+
+  @include mobile-horizontal-padding;
+}
+
+// Article tags styling (shared between themes)
+@mixin article-tags-style {
+  justify-content: flex-start;
+  margin-bottom: 1rem;
+
+  &::before {
+    content: none !important;
+    display: none !important;
+  }
+
+  @include mobile-horizontal-padding;
+}
+
+// Article content area styling (shared between themes)
+@mixin article-content-style {
+  background-color: var(--bg4) !important;
+  border: 1px solid var(--ui2) !important;
+  border-radius: 8px;
+  padding: 2rem;
+
+  @include mobile {
+    padding: 1rem 0;
+    border-radius: 0;
+    background-color: var(--bg1) !important;
+    border: 1px solid var(--bg1) !important;
+  }
+
+  // Main text color
+  & > p, & > ul > li, & > ol > li, & > blockquote, & > div:not(figure) {
+    color: var(--tx1) !important;
+  }
+
+  // Headings
+  h1, h2, h3, h4, h5, h6 {
+    color: var(--tx1) !important;
+  }
+
+  // Links
+  a {
+    color: var(--ax1) !important;
+    text-decoration: none;
+
+    &:hover {
+      color: var(--ax3) !important;
+    }
+  }
+
+  // Mobile: add minimal padding to text elements
+  @include mobile {
+    & > p, & > blockquote, & > div:not(figure) {
+      padding-left: $mobile-padding;
+      padding-right: $mobile-padding;
+    }
+
+    // Lists need more padding to accommodate markers
+    & > ul, & > ol {
+      padding-left: calc($mobile-padding + 1.5rem);
+      padding-right: $mobile-padding;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      padding-left: $mobile-padding;
+      padding-right: $mobile-padding;
+    }
+  }
+
+  // Code blocks
+  figure[data-rehype-pretty-code-figure] {
+    border: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  pre {
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow-x: auto;
+  }
+
+  // Inline code
+  :not(pre) > code {
+    padding: 0.2em 0.4em;
+    border-radius: 4px;
+    font-size: 0.9em;
+  }
+}
+
+// ============================================================================
+// Global Styles
+// ============================================================================
+
 // Hide footer
 footer {
   display: none !important;
 }
 
-// Scrap Notes logo styling with white color
+// Scrap Notes logo styling
 .page-title {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif !important;
   font-weight: 700 !important;
@@ -20,9 +175,8 @@ footer {
   color: var(--tx1) !important;
   text-transform: none !important;
 
-  // Add spacing on mobile when explorer button is visible
-  @media (max-width: 768px) {
-    margin-left: 0.5rem !important;
+  @include mobile {
+    margin-left: $mobile-padding !important;
   }
 
   a {
@@ -34,30 +188,39 @@ footer {
   }
 }
 
-// Light mode color scheme - Zenn inspired
+// ============================================================================
+// Theme: Light Mode
+// ============================================================================
+
 [saved-theme="light"] {
-  --bg1: #FFFFFF;         // Page background (pure white)
-  --bg2: #f6f8fa;         // Code block background (GitHub-style)
-  --bg3: #f3f4f6;         // Card hover/secondary background
-  --bg4: #FFFFFF;         // Article content background (white)
-  --bg5: #f6f8fa;         // Code block background
-  --ui1: #e5e7eb;         // Border light
-  --ui2: #d1d5db;         // Border medium
-  --ui3: #9ca3af;         // Border dark
-  --tx1: #1a1a1a;         // Primary text (dark)
-  --tx2: #6b7280;         // Secondary text (gray)
-  --tx3: #9ca3af;         // Tertiary text (light gray)
-  --ax1: #3ea8ff;         // Zenn blue (primary accent)
-  --ax2: #0f83fd;         // Link hover color
-  --ax3: #0369a1;         // Darker blue accent
-  --hl1: rgba(62, 168, 255, 0.15); // Highlight background (light blue)
+  // Color palette
+  --bg1: #FFFFFF;
+  --bg2: #f6f8fa;
+  --bg3: #f3f4f6;
+  --bg4: #FFFFFF;
+  --bg5: #f6f8fa;
+  --ui1: #e5e7eb;
+  --ui2: #d1d5db;
+  --ui3: #9ca3af;
+  --tx1: #1a1a1a;
+  --tx2: #6b7280;
+  --tx3: #9ca3af;
+  --ax1: #3ea8ff;
+  --ax2: #0f83fd;
+  --ax3: #0369a1;
+  --hl1: rgba(62, 168, 255, 0.15);
 
   color: var(--tx1);
   background: var(--bg1);
 
-  // Ensure entire HTML background matches article (mobile only)
-  @media (max-width: 768px) {
+  // Mobile: unified background
+  @include mobile {
     html, body, #quartz-body {
+      background-color: var(--bg1) !important;
+    }
+
+    .sidebar.left,
+    .explorer-content {
       background-color: var(--bg1) !important;
     }
   }
@@ -75,135 +238,33 @@ footer {
     color: var(--tx1) !important;
   }
 
-  // Article title - centered and large
   .page-header .article-title {
-    text-align: center;
-    font-size: 2.2rem;
-    font-weight: 700;
-    line-height: 1.3;
-    margin-bottom: 0.5rem;
-    color: var(--tx1) !important;
-
-    @media (max-width: 768px) {
-      font-size: 1.6rem;
-      padding-left: 0.5rem;
-      padding-right: 0.5rem;
-    }
+    @include article-title-style;
   }
 
-  // Article metadata - small and centered
   .page-header .content-meta {
-    text-align: center;
-    font-size: 0.85rem;
-    color: var(--tx3);
-    margin-bottom: 1rem;
-
-    @media (max-width: 768px) {
-      padding-left: 0.5rem;
-      padding-right: 0.5rem;
-    }
+    @include article-meta-style;
   }
 
-  // Article page tags - left aligned with bottom margin
   .page-header .tags {
-    justify-content: flex-start;
-    margin-bottom: 1rem;
-
-    // Remove "タグ:" label if it exists
-    &::before {
-      content: none !important;
-      display: none !important;
-    }
-
-    @media (max-width: 768px) {
-      padding-left: 0.5rem;
-      padding-right: 0.5rem;
-    }
+    @include article-tags-style;
   }
 
-  // Remove all mobile padding/margin for full-width display
-  @media (max-width: 768px) {
+  @include mobile {
     body, .page, .center, .page-header {
-      padding-left: 0 !important;
-      padding-right: 0 !important;
-      margin-left: 0 !important;
-      margin-right: 0 !important;
+      @include mobile-full-width;
     }
   }
 
-  // Article content area - card design
   .center > article {
-    background-color: var(--bg4) !important;
-    border: 1px solid var(--ui2) !important;
-    border-radius: 8px;
-    padding: 2rem;
+    @include article-content-style;
 
-    @media (max-width: 768px) {
-      padding: 1rem 0;
-      border-radius: 0;
-      background-color: var(--bg1) !important;
-      border: 1px solid var(--bg1) !important;
-    }
-
-    // Main text color
-    & > p, & > ul > li, & > ol > li, & > blockquote, & > div:not(figure) {
-      color: var(--tx1) !important;
-    }
-
-    // Headings
-    h1, h2, h3, h4, h5, h6 {
-      color: var(--tx1) !important;
-    }
-
-    // Links
-    a {
-      color: var(--ax1) !important;
-      text-decoration: none;
-
-      &:hover {
-        color: var(--ax3) !important;
-      }
-    }
-
-    // Mobile: add minimal padding to text elements
-    @media (max-width: 768px) {
-      & > p, & > ul, & > ol, & > blockquote, & > div:not(figure) {
-        padding-left: 0.5rem;
-        padding-right: 0.5rem;
-      }
-
-      h1, h2, h3, h4, h5, h6 {
-        padding-left: 0.5rem;
-        padding-right: 0.5rem;
-      }
-    }
-
-    // Code blocks
-    figure[data-rehype-pretty-code-figure] {
-      border: none !important;
-      margin: 0 !important;
-      padding: 0 !important;
-    }
-
-    pre {
-      border: none !important;
-      border-radius: 0 !important;
-      padding: 0 !important;
-      margin: 0 !important;
-      overflow-x: auto;
-    }
-
-    // Inline code
     :not(pre) > code {
       background-color: var(--ui1) !important;
       color: var(--tx1) !important;
-      padding: 0.2em 0.4em;
-      border-radius: 4px;
-      font-size: 0.9em;
     }
   }
 
-  // Graph view - same style as article
   .graph-outer,
   .global-graph-container {
     background-color: var(--bg4) !important;
@@ -212,30 +273,39 @@ footer {
   }
 }
 
+// ============================================================================
+// Theme: Dark Mode
+// ============================================================================
+
 [saved-theme="dark"] {
-  // Zenn dark-blue theme - color palette
-  --bg1: #151e2c;         // Page background (same as article)
-  --bg2: #0d223a;         // Unused (reserved)
-  --bg3: #162c49;         // Hover background
-  --bg4: #151e2c;         // Article content background
-  --bg5: #0b2c53;         // Code block background
-  --ui1: #1b324a;         // Border light
-  --ui2: #2e445c;         // Border medium
-  --ui3: #344c69;         // Border dark
-  --tx1: #ecf5ff;         // Primary text
-  --tx2: #a4bcd5;         // Secondary text
-  --tx3: #7a9cc6;         // Tertiary text
-  --ax1: #3ea8ff;         // Zenn blue (primary accent)
-  --ax2: #0f83fd;         // Link color
-  --ax3: #0868ce;         // Hover accent
-  --hl1: rgba(62, 168, 255, 0.2); // Highlight background
+  // Color palette
+  --bg1: #151e2c;
+  --bg2: #0d223a;
+  --bg3: #162c49;
+  --bg4: #151e2c;
+  --bg5: #0b2c53;
+  --ui1: #1b324a;
+  --ui2: #2e445c;
+  --ui3: #344c69;
+  --tx1: #ecf5ff;
+  --tx2: #a4bcd5;
+  --tx3: #7a9cc6;
+  --ax1: #3ea8ff;
+  --ax2: #0f83fd;
+  --ax3: #0868ce;
+  --hl1: rgba(62, 168, 255, 0.2);
 
   color: var(--tx1);
   background: var(--bg1);
 
-  // Ensure entire HTML background matches article (mobile only)
-  @media (max-width: 768px) {
+  // Mobile: unified background
+  @include mobile {
     html, body, #quartz-body {
+      background-color: var(--bg1) !important;
+    }
+
+    .sidebar.left,
+    .explorer-content {
       background-color: var(--bg1) !important;
     }
   }
@@ -253,36 +323,15 @@ footer {
     color: var(--tx1) !important;
   }
 
-  // Article title - Zenn style (large and centered)
   .page-header .article-title {
-    text-align: center;
-    font-size: 2.2rem;
-    font-weight: 700;
-    line-height: 1.3;
-    margin-bottom: 0.5rem;
-    color: var(--tx1) !important;
-
-    @media (max-width: 768px) {
-      font-size: 1.6rem;
-      padding-left: 0.5rem;
-      padding-right: 0.5rem;
-    }
+    @include article-title-style;
   }
 
-  // Article metadata - small and centered
   .page-header .content-meta {
-    text-align: center;
-    font-size: 0.85rem;
-    color: var(--tx3);
-    margin-bottom: 1rem;
-
-    @media (max-width: 768px) {
-      padding-left: 0.5rem;
-      padding-right: 0.5rem;
-    }
+    @include article-meta-style;
   }
 
-  // Tags styling - consistent across folder and article pages
+  // Tags styling
   .page-header .tags,
   .page-listing .tags,
   .section > .tags {
@@ -293,7 +342,6 @@ footer {
     padding: 0;
     list-style: none;
 
-    // Remove any label before tags
     &::before,
     &::after {
       content: "" !important;
@@ -326,106 +374,25 @@ footer {
     }
   }
 
-  // Article page tags - left aligned with bottom margin
   .page-header .tags {
-    justify-content: flex-start;
-    margin-bottom: 1rem;
-
-    // Remove "タグ:" label if it exists
-    &::before {
-      content: none !important;
-      display: none !important;
-    }
-
-    @media (max-width: 768px) {
-      padding-left: 0.5rem;
-      padding-right: 0.5rem;
-    }
+    @include article-tags-style;
   }
 
-  // Remove all mobile padding/margin for full-width display
-  @media (max-width: 768px) {
+  @include mobile {
     body, .page, .center, .page-header {
-      padding-left: 0 !important;
-      padding-right: 0 !important;
-      margin-left: 0 !important;
-      margin-right: 0 !important;
+      @include mobile-full-width;
     }
   }
 
-  // Article content area - Zenn-style card design
   .center > article {
-    background-color: var(--bg4) !important;
-    border: 1px solid var(--ui2) !important;
-    border-radius: 8px;
-    padding: 2rem;
+    @include article-content-style;
 
-    @media (max-width: 768px) {
-      padding: 1rem 0;
-      border-radius: 0;
-      background-color: var(--bg1) !important;
-      border: 1px solid var(--bg1) !important;
-    }
-
-    // Main text color - white/light for readability
-    & > p, & > ul > li, & > ol > li, & > blockquote, & > div:not(figure) {
-      color: var(--tx1) !important;
-    }
-
-    // Headings
-    h1, h2, h3, h4, h5, h6 {
-      color: var(--tx1) !important;
-    }
-
-    // Mobile: add minimal padding to text elements
-    @media (max-width: 768px) {
-      & > p, & > ul, & > ol, & > blockquote, & > div:not(figure) {
-        padding-left: 0.5rem;
-        padding-right: 0.5rem;
-      }
-
-      h1, h2, h3, h4, h5, h6 {
-        padding-left: 0.5rem;
-        padding-right: 0.5rem;
-      }
-    }
-
-    // Links - Zenn blue
-    a {
-      color: var(--ax1) !important;
-      text-decoration: none;
-
-      &:hover {
-        color: var(--ax3) !important;
-      }
-    }
-
-    // Code blocks - preserve syntax highlighting
-    figure[data-rehype-pretty-code-figure] {
-      border: none !important;
-      margin: 0 !important;
-      padding: 0 !important;
-    }
-
-    pre {
-      border: none !important;
-      border-radius: 0 !important;
-      padding: 0 !important;
-      margin: 0 !important;
-      overflow-x: auto;
-    }
-
-    // Inline code (not in pre blocks)
     :not(pre) > code {
       background-color: var(--bg3) !important;
       color: var(--tx1) !important;
-      padding: 0.2em 0.4em;
-      border-radius: 4px;
-      font-size: 0.9em;
     }
   }
 
-  // Graph view - same style as article
   .graph-outer,
   .global-graph-container {
     background-color: var(--bg4) !important;
@@ -434,30 +401,10 @@ footer {
   }
 }
 
-// Left sidebar and explorer background (mobile only)
-@media (max-width: 768px) {
-  [saved-theme="light"] {
-    .sidebar.left {
-      background-color: var(--bg1) !important;
-    }
+// ============================================================================
+// Typography
+// ============================================================================
 
-    .explorer-content {
-      background-color: var(--bg1) !important;
-    }
-  }
-
-  [saved-theme="dark"] {
-    .sidebar.left {
-      background-color: var(--bg1) !important;
-    }
-
-    .explorer-content {
-      background-color: var(--bg1) !important;
-    }
-  }
-}
-
-// Typography settings
 body {
   --font-text-size: 16px;
   --font-small: 13px;
@@ -485,7 +432,6 @@ body {
   --border-width: 1px;
 }
 
-// Headings
 h1 {
   font-size: var(--h1);
   font-weight: var(--h1-weight);
@@ -516,12 +462,10 @@ h6 {
   font-weight: var(--h6-weight);
 }
 
-// Images
 img {
   border-radius: var(--image-radius);
 }
 
-// Links
 a {
   font-weight: var(--normal-weight);
 
@@ -530,18 +474,19 @@ a {
   }
 }
 
-// Code
 code {
   font-size: 0.85em;
 }
 
-// Lists
 ol > li::marker,
 ul > li::marker {
   color: var(--tx3);
 }
 
-// Tables - clean minimal style
+// ============================================================================
+// Tables
+// ============================================================================
+
 table {
   border: var(--border-width) solid var(--ui1);
   border-collapse: collapse;
@@ -568,13 +513,49 @@ table {
   }
 }
 
-// Explorer title - smaller size
+// ============================================================================
+// Components
+// ============================================================================
+
+// Explorer
 .explorer .title-button h2 {
   font-size: 0.75rem !important;
   font-weight: 400 !important;
 }
 
-// Backlinks - match TOC format
+.folder-container {
+  & div > a {
+    font-size: 0.8rem !important;
+    line-height: 1.3rem !important;
+
+    @include mobile {
+      font-size: 0.9rem !important;
+      line-height: 1.5rem !important;
+    }
+  }
+
+  & div > button span {
+    font-size: 0.8rem !important;
+    line-height: 1.3rem !important;
+
+    @include mobile {
+      font-size: 0.9rem !important;
+      line-height: 1.5rem !important;
+    }
+  }
+}
+
+.explorer-content ul li > a {
+  font-size: 0.8rem !important;
+  line-height: 1.3rem !important;
+
+  @include mobile {
+    font-size: 0.9rem !important;
+    line-height: 1.5rem !important;
+  }
+}
+
+// Backlinks
 .backlinks > ul.overflow {
   list-style: none !important;
   padding: 0 !important;
@@ -582,14 +563,12 @@ table {
   overflow-y: visible !important;
   max-height: none !important;
 
-  // Hide scrollbar for WebKit browsers
   &::-webkit-scrollbar {
     display: none !important;
     width: 0 !important;
     height: 0 !important;
   }
 
-  // Hide scrollbar for Firefox
   scrollbar-width: none !important;
 
   & > li {
@@ -603,56 +582,21 @@ table {
   }
 }
 
-// Explorer font size - slightly larger (0.8rem)
-.folder-container {
-  & div > a {
-    font-size: 0.8rem !important; // Folder names
-    line-height: 1.3rem !important;
+// ============================================================================
+// Page Listing (Folder Pages)
+// ============================================================================
 
-    @media (max-width: 768px) {
-      font-size: 0.9rem !important;
-      line-height: 1.5rem !important;
-    }
-  }
-
-  & div > button span {
-    font-size: 0.8rem !important; // Folder button text
-    line-height: 1.3rem !important;
-
-    @media (max-width: 768px) {
-      font-size: 0.9rem !important;
-      line-height: 1.5rem !important;
-    }
-  }
-}
-
-.explorer-content ul li > a {
-  font-size: 0.8rem !important; // File names
-  line-height: 1.3rem !important;
-
-  @media (max-width: 768px) {
-    font-size: 0.9rem !important;
-    line-height: 1.5rem !important;
-  }
-}
-
-// Folder page horizontal card layout
 .page-listing {
   margin-top: 2rem;
 
-  // Count text styling
   & > p {
     color: var(--tx2);
     font-size: 0.9rem;
     margin-bottom: 1.5rem;
 
-    @media (max-width: 768px) {
-      padding-left: 0.5rem;
-      padding-right: 0.5rem;
-    }
+    @include mobile-horizontal-padding;
   }
 
-  // Single column layout
   ul.section-ul {
     display: flex;
     flex-direction: column;
@@ -662,7 +606,6 @@ table {
     margin: 0;
   }
 
-  // Horizontal card styling for each item
   li.section-li {
     margin: 0;
 
@@ -677,7 +620,7 @@ table {
       padding: 1rem 1.5rem;
       transition: all 0.2s ease;
 
-      @media (max-width: 768px) {
+      @include mobile {
         grid-template-columns: 1fr;
         grid-template-rows: auto auto auto;
         padding: 1rem 0;
@@ -693,7 +636,6 @@ table {
         transform: translateX(4px);
       }
 
-      // Title (row 1, col 1)
       & > .desc {
         grid-column: 1;
         grid-row: 1;
@@ -715,13 +657,9 @@ table {
           }
         }
 
-        @media (max-width: 768px) {
-          padding-left: 0.5rem;
-          padding-right: 0.5rem;
-        }
+        @include mobile-horizontal-padding;
       }
 
-      // Date (row 1, col 2)
       & > .meta {
         grid-column: 2;
         grid-row: 1;
@@ -732,16 +670,15 @@ table {
         text-align: right;
         align-self: center;
 
-        @media (max-width: 768px) {
+        @include mobile {
           grid-column: 1;
           grid-row: 2;
           text-align: left;
-          padding-left: 0.5rem;
-          padding-right: 0.5rem;
+          padding-left: $mobile-padding;
+          padding-right: $mobile-padding;
         }
       }
 
-      // Tags (row 2, col 1-2)
       & > .tags {
         grid-column: 1 / -1;
         grid-row: 2;
@@ -750,12 +687,12 @@ table {
         flex-wrap: wrap;
         gap: 0.5rem;
 
-        @media (max-width: 768px) {
+        @include mobile {
           display: flex !important;
           grid-row: 3;
           grid-column: 1;
-          padding-left: 0.5rem;
-          padding-right: 0.5rem;
+          padding-left: $mobile-padding;
+          padding-right: $mobile-padding;
         }
       }
     }
