@@ -258,3 +258,20 @@ hr {
   border-top: 1px solid var(--ui1);
   margin: 2em 0;
 }
+
+// Explorer font size - smaller
+.folder-container {
+  & div > a {
+    font-size: 0.8rem !important; // Smaller folder names
+    line-height: 1.4rem !important;
+  }
+
+  & div > button span {
+    font-size: 0.8rem !important; // Smaller folder button text
+    line-height: 1.4rem !important;
+  }
+}
+
+.explorer-content ul li > a {
+  font-size: 0.85rem !important; // Smaller file names
+}
