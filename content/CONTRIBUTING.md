@@ -2,8 +2,8 @@
 title: コンテンツ作成ガイドライン
 draft: false
 tags:
-  - ガイド
-  - ルール
+  - guide
+  - rules
 date: 2026-02-16
 authorship:
   type: ai-assisted

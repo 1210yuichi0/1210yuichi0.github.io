@@ -1,7 +1,7 @@
 ---
 title: アイデアノート
 tags:
-  - アイデア
+  - ideas
 date: 2026-02-16
 authorship:
   type: human-written

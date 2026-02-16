@@ -4,7 +4,7 @@ tags:
   - quartz
   - obsidian
   - github-pages
-  - セットアップ
+  - setup
 date: 2026-02-14
 authorship:
   type: ai-assisted

@@ -1,9 +1,9 @@
 ---
 title: マークダウン記法ガイド
 tags:
-  - ガイド
-  - マークダウン
-  - 書き方
+  - guide
+  - markdown
+  - writing
 date: 2026-02-16
 authorship:
   type: ai-assisted
