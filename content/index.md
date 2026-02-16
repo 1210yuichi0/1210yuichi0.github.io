@@ -14,8 +14,8 @@ authorship:
 
 ### Tech
 
-- [[tech/git-memo|Gitメモ]] - Git、GitHub、複数アカウント管理など
-- [[tech/setup-guide|Scrap Notes 構築手順]] - このサイトの構築方法
+- [[Tech/git-memo|Gitメモ]] - Git、GitHub、複数アカウント管理など
+- [[Tech/setup-guide|Scrap Notes 構築手順]] - このサイトの構築方法
 
 ### Notes
 

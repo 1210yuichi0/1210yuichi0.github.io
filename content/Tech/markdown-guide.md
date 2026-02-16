@@ -130,12 +130,12 @@ _イタリック_
 Quartzは Obsidian の `[[]]` リンク形式に対応しています。
 
 ```markdown
-[[tech/git-memo|Gitメモ]]
+[[Tech/git-memo|Gitメモ]]
 [[CONTRIBUTING]]
 ```
 
 **表示例:**
-[[tech/git-memo|Gitメモ]]
+[[Tech/git-memo|Gitメモ]]
 
 **ファイル名指定:**
 
@@ -740,4 +740,4 @@ Obsidian/Quartz対応のCallout記法:
 **関連ドキュメント:**
 
 - [[CONTRIBUTING|コンテンツ作成ガイドライン]] - Frontmatterやタイトル重複などのサイト固有ルール
-- [[tech/setup-guide|Scrap Notes 構築手順]] - サイトのセットアップ方法
+- [[Tech/setup-guide|Scrap Notes 構築手順]] - サイトのセットアップ方法
