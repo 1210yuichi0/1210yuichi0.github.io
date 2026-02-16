@@ -1,5 +1,5 @@
 ---
-title: "dbt + BigQuery: その他の設定"
+title: "その他の設定"
 date: 2026-02-17
 tags: ["dbt", "bigquery", "vars", "packages", "macros"]
 categories: ["dbt完全ガイド"]

@@ -1,5 +1,5 @@
 ---
-title: "dbt + BigQuery プロジェクト概要"
+title: "プロジェクト概要"
 date: 2026-02-17
 tags: ["dbt", "bigquery", "data-engineering", "best-practices"]
 categories: ["検証"]

@@ -1,5 +1,5 @@
 ---
-title: "dbt + BigQuery: フック設定"
+title: "フック設定"
 date: 2026-02-17
 tags: ["dbt", "bigquery", "hooks", "automation"]
 categories: ["dbt完全ガイド"]

@@ -1,5 +1,5 @@
 ---
-title: "dbt + BigQuery: スナップショット設定"
+title: "スナップショット設定"
 date: 2026-02-17
 tags: ["dbt", "bigquery", "snapshots", "scd-type-2"]
 categories: ["dbt完全ガイド"]
