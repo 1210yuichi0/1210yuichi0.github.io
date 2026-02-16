@@ -114,7 +114,7 @@ fn main() {
 
 **太字テキスト**
 
-*イタリック*
+_イタリック_
 
 ~~取り消し線~~
 
@@ -143,12 +143,12 @@ fn main() {
 
 ## テーブル
 
-| 言語 | 拡張子 | 用途 |
-|------|--------|------|
-| JavaScript | .js | Web開発 |
-| Python | .py | データ分析 |
-| Go | .go | バックエンド |
-| Rust | .rs | システム |
+| 言語       | 拡張子 | 用途         |
+| ---------- | ------ | ------------ |
+| JavaScript | .js    | Web開発      |
+| Python     | .py    | データ分析   |
+| Go         | .go    | バックエンド |
+| Rust       | .rs    | システム     |
 
 ## Mermaid 図
 
@@ -206,3 +206,9 @@ classDiagram
     }
     User <|-- Admin
 ```
+
+## YouTube埋め込み
+
+YouTubeのURLを貼り付けるだけで自動的に埋め込まれます。
+
+https://www.youtube.com/watch?v=dQw4w9WgXcQ
