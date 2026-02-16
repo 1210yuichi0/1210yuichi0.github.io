@@ -80,11 +80,11 @@ flowchart TD
 
 ### 1.2 テストタイプの比較表
 
-| テストタイプ | 定義場所 | 実行タイミング | 検証対象 | データソース | 実行速度 |
-|------------|---------|-------------|---------|------------|---------|
-| **Schema Tests** | models/*.yml | dbt test | 実データの品質 | BigQuery実テーブル | 遅い |
-| **Singular Tests** | tests/*.sql | dbt test | カスタムロジック | BigQuery実テーブル | 遅い |
-| **Unit Tests** | models/*.yml | dbt test --select test_type:unit | モデルロジック | モックデータ（メモリ内） | 速い |
+| テストタイプ       | 定義場所      | 実行タイミング                   | 検証対象         | データソース             | 実行速度 |
+| ------------------ | ------------- | -------------------------------- | ---------------- | ------------------------ | -------- |
+| **Schema Tests**   | models/\*.yml | dbt test                         | 実データの品質   | BigQuery実テーブル       | 遅い     |
+| **Singular Tests** | tests/\*.sql  | dbt test                         | カスタムロジック | BigQuery実テーブル       | 遅い     |
+| **Unit Tests**     | models/\*.yml | dbt test --select test_type:unit | モデルロジック   | モックデータ（メモリ内） | 速い     |
 
 ### 1.3 テストの実行フロー
 
@@ -148,11 +148,11 @@ having count(*) > 1
 
 **検証結果**:
 
-| ケース | 結果 | 説明 |
-|-------|------|------|
-| すべての値が一意 | ✅ PASS（0行） | 重複なし |
-| 重複がある | ❌ FAIL（重複行を返す） | 例: customer_id=1 が2回出現 |
-| NULLが複数ある | ❌ FAIL | NULLも重複としてカウント |
+| ケース           | 結果                    | 説明                        |
+| ---------------- | ----------------------- | --------------------------- |
+| すべての値が一意 | ✅ PASS（0行）          | 重複なし                    |
+| 重複がある       | ❌ FAIL（重複行を返す） | 例: customer_id=1 が2回出現 |
+| NULLが複数ある   | ❌ FAIL                 | NULLも重複としてカウント    |
 
 **実行コマンド**:
 
@@ -175,6 +175,7 @@ dbt test --select stg_customers
 ```
 
 **ベストプラクティス**:
+
 - 主キー（Primary Key）には必ず`unique`と`not_null`を両方設定
 - 複合キーの場合は、Singular Testで検証
 
@@ -199,7 +200,7 @@ models:
         tests:
           - not_null:
               config:
-                severity: warn  # 失敗しても警告のみ
+                severity: warn # 失敗しても警告のみ
 ```
 
 **生成されるSQL**:
@@ -214,10 +215,10 @@ where customer_id is null
 
 **検証結果**:
 
-| ケース | 結果 | 説明 |
-|-------|------|------|
-| すべての値が非NULL | ✅ PASS（0行） | NULLなし |
-| NULLが含まれる | ❌ FAIL（NULL行を返す） | 例: customer_id が NULL の行が5件 |
+| ケース             | 結果                    | 説明                              |
+| ------------------ | ----------------------- | --------------------------------- |
+| すべての値が非NULL | ✅ PASS（0行）          | NULLなし                          |
+| NULLが含まれる     | ❌ FAIL（NULL行を返す） | 例: customer_id が NULL の行が5件 |
 
 **高度な設定（条件付きエラー）**:
 
@@ -228,8 +229,8 @@ columns:
       - not_null:
           config:
             severity: error
-            error_if: ">= 10"  # 10行以上NULLがあればエラー
-            warn_if: ">= 1"    # 1〜9行NULLがあれば警告
+            error_if: ">= 10" # 10行以上NULLがあればエラー
+            warn_if: ">= 1" # 1〜9行NULLがあれば警告
 ```
 
 **実行例**:
@@ -244,6 +245,7 @@ dbt test --select not_null_stg_customers_first_name
 ```
 
 **ベストプラクティス**:
+
 - 必須カラムには`not_null`を設定
 - オプショナルなカラムでも、NULL率が高い場合は`severity: warn`で監視
 
@@ -264,8 +266,8 @@ models:
       - name: status
         tests:
           - accepted_values:
-              values: ['placed', 'shipped', 'completed', 'return_pending', 'returned']
-              quote: false  # 値をクォートしない（デフォルトはtrue）
+              values: ["placed", "shipped", "completed", "return_pending", "returned"]
+              quote: false # 値をクォートしない（デフォルトはtrue）
 ```
 
 **生成されるSQL**:
@@ -294,11 +296,11 @@ from validation_errors
 
 **検証結果**:
 
-| ケース | 結果 | 説明 |
-|-------|------|------|
-| すべての値がリスト内 | ✅ PASS（0行） | 不正な値なし |
-| リスト外の値がある | ❌ FAIL（不正な値を返す） | 例: status = 'cancelled' が3件 |
-| NULLがある | ✅ PASS | NULLは許容される（デフォルト） |
+| ケース               | 結果                      | 説明                           |
+| -------------------- | ------------------------- | ------------------------------ |
+| すべての値がリスト内 | ✅ PASS（0行）            | 不正な値なし                   |
+| リスト外の値がある   | ❌ FAIL（不正な値を返す） | 例: status = 'cancelled' が3件 |
+| NULLがある           | ✅ PASS                   | NULLは許容される（デフォルト） |
 
 **NULL処理のカスタマイズ**:
 
@@ -307,12 +309,13 @@ columns:
   - name: status
     tests:
       - accepted_values:
-          values: ['placed', 'shipped', 'completed']
+          values: ["placed", "shipped", "completed"]
           config:
-            where: "status is not null"  # NULLを除外して検証
+            where: "status is not null" # NULLを除外して検証
 ```
 
 **ベストプラクティス**:
+
 - ステータスカラム、カテゴリカラムには必ず設定
 - 値のリストは、ソースシステムのマスタデータと同期
 - `quote: false`は文字列リテラル、`quote: true`（デフォルト）は数値や日付で使用
@@ -364,11 +367,11 @@ where parent.to_field is null
 
 **検証結果**:
 
-| ケース | 結果 | 説明 |
-|-------|------|------|
-| すべての値が親テーブルに存在 | ✅ PASS（0行） | 孤児レコードなし |
+| ケース                         | 結果                          | 説明                                              |
+| ------------------------------ | ----------------------------- | ------------------------------------------------- |
+| すべての値が親テーブルに存在   | ✅ PASS（0行）                | 孤児レコードなし                                  |
 | 親テーブルに存在しない値がある | ❌ FAIL（孤児レコードを返す） | 例: customer_id=999 が stg_customers に存在しない |
-| NULLがある | ✅ PASS | NULLはスキップされる |
+| NULLがある                     | ✅ PASS                       | NULLはスキップされる                              |
 
 **実行例（失敗ケース）**:
 
@@ -386,6 +389,7 @@ dbt test --select relationships_stg_orders_customer_id__customer_id__ref_stg_cus
 ```
 
 **ベストプラクティス**:
+
 - すべての外部キーには`relationships`テストを設定
 - 循環参照がないように注意
 - パフォーマンスが気になる場合は、サンプリングやwhere句でフィルタリング
@@ -396,7 +400,7 @@ dbt test --select relationships_stg_orders_customer_id__customer_id__ref_stg_cus
     to: ref('stg_customers')
     field: customer_id
     config:
-      where: "order_date >= DATE_SUB(CURRENT_DATE(), INTERVAL 7 DAY)"  # 直近7日のみ検証
+      where: "order_date >= DATE_SUB(CURRENT_DATE(), INTERVAL 7 DAY)" # 直近7日のみ検証
 ```
 
 ---
@@ -418,6 +422,7 @@ jaffle_shop_duckdb/
 ```
 
 **基本ルール**:
+
 - テストSQLは、**失敗する行**を返すクエリを書く
 - 0行が返された場合 → ✅ PASS
 - 1行以上返された場合 → ❌ FAIL
@@ -438,6 +443,7 @@ where amount <= 0
 ```
 
 **説明**:
+
 - 金額が0以下の支払いレコードを検出
 - 不正なデータがあれば、そのレコードを返す
 
@@ -492,6 +498,7 @@ where abs(coalesce(o.order_amount, 0) - coalesce(p.payment_amount, 0)) > 0.01  -
 ```
 
 **説明**:
+
 - 注文テーブルと支払いテーブルの金額が一致しない注文を検出
 - 0.01以上の差異があれば失敗
 
@@ -525,6 +532,7 @@ where status = 'returned'
 ```
 
 **説明**:
+
 - 'returned' ステータスの注文が、前のステータスとして 'completed' を持っていることを確認
 - 無効な遷移（例: 'placed' → 'returned'）を検出
 
@@ -547,6 +555,7 @@ tests/
 ```
 
 **ベストプラクティス**:
+
 - テストファイル名は `assert_*` または `test_*` で始める
 - 1ファイル = 1テスト（複数のチェックを1ファイルにまとめない）
 - descriptionをコメントで記載
@@ -586,13 +595,13 @@ graph TB
     style DT3 fill:#87CEEB
 ```
 
-| 観点 | Unit Tests | Data Tests |
-|------|-----------|-----------|
-| **目的** | モデルのSQLロジック検証 | 実データの品質検証 |
-| **データ** | モック（YAML定義） | 実テーブル |
-| **実行速度** | 高速（秒単位） | 低速（分単位） |
-| **実行タイミング** | 開発時、PR作成時 | 本番デプロイ後、定期実行 |
-| **コスト** | 無料（BigQueryアクセスなし） | 有料（スキャン量に応じた課金） |
+| 観点               | Unit Tests                   | Data Tests                     |
+| ------------------ | ---------------------------- | ------------------------------ |
+| **目的**           | モデルのSQLロジック検証      | 実データの品質検証             |
+| **データ**         | モック（YAML定義）           | 実テーブル                     |
+| **実行速度**       | 高速（秒単位）               | 低速（分単位）                 |
+| **実行タイミング** | 開発時、PR作成時             | 本番デプロイ後、定期実行       |
+| **コスト**         | 無料（BigQueryアクセスなし） | 有料（スキャン量に応じた課金） |
 
 ---
 
@@ -603,6 +612,7 @@ graph TB
 ### 5.1 severity（テスト失敗時の重大度）
 
 **設定値**:
+
 - `error`（デフォルト）: テスト失敗時にエラーとして扱い、終了コード1で終了
 - `warn`: テスト失敗時に警告として扱い、終了コード0で継続
 
@@ -617,9 +627,9 @@ models:
       - name: status
         tests:
           - accepted_values:
-              values: ['placed', 'shipped', 'completed']
+              values: ["placed", "shipped", "completed"]
               config:
-                severity: warn  # 失敗しても警告のみ
+                severity: warn # 失敗しても警告のみ
 ```
 
 **実行例**:
@@ -638,6 +648,7 @@ dbt test --select accepted_values_stg_orders_status
 ```
 
 **ベストプラクティス**:
+
 - 本番環境では`error`、開発環境では`warn`
 - 段階的な導入: 最初は`warn`で監視、データ品質が安定したら`error`に変更
 
@@ -655,19 +666,19 @@ columns:
     tests:
       - not_null:
           config:
-            error_if: ">= 10"  # 10行以上NULLがあればエラー
-            warn_if: ">= 1"    # 1〜9行NULLがあれば警告
+            error_if: ">= 10" # 10行以上NULLがあればエラー
+            warn_if: ">= 1" # 1〜9行NULLがあれば警告
             # 0行ならPASS
 ```
 
 **条件式のサポート**:
 
-| 条件式 | 意味 | 例 |
-|-------|------|---|
-| `">= 10"` | 10行以上 | 重大な問題 |
-| `"> 5"` | 6行以上 | 中程度の問題 |
-| `"!= 0"` | 1行以上 | 任意の失敗 |
-| `"= 0"` | 0行 | 成功（デフォルト） |
+| 条件式    | 意味     | 例                 |
+| --------- | -------- | ------------------ |
+| `">= 10"` | 10行以上 | 重大な問題         |
+| `"> 5"`   | 6行以上  | 中程度の問題       |
+| `"!= 0"`  | 1行以上  | 任意の失敗         |
+| `"= 0"`   | 0行      | 成功（デフォルト） |
 
 **実行例**:
 
@@ -686,6 +697,7 @@ dbt test --select not_null_stg_orders_order_date
 ```
 
 **ユースケース**:
+
 - データドリフト検出: 通常は0〜5行のエラー、急増したら警告
 - パフォーマンス劣化検出: スキャン行数が閾値を超えたら警告
 
@@ -704,7 +716,7 @@ columns:
       - unique:
           config:
             store_failures: true
-            schema: dbt_test_failures  # 保存先スキーマ（デフォルトは dbt_test__audit）
+            schema: dbt_test_failures # 保存先スキーマ（デフォルトは dbt_test__audit）
 ```
 
 **生成されるテーブル**:
@@ -716,9 +728,9 @@ your-gcp-project-id.dbt_test_failures.unique_stg_orders_order_id
 **テーブル内容**:
 
 | order_id | n_records |
-|----------|-----------|
-| 123 | 3 |
-| 456 | 2 |
+| -------- | --------- |
+| 123      | 3         |
+| 456      | 2         |
 
 **保存されたデータの確認**:
 
@@ -731,6 +743,7 @@ limit 10
 ```
 
 **ベストプラクティス**:
+
 - 本番環境では`store_failures: true`を設定し、失敗原因を調査可能にする
 - 定期的にクリーンアップ（古い失敗データを削除）
 
@@ -755,7 +768,7 @@ columns:
     tests:
       - unique:
           config:
-            limit: 10  # 最大10行まで表示
+            limit: 10 # 最大10行まで表示
 ```
 
 **デフォルト**: 制限なし（すべての失敗行を返す）
@@ -775,6 +788,7 @@ dbt test --select unique_stg_orders_order_id
 ```
 
 **ベストプラクティス**:
+
 - `limit: 100` を設定し、ログの肥大化を防ぐ
 - `store_failures: true` と併用し、すべての失敗データをテーブルに保存
 
@@ -799,6 +813,7 @@ columns:
 ```
 
 **ユースケース**:
+
 - パフォーマンス最適化: 大量データのテーブルで、直近データのみ検証
 - 段階的な導入: 新しいルールを最新データのみに適用
 
@@ -819,12 +834,12 @@ dbt test --select relationships_stg_orders_customer_id
 
 ### 5.6 その他の設定オプション
 
-| オプション | 説明 | デフォルト | 例 |
-|-----------|------|----------|---|
-| `enabled` | テストの有効/無効 | true | `enabled: false` |
-| `tags` | テストにタグ付け | [] | `tags: ['nightly', 'critical']` |
-| `meta` | メタデータ付与 | {} | `meta: {owner: 'data_team'}` |
-| `fail_calc` | 失敗判定のカスタム式 | `!= 0` | `fail_calc: "> 100"` |
+| オプション  | 説明                 | デフォルト | 例                              |
+| ----------- | -------------------- | ---------- | ------------------------------- |
+| `enabled`   | テストの有効/無効    | true       | `enabled: false`                |
+| `tags`      | テストにタグ付け     | []         | `tags: ['nightly', 'critical']` |
+| `meta`      | メタデータ付与       | {}         | `meta: {owner: 'data_team'}`    |
+| `fail_calc` | 失敗判定のカスタム式 | `!= 0`     | `fail_calc: "> 100"`            |
 
 **設定例**:
 
@@ -835,10 +850,10 @@ columns:
       - unique:
           config:
             enabled: true
-            tags: ['critical', 'daily']
+            tags: ["critical", "daily"]
             meta:
-              owner: 'data_quality_team'
-              alert_channel: '#data-alerts'
+              owner: "data_quality_team"
+              alert_channel: "#data-alerts"
             severity: error
             store_failures: true
             limit: 100
@@ -942,7 +957,7 @@ dbt test --select tests/integrity/*
 dbt:
   outputs:
     dev:
-      threads: 8  # 8並列でテスト実行
+      threads: 8 # 8並列でテスト実行
 ```
 
 **実行例**:
@@ -962,6 +977,7 @@ dbt test --threads 16
 ```
 
 **ベストプラクティス**:
+
 - ローカル開発: threads=4
 - CI/CD: threads=8
 - 本番: threads=16
@@ -989,6 +1005,7 @@ flowchart TB
 ```
 
 **推奨比率**:
+
 - Unit Tests: 70%（高速、低コスト）
 - Integration Tests（Data Tests）: 25%（中速、中コスト）
 - E2E Tests: 5%（低速、高コスト）
@@ -1068,29 +1085,29 @@ models:
         tests:
           - unique:
               config:
-                tags: ['critical', 'daily', 'pii']
+                tags: ["critical", "daily", "pii"]
           - not_null:
               config:
-                tags: ['critical', 'daily']
+                tags: ["critical", "daily"]
 
       - name: status
         tests:
           - accepted_values:
-              values: ['placed', 'shipped']
+              values: ["placed", "shipped"]
               config:
-                tags: ['noncritical', 'weekly']
+                tags: ["noncritical", "weekly"]
 ```
 
 **タグの使い分け**:
 
-| タグ | 意味 | 実行頻度 | 例 |
-|------|------|---------|---|
-| `critical` | 重要（失敗時に即対応） | 毎回 | 主キーのunique/not_null |
-| `noncritical` | 非重要（失敗しても継続可） | 毎日 | オプショナルカラムのチェック |
-| `daily` | 毎日実行 | 1日1回 | relationshipsテスト |
-| `weekly` | 週次実行 | 週1回 | 統計的チェック |
-| `pii` | 個人情報関連 | 毎回 | PIIカラムのnot_null |
-| `performance` | パフォーマンス監視 | 毎日 | 大規模テーブルのチェック |
+| タグ          | 意味                       | 実行頻度 | 例                           |
+| ------------- | -------------------------- | -------- | ---------------------------- |
+| `critical`    | 重要（失敗時に即対応）     | 毎回     | 主キーのunique/not_null      |
+| `noncritical` | 非重要（失敗しても継続可） | 毎日     | オプショナルカラムのチェック |
+| `daily`       | 毎日実行                   | 1日1回   | relationshipsテスト          |
+| `weekly`      | 週次実行                   | 週1回    | 統計的チェック               |
+| `pii`         | 個人情報関連               | 毎回     | PIIカラムのnot_null          |
+| `performance` | パフォーマンス監視         | 毎日     | 大規模テーブルのチェック     |
 
 **実行例**:
 
@@ -1119,12 +1136,12 @@ columns:
       - unique:
           config:
             severity: error
-            tags: ['critical', 'daily']
+            tags: ["critical", "daily"]
             store_failures: true
       - not_null:
           config:
             severity: error
-            tags: ['critical', 'daily']
+            tags: ["critical", "daily"]
             store_failures: true
 ```
 
@@ -1134,9 +1151,9 @@ columns:
 # Singular test で検証
 # tests/assert_unique_composite_key.sql
 select
-    column1,
-    column2,
-    count(*) as n_records
+column1,
+column2,
+count(*) as n_records
 from {{ ref('my_table') }}
 group by column1, column2
 having count(*) > 1
@@ -1236,7 +1253,7 @@ config:
   partition_by:
     field: order_date
     data_type: date
-  cluster_by: ['customer_id']
+  cluster_by: ["customer_id"]
 ```
 
 ---
@@ -1259,7 +1276,7 @@ where _dbt_test_execution_time < TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 7 D
 tests:
   +store_failures: true
   +schema: dbt_test_failures
-  +hours_to_expiration: 168  # 7日後に自動削除
+  +hours_to_expiration: 168 # 7日後に自動削除
 ```
 
 ---
@@ -1365,24 +1382,24 @@ models:
           - unique:
               config:
                 severity: error
-                tags: ['critical', 'daily']
+                tags: ["critical", "daily"]
                 store_failures: true
           - not_null:
               config:
                 severity: error
-                tags: ['critical', 'daily']
+                tags: ["critical", "daily"]
 
       - name: email
         description: "メールアドレス"
         tests:
           - unique:
               config:
-                severity: warn  # 重複は警告レベル
-                tags: ['noncritical', 'daily']
+                severity: warn # 重複は警告レベル
+                tags: ["noncritical", "daily"]
           - not_null:
               config:
                 severity: error
-                tags: ['critical', 'daily']
+                tags: ["critical", "daily"]
 
       - name: customer_lifetime_value
         description: "顧客生涯価値"
@@ -1392,7 +1409,7 @@ models:
               expression: ">= 0"
               config:
                 severity: error
-                tags: ['critical', 'daily']
+                tags: ["critical", "daily"]
 ```
 
 ---
@@ -1401,11 +1418,11 @@ models:
 
 **推奨カバレッジ**:
 
-| レイヤー | 主キーテスト | 外部キーテスト | ビジネスルールテスト | カバレッジ目標 |
-|---------|-------------|-------------|------------------|-------------|
-| **Staging** | 100% | 80% | - | 90% |
-| **Intermediate** | 100% | 60% | 30% | 80% |
-| **Marts** | 100% | 50% | 80% | 95% |
+| レイヤー         | 主キーテスト | 外部キーテスト | ビジネスルールテスト | カバレッジ目標 |
+| ---------------- | ------------ | -------------- | -------------------- | -------------- |
+| **Staging**      | 100%         | 80%            | -                    | 90%            |
+| **Intermediate** | 100%         | 60%            | 30%                  | 80%            |
+| **Marts**        | 100%         | 50%            | 80%                  | 95%            |
 
 **カバレッジの計算**:
 
