@@ -1,5 +1,5 @@
 ---
-title: "dbt + BigQuery: 接続設定"
+title: "接続設定"
 date: 2026-02-17
 tags: ["dbt", "bigquery", "profiles.yml", "authentication"]
 categories: ["dbt完全ガイド"]

@@ -1,5 +1,5 @@
 ---
-title: "dbt + BigQuery: シード設定"
+title: "シード設定"
 date: 2026-02-17
 tags: ["dbt", "bigquery", "seeds", "csv"]
 categories: ["dbt完全ガイド"]

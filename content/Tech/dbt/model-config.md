@@ -1,5 +1,5 @@
 ---
-title: "dbt + BigQuery: モデル設定"
+title: "モデル設定"
 date: 2026-02-17
 tags: ["dbt", "bigquery", "materialization", "partitioning", "clustering"]
 categories: ["dbt完全ガイド"]

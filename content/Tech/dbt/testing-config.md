@@ -1,5 +1,5 @@
 ---
-title: "dbt + BigQuery: テスト設定"
+title: "テスト設定"
 date: 2026-02-17
 tags: ["dbt", "bigquery", "testing", "data-quality", "schema-tests"]
 categories: ["dbt完全ガイド"]

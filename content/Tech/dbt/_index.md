@@ -23,9 +23,12 @@ dbt core + BigQueryの全設定項目（130項目）を完全に検証し、実�
 - [プロジェクト基本設定](project-basic-config.md) - dbt_project.yml の全設定
 - [BigQuery接続設定](bigquery-connection.md) - 認証方法、接続設定
 - [モデル設定](model-config.md) - マテリアライゼーション、パーティショニング、クラスタリング
+- **[BigQuery全設定リファレンス](bigquery-configs-complete.md)** - 全40項目の完全ガイド（暗号化、Python、マテビュー等）
 
 ### 🟡 重要（データ品質・運用効率の向上）
 - [テスト設定](testing-config.md) - Schema/Singular/Unit Tests
+- **[Unit Tests完全検証](unit-tests-verification.md)** - 6種類のデータ形式、CI/CD統合
+- **[Contract設定（スキーマ保証）](contracts-config.md)** - 型安全性、unit testsとの組み合わせ
 - [ドキュメント設定](documentation-config.md) - dbt docs、descriptions
 - [パフォーマンス最適化](performance-optimization.md) - スロット最適化、並列実行
 

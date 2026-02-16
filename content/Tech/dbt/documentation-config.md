@@ -1,5 +1,5 @@
 ---
-title: "dbt + BigQuery: ドキュメント設定"
+title: "ドキュメント設定"
 date: 2026-02-17
 tags: ["dbt", "bigquery", "documentation", "dbt-docs"]
 categories: ["dbt完全ガイド"]
