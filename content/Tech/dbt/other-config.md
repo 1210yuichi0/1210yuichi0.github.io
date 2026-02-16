@@ -1,5 +1,5 @@
 ---
-title: "dbt + BigQuery #10: その他の設定"
+title: "dbt + BigQuery: その他の設定"
 date: 2026-02-17
 tags: ["dbt", "bigquery", "vars", "packages", "macros"]
 categories: ["dbt完全ガイド"]
@@ -7,7 +7,7 @@ draft: false
 weight: 100
 ---
 
-# Category 10: その他の設定の検証レポート
+# その他の設定の検証レポート
 
 ## 目次
 - [概要](#概要)

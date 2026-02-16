@@ -1,5 +1,5 @@
 ---
-title: "dbt + BigQuery #06: パフォーマンス最適化"
+title: "dbt + BigQuery: パフォーマンス最適化"
 date: 2026-02-17
 tags: ["dbt", "bigquery", "performance", "optimization"]
 categories: ["dbt完全ガイド"]
@@ -7,7 +7,7 @@ draft: false
 weight: 60
 ---
 
-# Category 6: パフォーマンス最適化設定の検証レポート
+# パフォーマンス最適化設定の検証レポート
 
 ## 目次
 - [概要](#概要)
