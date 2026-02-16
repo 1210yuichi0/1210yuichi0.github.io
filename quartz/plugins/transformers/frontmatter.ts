@@ -80,6 +80,14 @@ export const FrontMatter: QuartzTransformerPlugin<Partial<Options>> = (userOpts)
             const tags = coerceToArray(coalesceAliases(data, ["tags", "tag"]))
             if (tags) data.tags = [...new Set(tags.map((tag: string) => slugTag(tag)))]
 
+            // Add "未検証" tag if authorship.reviewed is false
+            if (data.authorship?.reviewed === false) {
+              const currentTags = data.tags || []
+              if (!currentTags.includes("未検証")) {
+                data.tags = [...currentTags, "未検証"]
+              }
+            }
+
             const aliases = coerceToArray(coalesceAliases(data, ["aliases", "alias"]))
             if (aliases) {
               data.aliases = aliases // frontmatter
