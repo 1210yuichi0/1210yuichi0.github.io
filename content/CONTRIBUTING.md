@@ -299,7 +299,7 @@ authorship:
 
 ## フォルダ別ガイド
 
-### tech/ - 技術記事
+### Tech/ - 技術記事
 
 **用途:**
 
@@ -341,7 +341,7 @@ date: YYYY-MM-DD
 ## まとめ
 ```
 
-### notes/ - 一般ノート
+### Notes/ - 一般ノート
 
 **用途:**
 
@@ -374,7 +374,7 @@ date: YYYY-MM-DD
 ## 参考資料
 ```
 
-### ideas/ - アイデアノート
+### Ideas/ - アイデアノート
 
 **詳細ガイド:** [ideas/README.md](./ideas/README.md)
 
