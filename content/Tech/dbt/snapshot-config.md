@@ -1,5 +1,5 @@
 ---
-title: "スナップショット設定"
+title: "Snapshots"
 date: 2026-02-17
 tags: ["dbt", "bigquery", "snapshots", "scd-type-2"]
 categories: ["dbt"]
@@ -7,7 +7,7 @@ draft: false
 weight: 70
 ---
 
-# スナップショット設定の検証レポート
+# Snapshots検証レポート
 
 ## 目次
 - [概要](#概要)

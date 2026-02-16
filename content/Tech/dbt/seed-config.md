@@ -1,5 +1,5 @@
 ---
-title: "シード設定"
+title: "Seeds"
 date: 2026-02-17
 tags: ["dbt", "bigquery", "seeds", "csv"]
 categories: ["dbt"]
@@ -7,7 +7,7 @@ draft: false
 weight: 80
 ---
 
-# シード設定の検証レポート
+# Seeds検証レポート
 
 ## 目次
 - [概要](#概要)

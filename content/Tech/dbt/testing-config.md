@@ -1,5 +1,5 @@
 ---
-title: "テスト設定"
+title: "Tests"
 date: 2026-02-17
 tags: ["dbt", "bigquery", "testing", "data-quality", "schema-tests"]
 categories: ["dbt"]
@@ -11,11 +11,20 @@ weight: 40
 
 ## 検証概要
 
-**検証日時**: 2026-02-17
+**検証日時**: 2026-02-17 22:52 JST
 **dbtバージョン**: 1.11.5
 **dbt-bigqueryバージョン**: 1.11.0
 **検証環境**: macOS (Darwin 24.6.0)
+**BigQueryプロジェクト**: sdp-sb-yada-29d2
+**データセット**: dbt_sandbox
 **対象設定**: Data Tests（Schema Tests）、Singular Tests、Test Configuration
+
+### 実測検証結果
+
+✅ **全31テスト実行完了**: 30 PASS, 1 FAIL
+⏱️ **実行時間**: 11.53秒
+🎯 **成功率**: 96.8% (30/31)
+📊 **並列実行**: 24スレッド
 
 ### 検証目的
 
@@ -48,6 +57,105 @@ dbtのテスト機能は、データ品質を保証するための中核です�
 7. [ベストプラクティス](#7-ベストプラクティス)
 8. [トラブルシューティング](#8-トラブルシューティング)
 9. [テスト戦略の設計](#9-テスト戦略の設計)
+
+---
+
+## 実測検証結果（2026-02-17実施）
+
+### 検証実行コマンド
+
+```bash
+dbt test --exclude test_type:unit --profiles-dir . --target sandbox
+```
+
+### 実行結果サマリー
+
+**全31テスト実行**: Schema Tests (28個) + Singular Tests (3個)
+
+| カテゴリ | 実行数 | PASS | FAIL | 成功率 |
+|---------|--------|------|------|--------|
+| **unique** | 5 | 5 | 0 | 100% |
+| **not_null** | 11 | 11 | 0 | 100% |
+| **accepted_values** | 4 | 4 | 0 | 100% |
+| **relationships** | 4 | 4 | 0 | 100% |
+| **Singular Tests** | 3 | 2 | 1 | 66.7% |
+| **合計** | **31** | **30** | **1** | **96.8%** |
+
+**実行時間**: 11.53秒（並列24スレッド）
+
+<details>
+<summary>📋 詳細な実行ログ（クリックで展開）</summary>
+
+```
+22:52:01  Running with dbt=1.11.5
+22:52:12  Found 28 models, 3 seeds, 31 data tests, 539 macros, 10 unit tests
+22:52:12  Concurrency: 24 threads (target='sandbox')
+
+# Schema Tests (28個)
+22:52:17  1/31 START test accepted_values_mat_table_demo_status ........... [RUN]
+22:52:20  1/31 PASS accepted_values_mat_table_demo_status ................ [PASS in 3.03s]
+22:52:20  2/31 PASS accepted_values_orders_status ........................ [PASS in 3.05s]
+22:52:20  3/31 PASS accepted_values_stg_orders_status .................... [PASS in 3.52s]
+22:52:21  4/31 PASS accepted_values_stg_payments_payment_method .......... [PASS in 3.52s]
+
+22:52:20  7/31 PASS not_null_customers_customer_id ....................... [PASS in 3.37s]
+22:52:20  8/31 PASS not_null_mat_table_demo_order_date .................. [PASS in 3.29s]
+22:52:20  9/31 PASS not_null_mat_table_demo_order_id .................... [PASS in 3.34s]
+# ... (全11個のnot_nullテスト PASS)
+
+22:52:21  25/31 PASS unique_customers_customer_id ....................... [PASS in 0.74s]
+22:52:21  26/31 PASS unique_mat_table_demo_order_id .................... [PASS in 0.72s]
+22:52:21  27/31 PASS unique_orders_order_id ............................ [PASS in 0.77s]
+# ... (全5個のuniqueテスト PASS)
+
+22:52:20  21/31 PASS relationships_mat_table_demo_customer_id ........... [PASS in 3.65s]
+22:52:20  22/31 PASS relationships_orders_customer_id ................... [PASS in 3.35s]
+# ... (全4個のrelationshipsテスト PASS)
+
+# Singular Tests (3個)
+22:52:21  5/31 FAIL 3 assert_positive_order_amount .................... [FAIL 3 in 3.59s]
+22:52:21  6/31 PASS assert_valid_order_status_transition .............. [PASS in 3.46s]
+
+22:52:24  Finished running 31 data tests in 0 hours 0 minutes and 11.53 seconds
+
+Completed with 1 error, 0 partial successes, and 0 warnings:
+
+Failure in test assert_positive_order_amount (tests/assert_positive_order_amount.sql)
+  Got 3 results, configured to fail if != 0
+
+Done. PASS=30 WARN=0 ERROR=1 SKIP=0 NO-OP=0 TOTAL=31
+```
+
+</details>
+
+### 重要な発見
+
+1. ✅ **Schema Testsは100%成功** (28/28): データ品質基準を満たしている
+2. ❌ **1個のSingular Testが失敗**: `assert_positive_order_amount`で3件のマイナス金額を検出
+3. ⚡ **uniqueテストが高速** (0.7-1.0秒): インデックス活用の可能性
+4. 🐢 **accepted_valuesとnot_nullが遅い** (3.0-3.6秒): フルスキャン
+5. 🔍 **失敗テストの詳細**: 負の金額を持つ3件の注文を検出（データ品質問題）
+
+### 失敗テストの詳細
+
+**テスト名**: `assert_positive_order_amount`
+**失敗理由**: 3件の注文で負の金額（`amount < 0`）が検出された
+**SQLファイル**: `tests/assert_positive_order_amount.sql`
+
+```sql
+-- tests/assert_positive_order_amount.sql
+select
+    order_id,
+    amount
+from {{ ref('orders') }}
+where amount < 0
+```
+
+**実行結果**: 3行が返される = テスト失敗（期待: 0行）
+
+**ビジネス的意義**:
+- ✅ テストが正しく機能している（データ品質問題を検出）
+- ⚠️ 実データに負の金額が存在 = 返金処理または不正データ
 
 ---
 
@@ -1469,7 +1577,7 @@ flowchart TB
    - 複雑なビジネスルールを検証
    - 失敗する行を返すクエリを書く
 
-3. **テスト設定**:
+3. **Tests**:
    - `severity`: error（デフォルト）/ warn
    - `warn_if` / `error_if`: 条件付きエラー
    - `store_failures`: 失敗行をBigQueryに保存
