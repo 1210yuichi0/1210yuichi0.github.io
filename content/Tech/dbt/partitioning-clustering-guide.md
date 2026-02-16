@@ -5,9 +5,14 @@ tags: ["dbt", "bigquery", "partitioning", "clustering", "performance", "best-pra
 categories: ["dbt"]
 draft: false
 weight: 25
+authorship:
+  type: ai-assisted
+  model: Claude Sonnet 4.5
+  date: 2026-02-17
+  reviewed: false
 ---
 
-# BigQueryパーティショニング＆クラスタリング
+
 
 > **いつも設定に迷う方へ**: パーティショニングとクラスタリングの順番、数、使い分けを実測検証とGCP公式ドキュメントで解説
 
@@ -72,7 +77,7 @@ flowchart TD
     PartDate --> Q5{さらに絞り込む列は？}
     PartTS --> Q5
     PartInt --> Q5
-    Q5 -->|Yes| PartCluster[✅ パーティション+クラスタリング<br/>最強の組み合わせ]
+    Q5 -->|Yes| PartCluster[✅ パーティション+クラスタリング<br/>推奨される組み合わせ]
     Q5 -->|No| PartOnly[✅ パーティションのみ]
 
     style PartDate fill:#90EE90
@@ -539,7 +544,7 @@ SELECT * FROM fact_orders WHERE order_date = '2026-01-01';
 
 ## 4. 組み合わせ戦略
 
-### 4.1 パーティション＋クラスタリング（最強）
+### 4.1 パーティション＋クラスタリング（推奨）
 
 **時系列データ + 高カーディナリティ列**
 

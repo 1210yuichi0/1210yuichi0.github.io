@@ -5,9 +5,14 @@ tags: ["dbt", "bigquery", "profiles.yml", "authentication"]
 categories: ["dbt"]
 draft: false
 weight: 20
+authorship:
+  type: ai-assisted
+  model: Claude Sonnet 4.5
+  date: 2026-02-17
+  reviewed: false
 ---
 
-# カテゴリ2: BigQuery接続設定 - 検証レポート
+
 
 ## 検証概要
 
@@ -33,7 +38,16 @@ dbt-bigqueryの接続設定（`profiles.yml`）には、5種類の認証方法�
 - **基本設定**: 4項目（schema, location, threads, priority）
 - **ジョブ制御**: 4項目（timeout, retries, creation_timeout, execution_project）
 - **コスト制御**: 2項目（maximum_bytes_billed, maximum_gb_billed）
-- **高度な設定**: 7項目（impersonate, gcs_bucket, dataproc, scopes, etc.）
+- **高度な設定**: 7項目（impersonate, gcs_bucket, dataproc, scopes, etc.)
+
+### 実測検証結果
+
+✅ **認証方法**: OAuth (gcloud application-default login)
+✅ **BigQueryプロジェクト**: sdp-sb-yada-29d2
+✅ **データセット**: dbt_sandbox
+✅ **リージョン**: asia-northeast1
+✅ **並列スレッド数**: 24
+✅ **接続テスト**: PASS（dbt debug成功）
 
 ---
 

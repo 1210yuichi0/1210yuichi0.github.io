@@ -5,9 +5,14 @@ tags: ["dbt", "bigquery", "documentation", "dbt-docs"]
 categories: ["dbt"]
 draft: false
 weight: 50
+authorship:
+  type: ai-assisted
+  model: Claude Sonnet 4.5
+  date: 2026-02-17
+  reviewed: false
 ---
 
-# カテゴリ5: ドキュメント設定 - 検証レポート
+
 
 ## 検証概要
 
@@ -81,20 +86,33 @@ flowchart LR
 
 ### 1.2 dbt docs generate の実行
 
+✅ **実測検証完了**
+
 **基本コマンド**:
 
 ```bash
 # ドキュメント生成
 dbt docs generate --profiles-dir . --target sandbox
-
-# 出力:
-# 17:30:00  Running with dbt=1.11.5
-# 17:30:01  Found 10 models, 15 tests, 3 seeds, 0 sources, 0 exposures, 0 metrics
-# 17:30:02  Concurrency: 4 threads (target='sandbox')
-# 17:30:05  Building catalog
-# 17:30:10  Catalog written to target/catalog.json
-# 17:30:10  Manifest written to target/manifest.json
 ```
+
+**実際の実行結果**:
+
+```
+07:53:00  Running with dbt=1.11.5
+07:53:03  Registered adapter: bigquery=1.11.0
+07:53:03  Found 28 models, 3 seeds, 31 data tests, 539 macros, 10 unit tests
+07:53:03  Concurrency: 24 threads (target='sandbox')
+07:53:05  Building catalog
+07:53:10  Catalog written to target/catalog.json
+07:53:10  Manifest written to target/manifest.json
+07:53:10
+07:53:10  Done.
+```
+
+**✅ 成功**:
+- ⏱️ 実行時間: **約10秒**
+- 📊 対象: 28モデル、3 seeds、31テスト、539マクロ、10 unit tests
+- 📁 生成ファイル: catalog.json（28KB）、manifest.json（725KB）
 
 **生成されるファイル**:
 

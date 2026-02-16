@@ -6,9 +6,14 @@ categories: ["ガイド"]
 draft: false
 description: "dbt + BigQuery検証プロジェクトを最初から再実行するための手順書。環境構築から全カテゴリの検証まで、すべてのコマンドを網羅。"
 weight: 2
+authorship:
+  type: ai-assisted
+  model: Claude Sonnet 4.5
+  date: 2026-02-17
+  reviewed: false
 ---
 
-# dbt + BigQuery 検証プロジェクト - 再実行ガイド
+
 
 このガイドでは、dbt + BigQueryの全設定項目検証を**最初から再現**するための手順を説明します。
 

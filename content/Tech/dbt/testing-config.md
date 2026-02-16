@@ -5,9 +5,14 @@ tags: ["dbt", "bigquery", "testing", "data-quality", "schema-tests"]
 categories: ["dbt"]
 draft: false
 weight: 40
+authorship:
+  type: ai-assisted
+  model: Claude Sonnet 4.5
+  date: 2026-02-17
+  reviewed: false
 ---
 
-# カテゴリ4: テスト設定 - 検証レポート
+
 
 ## 検証概要
 
