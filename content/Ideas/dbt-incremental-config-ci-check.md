@@ -1,11 +1,11 @@
 ---
 title: dbt増分更新設定の自動チェックをCIに組み込む
 tags:
-  - アイデア
+  - ideas
   - dbt
-  - CI/CD
-  - データエンジニアリング
-  - BigQuery
+  - ci-cd
+  - data-engineering
+  - bigquery
 date: 2026-02-16
 authorship:
   type: ai-assisted

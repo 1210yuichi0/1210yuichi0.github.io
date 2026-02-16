@@ -1,10 +1,10 @@
 ---
 title: Git pre-commitで禁止ワードをチェックする
 tags:
-  - Git
+  - git
   - pre-commit
-  - セキュリティ
-  - 自動化
+  - security
+  - automation
 date: 2026-02-16
 authorship:
   type: ai-assisted

@@ -54,6 +54,29 @@ dbt 1.8+で導入されたunit tests機能のBigQueryにおける挙動を実際
 
 ---
 
+## テストデータ形式の選択フローチャート
+
+```mermaid
+flowchart TD
+    Start[テストデータ形式の選択] --> Q1{BigQuery専用<br/>プロジェクト?}
+
+    Q1 -->|Yes| Q2{型安全性<br/>重視?}
+    Q1 -->|No| Q3{データ量は?}
+
+    Q2 -->|Yes| UNNEST[UNNEST形式<br/>⭐⭐⭐⭐⭐<br/>簡潔で型安全]
+    Q2 -->|No| CSV1[CSV形式<br/>⭐⭐⭐⭐<br/>可読性重視]
+
+    Q3 -->|1-3行| Dict[Dict形式<br/>⭐⭐⭐⭐⭐<br/>最も簡潔]
+    Q3 -->|5-10行| CSV2[CSV形式<br/>⭐⭐⭐⭐<br/>可読性重視]
+    Q3 -->|複雑| SQL[SQL形式<br/>⭐⭐⭐<br/>完全制御]
+
+    style UNNEST fill:#e1ffe1
+    style CSV1 fill:#e1f5ff
+    style CSV2 fill:#e1f5ff
+    style Dict fill:#fff4e1
+    style SQL fill:#ffe1f5
+```
+
 ## テストパターン別の詳細結果
 
 ### 1. Dict形式（辞書形式）
@@ -531,6 +554,31 @@ dbt test --select test_type:unit --store-failures
 
 ### テストデータ形式の選択基準
 
+#### 形式別の特性比較図
+
+```mermaid
+graph TB
+    subgraph "簡潔性重視"
+        Dict[Dict形式<br/>⭐⭐⭐ 最も簡潔<br/>1-3行]
+        Macro[マクロ形式<br/>⭐⭐⭐ 最小記述<br/>❌ dbt 1.11.x動作しない]
+    end
+
+    subgraph "型安全性重視"
+        UNNEST[UNNEST形式<br/>⭐⭐⭐ 型安全<br/>BigQuery専用]
+        SQL[SQL形式<br/>⭐⭐⭐ 完全制御<br/>冗長]
+    end
+
+    subgraph "可読性重視"
+        CSV[CSV形式<br/>⭐⭐ 可読性高<br/>5-10行]
+    end
+
+    style Dict fill:#fff4e1
+    style Macro fill:#ffe1e1
+    style UNNEST fill:#e1ffe1
+    style SQL fill:#e1f5ff
+    style CSV fill:#e1f5ff
+```
+
 #### 形式別の特性比較表
 
 | 形式       | 推奨ケース       | データ量 | 型安全性  | BigQuery専用 | 記述量      | コメント | 学習コスト |
@@ -607,16 +655,25 @@ given:
 
 #### 使い分けのフローチャート
 
-```
-BigQuery専用プロジェクト？
-  ├─ Yes → 型安全性が重要？
-  │         ├─ Yes → UNNEST形式（推奨）
-  │         └─ No  → CSV形式（可読性重視）
-  │
-  └─ No  → データ量は？
-            ├─ 1-3行 → Dict形式（最も簡潔）
-            ├─ 5-10行 → CSV形式（可読性重視）
-            └─ 複雑   → SQL形式（完全制御）
+```mermaid
+flowchart TD
+    Start2[テストデータ形式の選択] --> Q4{BigQuery専用<br/>プロジェクト?}
+
+    Q4 -->|Yes| Q5{型安全性が<br/>重要?}
+    Q4 -->|No| Q6{データ量は?}
+
+    Q5 -->|Yes| UNNEST2[UNNEST形式<br/>簡潔で型安全]
+    Q5 -->|No| CSV3[CSV形式<br/>可読性重視]
+
+    Q6 -->|1-3行| Dict2[Dict形式<br/>最も簡潔]
+    Q6 -->|5-10行| CSV4[CSV形式<br/>可読性重視]
+    Q6 -->|複雑| SQL2[SQL形式<br/>完全制御]
+
+    style UNNEST2 fill:#e1ffe1
+    style CSV3 fill:#e1f5ff
+    style CSV4 fill:#e1f5ff
+    style Dict2 fill:#fff4e1
+    style SQL2 fill:#ffe1f5
 ```
 
 ### 推奨する形式（優先順位）
@@ -654,6 +711,43 @@ BigQuery専用プロジェクト？
 
 ## 何が担保されるのか
 
+```mermaid
+graph LR
+    subgraph "✅ 担保されること"
+        A1[ロジックの正確性<br/>集計・JOIN処理]
+        A2[NULL処理<br/>エッジケース]
+        A3[リグレッション防止<br/>CI/CD統合]
+        A4[ドキュメント価値<br/>仕様書化]
+    end
+
+    subgraph "❌ 担保されないこと"
+        B1[本番データ品質<br/>実データの問題]
+        B2[パフォーマンス<br/>大規模データ]
+        B3[DWH状態<br/>権限・スキーマ]
+        B4[統合テスト<br/>複雑な依存関係]
+    end
+
+    UT[dbt unit tests] --> A1
+    UT --> A2
+    UT --> A3
+    UT --> A4
+
+    UT -.×.-> B1
+    UT -.×.-> B2
+    UT -.×.-> B3
+    UT -.×.-> B4
+
+    style A1 fill:#e1ffe1
+    style A2 fill:#e1ffe1
+    style A3 fill:#e1ffe1
+    style A4 fill:#e1ffe1
+    style B1 fill:#ffe1e1
+    style B2 fill:#ffe1e1
+    style B3 fill:#ffe1e1
+    style B4 fill:#ffe1e1
+    style UT fill:#e1f5ff
+```
+
 ### ✅ 担保されること
 
 | 項目                   | 詳細                                                 |
@@ -676,6 +770,38 @@ BigQuery専用プロジェクト？
 ---
 
 ## CI/pre-commit設定
+
+### CI/CDパイプライン全体図
+
+```mermaid
+flowchart LR
+    Dev[ローカル開発] --> Commit[git commit]
+    Commit --> PreCommit{pre-commit<br/>hook}
+
+    PreCommit -->|構文チェック| Compile[dbt compile<br/>~5秒]
+    Compile -->|✅ PASS| Push[git push]
+    Compile -->|❌ FAIL| Fix1[修正]
+    Fix1 --> Commit
+
+    Push --> PR[Pull Request]
+    PR --> CI{GitHub Actions<br/>CI/CD}
+
+    CI -->|Unit Tests| UT[dbt test<br/>test_type:unit<br/>~30秒]
+    UT -->|✅ PASS| Merge[main へ merge]
+    UT -->|❌ FAIL| Fix2[修正]
+    Fix2 --> Commit
+
+    Merge --> Deploy[本番デプロイ]
+    Deploy --> Daily{定期実行<br/>毎日}
+    Daily -->|Data Tests| DT[dbt test<br/>実データ検証<br/>~5分]
+
+    style PreCommit fill:#fff4e1
+    style CI fill:#e1f5ff
+    style Daily fill:#f5e1ff
+    style Compile fill:#e1ffe1
+    style UT fill:#e1ffe1
+    style DT fill:#ffe1f5
+```
 
 ### pre-commit設定案
 
@@ -846,18 +972,35 @@ select * from completed_orders
 
 #### 3. テストピラミッド（Testing Pyramid）の適用
 
+```mermaid
+graph TD
+    subgraph "Testing Pyramid for dbt"
+        E2E["E2E Tests (data tests)<br/>🐢 遅い・月次週次<br/>実データでの検証"]
+        Integration["Integration Tests (schema tests)<br/>🏃 中速・日次<br/>テーブル間の整合性"]
+        Unit["Unit Tests (dbt unit tests) ⭐<br/>⚡ 高速・PR毎<br/>ロジックの検証"]
+    end
+
+    E2E --> Integration
+    Integration --> Unit
+
+    style E2E fill:#ffe1e1
+    style Integration fill:#fff4e1
+    style Unit fill:#e1ffe1
 ```
-          /\
-         /  \        ← E2E Tests (data tests)
-        / 遅 \          実データでの検証
-       /______\         月次・週次実行
-      /        \
-     /  中速   \     ← Integration Tests (schema tests)
-    /___________\       テーブル間の整合性チェック
-   /             \      日次実行
-  /    高速       \   ← Unit Tests (dbt unit tests) ← **今回検証**
- /_________________\     ロジックの検証
-                         PR毎に実行
+
+**逆ピラミッド構造（実行頻度と量）**:
+```mermaid
+graph BT
+    Unit2["Unit Tests<br/>数百個<br/>PR毎（1日数十回）<br/>⚡ 4.5秒<br/>💰 $0"]
+    Integration2["Integration Tests<br/>数十個<br/>日次<br/>🏃 数十秒<br/>💰 $ 少"]
+    E2E2["E2E Tests<br/>数個<br/>週次<br/>🐢 数分<br/>💰 $$ 多"]
+
+    Unit2 --> Integration2
+    Integration2 --> E2E2
+
+    style Unit2 fill:#e1ffe1
+    style Integration2 fill:#fff4e1
+    style E2E2 fill:#ffe1e1
 ```
 
 | レイヤー              | dbt での実装                         | 実行速度        | コスト | 実行タイミング |
@@ -869,6 +1012,32 @@ select * from completed_orders
 **重要**: unit testsが**ピラミッドの土台**として最も多く、高速で、頻繁に実行される。
 
 #### 4. Dependency Injection パターン
+
+```mermaid
+graph LR
+    subgraph "本番環境"
+        Model1[customers model] --> RefProd1[ref orders]
+        RefProd1 --> ProdOrders[(production.orders<br/>数百万行)]
+        Model1 --> RefProd2[ref payments]
+        RefProd2 --> ProdPayments[(production.payments<br/>数百万行)]
+    end
+
+    subgraph "Unit Test環境"
+        Model2[customers model] --> RefTest1[ref orders]
+        RefTest1 --> MockOrders[Mock: 3行のテストデータ]
+        Model2 --> RefTest2[ref payments]
+        RefTest2 --> MockPayments[Mock: 3行のテストデータ]
+    end
+
+    DI[ref による<br/>Dependency Injection] -.-> Model1
+    DI -.-> Model2
+
+    style ProdOrders fill:#ffe1e1
+    style ProdPayments fill:#ffe1e1
+    style MockOrders fill:#e1ffe1
+    style MockPayments fill:#e1ffe1
+    style DI fill:#fff4e1
+```
 
 `ref()` は**Dependency Injection Container**として機能:
 

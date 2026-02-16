@@ -3,7 +3,7 @@ title: Gitメモ
 tags:
   - git
   - github
-  - 開発環境
+  - development
 date: 2024-02-29
 authorship:
   type: human-written
