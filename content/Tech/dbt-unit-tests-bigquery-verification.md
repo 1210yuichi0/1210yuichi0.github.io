@@ -1230,14 +1230,6 @@ group by customer_id
 4. **expectは部分列指定**: 検証したい列のみを指定
 5. **CI/pre-commit**: pre-commitは軽量に、unit testsはCIで実行
 
-### 次のステップ
-
-- [x] 検証レポートの作成
-- [ ] pre-commit設定の実装
-- [ ] CI/CD設定の実装
-- [ ] チームへの共有とナレッジ化
-
----
 
 ## 参考資料
 

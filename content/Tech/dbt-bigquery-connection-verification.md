@@ -1466,14 +1466,6 @@ flowchart TB
    - `job_retries: 1` で一時的なエラーを吸収
    - `job_execution_timeout_seconds: 3600` で適切なタイムアウト
 
-### 次のステップ
-
-- [x] Category 2（BigQuery接続設定）検証完了
-- [ ] Category 4（テスト設定）の検証
-- [ ] Category 5（ドキュメント設定）の検証
-- [ ] 統合ドキュメントの作成
-
----
 
 **検証日**: 2026-02-17
 **作成者**: dbt検証プロジェクト
