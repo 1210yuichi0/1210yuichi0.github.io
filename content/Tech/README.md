@@ -1,5 +1,8 @@
 ---
 title: Tech
+authorship:
+  type: human-written
+  reviewed: false
 ---
 
 技術関連のメモです。
