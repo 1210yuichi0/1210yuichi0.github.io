@@ -1,13 +1,13 @@
 ---
-title: "全設定項目完全リファレンス"
+title: "全設定項目リファレンス"
 date: 2026-02-17
 tags: ["dbt", "bigquery", "configuration", "reference"]
-categories: ["dbt完全ガイド"]
+categories: ["dbt"]
 draft: false
 weight: 15
 ---
 
-# dbt + BigQuery 全設定項目完全リファレンス
+# dbt + BigQuery 全設定項目リファレンス
 
 ## 検証概要
 

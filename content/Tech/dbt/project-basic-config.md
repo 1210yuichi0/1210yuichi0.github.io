@@ -2,7 +2,7 @@
 title: "プロジェクト基本設定"
 date: 2026-02-17
 tags: ["dbt", "bigquery", "dbt_project.yml", "configuration"]
-categories: ["dbt完全ガイド"]
+categories: ["dbt"]
 draft: false
 weight: 10
 ---

@@ -2,7 +2,7 @@
 title: "パフォーマンス最適化"
 date: 2026-02-17
 tags: ["dbt", "bigquery", "performance", "optimization"]
-categories: ["dbt完全ガイド"]
+categories: ["dbt"]
 draft: false
 weight: 60
 ---

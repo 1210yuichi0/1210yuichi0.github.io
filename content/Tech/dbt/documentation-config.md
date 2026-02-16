@@ -2,12 +2,12 @@
 title: "ドキュメント設定"
 date: 2026-02-17
 tags: ["dbt", "bigquery", "documentation", "dbt-docs"]
-categories: ["dbt完全ガイド"]
+categories: ["dbt"]
 draft: false
 weight: 50
 ---
 
-# カテゴリ5: ドキュメント設定 - 完全検証レポート
+# カテゴリ5: ドキュメント設定 - 検証レポート
 
 ## 検証概要
 
