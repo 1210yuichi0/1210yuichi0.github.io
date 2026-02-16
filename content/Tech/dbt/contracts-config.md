@@ -883,7 +883,245 @@ flowchart TD
 
 ## 5. ベストプラクティス
 
-### 5.1 Contract + Unit Tests統合戦略
+### 5.1 Contractチェックの運用戦略（pre-commit/CI）
+
+#### どの段階でContractをチェックすべきか
+
+```mermaid
+flowchart LR
+    A[ローカル開発] --> B[pre-commit]
+    B --> C[CI: PR作成時]
+    C --> D[CI: mainマージ前]
+    D --> E[本番デプロイ]
+
+    A --> A1[dbt run/compile<br/>手動実行]
+    B --> B1[Contract検証<br/>コンパイルのみ]
+    C --> C1[Contract + unit tests<br/>変更モデル]
+    D --> D1[全Contract + 全tests<br/>完全検証]
+    E --> E1[本番実行<br/>Contract enforced]
+
+    style B1 fill:#fff3e0
+    style C1 fill:#e3f2fd
+    style D1 fill:#e8f5e9
+    style E1 fill:#ffebee
+```
+
+#### 推奨設定一覧
+
+| チェックポイント | 実行内容 | 目的 | 実行時間目安 | BigQueryコスト |
+|-----------------|---------|------|-------------|---------------|
+| **ローカル開発** | `dbt run --select <model>` | 即座のフィードバック | 5-10秒/モデル | 小（開発環境） |
+| **pre-commit** | `dbt compile` | SQL構文＋Contract検証 | 3-5秒 | **0円**（コンパイルのみ） |
+| **CI: PR作成** | `dbt test --select state:modified+` | 変更されたモデルのみ | 30秒-2分 | 小（必要最小限） |
+| **CI: mainマージ前** | `dbt test --select test_type:unit` + `dbt run --select state:modified+` | 全unit tests + 変更モデル実行 | 2-5分 | 中（unit testsは小データ） |
+| **定期実行（毎日）** | `dbt test` + `dbt run` | 全tests + 全モデル | 10-30分 | 大（本番規模データ） |
+
+---
+
+#### pre-commit設定例（Contract検証）
+
+**目的**: コミット前にSQL構文とContract違反を検出（BigQueryコスト0円）
+
+**ファイル**: `.pre-commit-config.yaml`
+
+```yaml
+repos:
+  - repo: local
+    hooks:
+      # dbt compile check（Contractチェック含む）
+      - id: dbt-compile
+        name: dbt compile + Contract validation
+        entry: bash -c 'dbt compile --profiles-dir . --target dev'
+        language: system
+        pass_filenames: false
+        files: 'models/.*\.(sql|yml|yaml)$'
+        stages: [commit]
+        verbose: true
+
+      # SQLフォーマットチェック（オプション）
+      - id: sqlfluff-lint
+        name: sqlfluff lint
+        entry: sqlfluff lint
+        language: system
+        files: 'models/.*\.sql$'
+        pass_filenames: true
+```
+
+**実行例**:
+
+```bash
+# pre-commitフックのインストール
+pre-commit install
+
+# 手動実行
+pre-commit run --all-files
+
+# 実行結果
+dbt compile + Contract validation......................................Passed
+  - Duration: 3.2s
+  - Cost: 0円（BigQueryアクセスなし）
+```
+
+**効果**:
+- ✅ Contract違反を**コミット前に検出**
+- ✅ BigQueryコスト0円（コンパイルのみ）
+- ✅ 実行時間: 3-5秒（高速）
+- ✅ チーム全体での品質保証
+
+---
+
+#### CI/CD設定例（GitHub Actions）
+
+**目的**: PRマージ前にContract + unit testsで完全検証
+
+**ファイル**: `.github/workflows/dbt_pr_check.yml`
+
+```yaml
+name: dbt PR Check
+
+on:
+  pull_request:
+    paths:
+      - 'models/**'
+      - 'macros/**'
+      - 'dbt_project.yml'
+
+jobs:
+  dbt-contract-unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      - name: Install dbt
+        run: pip install dbt-bigquery
+
+      - name: Authenticate to BigQuery
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      # ステップ1: dbt compile（Contract検証）
+      - name: dbt compile (Contract validation)
+        run: |
+          dbt compile --profiles-dir . --target ci
+        continue-on-error: false  # Contract違反で即座に失敗
+
+      # ステップ2: unit tests実行
+      - name: dbt unit tests
+        run: |
+          dbt test --select test_type:unit --profiles-dir . --target ci
+
+      # ステップ3: 変更されたモデルのみ実行（オプション）
+      - name: dbt run (changed models only)
+        run: |
+          dbt run --select state:modified+ --profiles-dir . --target ci --state ./prod_manifest/
+
+      - name: Upload logs
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: dbt-logs
+          path: logs/
+```
+
+**実行フロー**:
+
+1. **dbt compile** → Contract違反で即座に失敗（コスト0円）
+2. **unit tests** → ロジック検証（コスト小）
+3. **dbt run（変更モデル）** → 実際のBigQuery実行（コスト中）
+
+---
+
+#### 運用戦略の推奨構成
+
+##### パターンA: コスト重視（推奨）
+
+| チェックポイント | 実行内容 | 理由 |
+|-----------------|---------|------|
+| **pre-commit** | `dbt compile` のみ | コスト0円、高速 |
+| **CI: PR作成** | `dbt compile` + unit tests | 軽量、必要最小限 |
+| **CI: mainマージ前** | 全tests + 変更モデル実行 | 完全検証 |
+
+**メリット**:
+- ✅ BigQueryコストを最小化
+- ✅ 高速フィードバック（pre-commit: 3秒）
+- ✅ Contract違反を早期発見
+
+**デメリット**:
+- ⚠️ 実データでの検証は後回し
+
+---
+
+##### パターンB: 品質重視
+
+| チェックポイント | 実行内容 | 理由 |
+|-----------------|---------|------|
+| **pre-commit** | `dbt compile` + unit tests | 完全検証 |
+| **CI: PR作成** | 全tests + 変更モデル実行 | 実データでも検証 |
+| **CI: mainマージ前** | 全tests + 全モデル実行 | 完全な品質保証 |
+
+**メリット**:
+- ✅ 最高の品質保証
+- ✅ 実データでの検証も早期に実施
+
+**デメリット**:
+- ⚠️ BigQueryコスト増加
+- ⚠️ 実行時間長い（pre-commit: 10-30秒）
+
+---
+
+##### パターンC: ハイブリッド（バランス型・推奨）
+
+```mermaid
+flowchart TD
+    A[ローカル開発] --> B[dbt run 手動実行]
+    B --> C{Contract違反?}
+    C -->|Yes| D[修正]
+    C -->|No| E[Git commit]
+
+    E --> F[pre-commit: dbt compile]
+    F --> G{構文/Contract OK?}
+    G -->|No| H[コミット失敗]
+    G -->|Yes| I[PR作成]
+
+    I --> J[CI: dbt compile + unit tests]
+    J --> K{成功?}
+    K -->|No| L[PR修正要求]
+    K -->|Yes| M[レビュー待ち]
+
+    M --> N[CI: 全tests + 変更モデル実行]
+    N --> O{成功?}
+    O -->|No| P[マージ不可]
+    O -->|Yes| Q[mainマージ]
+
+    Q --> R[本番デプロイ]
+
+    style F fill:#fff3e0
+    style J fill:#e3f2fd
+    style N fill:#e8f5e9
+    style R fill:#ffebee
+```
+
+**特徴**:
+- **pre-commit**: コンパイルのみ（高速、コスト0円）
+- **CI PR作成**: compile + unit tests（軽量）
+- **CI mainマージ前**: 完全検証（品質保証）
+
+**推奨理由**:
+1. ✅ **開発速度を維持**: pre-commitは高速（3秒）
+2. ✅ **コストを抑制**: 早期段階はBigQueryアクセス最小限
+3. ✅ **品質を保証**: mainマージ前は完全検証
+4. ✅ **段階的チェック**: 問題を早く、安く発見
+
+---
+
+### 5.2 Contract + Unit Tests統合戦略
 
 ```mermaid
 flowchart TD
