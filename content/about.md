@@ -1,7 +1,5 @@
 ---
 title: About
-authorship:
-  type: human-written
 ---
 
 # About
