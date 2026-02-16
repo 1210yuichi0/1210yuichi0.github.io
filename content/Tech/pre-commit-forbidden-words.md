@@ -275,6 +275,42 @@ echo "your_forbidden_word" >> forbidden-words.txt
 secret
 ```
 
+### 大文字小文字について
+
+**チェックは大文字小文字を区別しません。**
+
+`forbidden-words.txt` に小文字で記述するだけで、あらゆる大文字小文字の組み合わせを検出します。
+
+**例:**
+
+`forbidden-words.txt` に以下のように記述：
+
+```txt
+password
+secret
+api_key
+```
+
+**検出される例:**
+
+- ✅ `password` / `PASSWORD` / `Password` / `pAsSwOrD`
+- ✅ `secret` / `SECRET` / `Secret` / `SeCrEt`
+- ✅ `api_key` / `API_KEY` / `Api_Key` / `API_key`
+
+**実装:**
+
+[check-forbidden-words.sh](scripts/check-forbidden-words.sh) で `grep -i` オプションを使用しているため、大文字小文字を無視して検索します：
+
+```bash
+MATCHES=$(grep -niE "$FORBIDDEN_WORDS" "$FILE" || true)
+```
+
+**推奨:**
+
+- 禁止ワードは**小文字で統一**して記述
+- シンプルで管理しやすい
+- 検出時は自動的にすべてのケースをカバー
+
 ## カスタマイズ
 
 ### バイナリファイルの除外
