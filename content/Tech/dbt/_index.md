@@ -15,25 +15,27 @@ dbt core + BigQueryの全設定項目（130項目）を検証し、実運用で�
 ## 📑 ドキュメント
 
 - [プロジェクト概要](overview.md) - 検証環境、カテゴリ一覧
-- [ガイド](guides/README.md) - 学習パス、クイックスタート、活用例
+- [学習ガイド](guides/learning-guide.md) - 学習パス、クイックスタート、使い方
+- [再実行ガイド](guides/execution-guide.md) - 検証の再現手順
 
 ## 📚 カテゴリ別ガイド
 
 ### 🔴 必須（本番運用に必須）
 - [プロジェクト基本設定](project-basic-config.md) - dbt_project.yml の全設定
 - [BigQuery接続設定](bigquery-connection.md) - 認証方法、接続設定
-- [モデル設定](model-config.md) - マテリアライゼーション、パーティショニング、クラスタリング
+- [Models](model-config.md) - マテリアライゼーション、パーティショニング、クラスタリング
+- **[パーティショニング＆クラスタリング完全ガイド](partitioning-clustering-guide.md)** - 順番・数・使い分けの決定版（GCP公式参照）
 - **[BigQuery設定リファレンス](bigquery-configs-complete.md)** - 詳細ガイド（暗号化、Python、マテビュー等）
 
 ### 🟡 重要（データ品質・運用効率の向上）
-- [テスト設定](testing-config.md) - Schema/Singular/Unit Tests
+- [Tests](testing-config.md) - Schema/Singular/Unit Tests
 - **[Unit Tests検証](unit-tests-verification.md)** - 6種類のデータ形式、CI/CD統合
 - **[Contract設定（スキーマ保証）](contracts-config.md)** - 型安全性、unit testsとの組み合わせ
 - [ドキュメント設定](documentation-config.md) - dbt docs、descriptions
 - [パフォーマンス最適化](performance-optimization.md) - スロット最適化、並列実行
 
 ### 🟢 任意（高度な機能・特殊用途）
-- [スナップショット設定](snapshot-config.md) - SCD Type 2実装
-- [シード設定](seed-config.md) - CSVファイルのロード
-- [フック設定](hooks-config.md) - pre-hook、post-hook
+- [Snapshots](snapshot-config.md) - SCD Type 2実装
+- [Seeds](seed-config.md) - CSVファイルのロード
+- [Hooks](hooks-config.md) - pre-hook、post-hook
 - [その他の設定](other-config.md) - vars、packages、macros

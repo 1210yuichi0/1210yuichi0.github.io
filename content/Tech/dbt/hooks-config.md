@@ -1,5 +1,5 @@
 ---
-title: "フック設定"
+title: "Hooks"
 date: 2026-02-17
 tags: ["dbt", "bigquery", "hooks", "automation"]
 categories: ["dbt"]
@@ -7,7 +7,7 @@ draft: false
 weight: 90
 ---
 
-# フック設定の検証レポート
+# Hooks検証レポート
 
 ## 目次
 - [概要](#概要)

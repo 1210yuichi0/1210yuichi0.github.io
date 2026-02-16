@@ -1,5 +1,5 @@
 ---
-title: "モデル設定"
+title: "Models"
 date: 2026-02-17
 tags: ["dbt", "bigquery", "materialization", "partitioning", "clustering"]
 categories: ["dbt"]
