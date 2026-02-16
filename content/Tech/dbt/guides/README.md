@@ -1,5 +1,5 @@
 ---
-title: "dbt + BigQuery - README"
+title: "README"
 date: 2026-02-17
 draft: false
 ---
@@ -13,7 +13,7 @@ draft: false
 | ファイル名 | 内容 | サイズ |
 |-----------|------|--------|
 | [_index.md](../_index.md) | **統合インデックス** - 全体概要、学習パス | 11KB |
-| [execution-guide.md](execution-guide.md) | **再実行ガイド** - 完全な実行手順 | 25KB |
+| [execution-guide.md](execution-guide.md) | **再実行ガイド** - 実行手順 | 25KB |
 
 ### カテゴリ別ガイド（全10カテゴリ）
 
@@ -52,7 +52,7 @@ draft: false
 
 ### 3. すべて検証を再実行したい方
 
-[execution-guide.md](execution-guide.md) に完全な手順が記載されています。
+[execution-guide.md](execution-guide.md) に手順が記載されています。
 
 ---
 
@@ -165,7 +165,7 @@ draft: false
 ### 4. 実践的なガイド
 - **ベストプラクティス**（環境別の推奨設定）
 - **トラブルシューティング**（よくある問題と解決策）
-- **設定テンプレート**（コピペで使える完全な設定例）
+- **設定テンプレート**（コピペで使える設定例）
 
 ### 5. 検証モデルのコード
 - **SQLコード全文**（リンクではなく直接記載）
@@ -179,7 +179,7 @@ draft: false
 
 - すべての設定項目を**実際にBigQueryで実行**
 - 成功例・失敗例の両方を記録
-- エラーメッセージと解決策を完全網羅
+- エラーメッセージと解決策を網羅
 
 ### ✅ 実運用レベルの品質
 
@@ -295,7 +295,7 @@ jaffle_shop_duckdb/
 
 ### このプロジェクトの関連ドキュメント
 
-- [再実行ガイド](guides/execution-guide.md): 検証の完全な再現手順
+- [再実行ガイド](guides/execution-guide.md): 検証の再現手順
 
 ---
 
