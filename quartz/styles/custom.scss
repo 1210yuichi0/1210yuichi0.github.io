@@ -66,6 +66,14 @@ $mobile-padding: 0.5rem;
   margin-bottom: 1rem;
 
   @include mobile-horizontal-padding;
+
+  // Mobile: wrap items when width is insufficient
+  @include mobile {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.25rem 0.5rem; // row-gap: 0.25rem, column-gap: 0.5rem
+  }
 }
 
 // Article tags styling (shared between themes)
@@ -517,6 +525,12 @@ table {
 // Components
 // ============================================================================
 
+// Graph view spacing
+.graph-outer,
+.global-graph-container {
+  margin-top: 2rem;
+}
+
 // Explorer
 .explorer .title-button h2 {
   font-size: 0.75rem !important;
@@ -583,12 +597,32 @@ table {
 }
 
 // ============================================================================
-// Page Listing (Folder Pages)
+// Page Listing (Folder Pages) & Recent Notes
 // ============================================================================
 
-.page-listing {
+.page-listing,
+.recent-notes {
   margin-top: 2rem;
+  margin-bottom: 3rem;
 
+  & > h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--tx1);
+  }
+}
+
+// Add horizontal line after recent notes
+.recent-notes::after {
+  content: "";
+  display: block;
+  margin-top: 2rem;
+  border-bottom: 2px solid var(--lightgray);
+}
+
+.page-listing,
+.recent-notes {
   & > p {
     color: var(--tx2);
     font-size: 0.9rem;
