@@ -2,8 +2,13 @@
 title: "dbt プロジェクト基本設定 完全ガイド (dbt_project.yml)"
 date: 2026-02-17
 tags: ["dbt", "bigquery", "configuration", "best-practices", "project-setup"]
-categories: ["検証", "Data Engineering"]
+categories: ["verification", "data-engineering"]
 draft: false
+authorship:
+  type: ai-assisted
+  model: Claude Sonnet 4.5
+  date: 2026-02-17
+  reviewed: false
 summary: "dbt_project.ymlの15項目を徹底解説。name, profile, パス設定、require-dbt-version, query-comment, varsなどの役割と、5つのMermaid図で視覚化したベストプラクティス。"
 ---
 

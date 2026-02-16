@@ -2,8 +2,13 @@
 title: "BigQuery + dbt モデル設定完全ガイド"
 date: 2026-02-17
 tags: ["dbt", "bigquery", "data-modeling", "performance", "partitioning", "clustering", "materialization"]
-categories: ["検証", "Data Engineering"]
+categories: ["verification", "data-engineering"]
 draft: false
+authorship:
+  type: ai-assisted
+  model: Claude Sonnet 4.5
+  date: 2026-02-17
+  reviewed: false
 summary: "dbt + BigQueryのモデル設定30項目を徹底検証。Materialization、パーティション、クラスタリング、増分戦略の実際の挙動とベストプラクティスを、7つのMermaid図と共に詳解。"
 ---
 
@@ -11,7 +16,7 @@ summary: "dbt + BigQueryのモデル設定30項目を徹底検証。Materializat
 
 ## 検証概要
 
-**検証日時**: 2026-02-16
+**検証日時**: 2026-02-17
 **環境**: dbt 1.11.5 + dbt-bigquery 1.11.0
 **BigQueryプロジェクト**: your-gcp-project-id
 **データセット**: dbt_sandbox

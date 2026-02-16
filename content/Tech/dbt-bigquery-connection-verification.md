@@ -2,9 +2,14 @@
 title: "dbt-bigquery接続設定 完全検証レポート"
 date: 2026-02-17
 tags: ["dbt", "bigquery", "profiles.yml", "authentication", "data-engineering"]
-categories: ["検証"]
+categories: ["verification"]
 draft: false
-description: "dbt-bigqueryの5種類の認証方法と20以上のオプション設定を完全検証。環境別のベストプラクティスとトラブルシューティングガイド。"
+authorship:
+  type: ai-assisted
+  model: Claude Sonnet 4.5
+  date: 2026-02-17
+  reviewed: false
+summary: "dbt-bigqueryの5種類の認証方法と20以上のオプション設定を完全検証。環境別のベストプラクティスとトラブルシューティングガイド。"
 ---
 
 # カテゴリ2: BigQuery接続設定 - 完全検証レポート
