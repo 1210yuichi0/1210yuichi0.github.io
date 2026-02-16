@@ -1,7 +1,5 @@
 ---
 title: Scrap Notes
-authorship:
-  type: human-written
 ---
 
 # Scrap Notes 📝
@@ -14,17 +12,12 @@ authorship:
 
 ### Tech
 
-- [[Tech/git-memo|Gitメモ]] - Git、GitHub、複数アカウント管理など
-- [[Tech/setup-guide|Scrap Notes 構築手順]] - このサイトの構築方法
+- [[tech/git-memo|Gitメモ]] - Git、GitHub、複数アカウント管理など
+- [[tech/setup-guide|Scrap Notes 構築手順]] - このサイトの構築方法
 
 ### Notes
 
 - （まだありません）
-
-### Ideas
-
-- [[Ideas/index|アイデアノート]] - 💡 アイデアや思考のメモ
-- [[Ideas/dbt-incremental-config-ci-check|dbt増分更新設定の自動チェックをCIに組み込む]] - dbtのCI/CD改善アイデア
 
 ## 使い方
 

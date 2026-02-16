@@ -5,11 +5,6 @@ tags:
   - github
   - 開発環境
 date: 2024-02-29
-authorship:
-  type: ai-assisted
-  model: Claude Sonnet 4.5
-  date: 2026-02-14
-  reviewed: false
 ---
 
 # Gitメモ
