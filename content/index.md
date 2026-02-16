@@ -1,5 +1,9 @@
 ---
 title: Scrap Notes
+date: 2026-02-16
+authorship:
+  type: human-written
+  reviewed: false
 ---
 
 日々の学びや気づきをスクラップ的にメモしていく場所です。

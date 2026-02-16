@@ -1,5 +1,9 @@
 ---
 title: About
+date: 2026-02-16
+authorship:
+  type: human-written
+  reviewed: false
 ---
 
 ## このサイトについて

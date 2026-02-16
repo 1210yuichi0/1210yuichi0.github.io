@@ -6,6 +6,11 @@ tags:
   - github-pages
   - セットアップ
 date: 2026-02-14
+authorship:
+  type: ai-assisted
+  model: Claude Sonnet 4.5
+  date: 2026-02-14
+  reviewed: false
 ---
 
 Quartz v4 + Obsidian + GitHub Pagesでスクラップメモサイトを構築した手順です。

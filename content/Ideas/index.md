@@ -5,6 +5,7 @@ tags:
 date: 2026-02-16
 authorship:
   type: human-written
+  reviewed: false
 ---
 
 アイデアや思考のメモを記録する場所です。

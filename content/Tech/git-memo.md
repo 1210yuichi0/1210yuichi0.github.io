@@ -5,6 +5,9 @@ tags:
   - github
   - 開発環境
 date: 2024-02-29
+authorship:
+  type: human-written
+  reviewed: false
 ---
 
 Gitの使い方、GitHub運用、複数アカウント管理などのメモ集
