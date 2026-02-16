@@ -1,15 +1,10 @@
 ---
-title: "dbt プロジェクト基本設定 完全ガイド (dbt_project.yml)"
+title: "dbt + BigQuery #01: プロジェクト基本設定"
 date: 2026-02-17
-tags: ["dbt", "bigquery", "configuration", "best-practices", "project-setup"]
-categories: ["verification", "data-engineering"]
+tags: ["dbt", "bigquery", "dbt_project.yml", "configuration"]
+categories: ["dbt完全ガイド"]
 draft: false
-authorship:
-  type: ai-assisted
-  model: Claude Sonnet 4.5
-  date: 2026-02-17
-  reviewed: false
-summary: "dbt_project.ymlの15項目を徹底解説。name, profile, パス設定、require-dbt-version, query-comment, varsなどの役割と、5つのMermaid図で視覚化したベストプラクティス。"
+weight: 10
 ---
 
 # Category 1: dbt プロジェクト基本設定 完全ガイド
@@ -93,19 +88,16 @@ graph TD
 ### 1.1 name
 
 **設定例**:
-
 ```yaml
-name: "jaffle_shop"
+name: 'jaffle_shop'
 ```
 
 **役割**:
-
 - プロジェクトの一意な識別子
 - dbt docsでの表示名
 - パッケージ管理での参照名
 
 **ベストプラクティス**:
-
 ```yaml
 # ✅ 良い例: 小文字、アンダースコア、短く明確
 name: 'sales_analytics'
@@ -117,7 +109,6 @@ name: 'SALES-ANALYTICS'   # ハイフン非推奨
 ```
 
 **影響範囲**:
-
 - `ref()` での参照: `{{ ref('model_name') }}`
 - dbt docsのプロジェクト名表示
 - 他のdbtプロジェクトからのパッケージ参照
@@ -127,23 +118,19 @@ name: 'SALES-ANALYTICS'   # ハイフン非推奨
 ### 1.2 config-version
 
 **設定例**:
-
 ```yaml
 config-version: 2
 ```
 
 **役割**:
-
 - dbt_project.ymlの設定フォーマットバージョン
 - dbt 1.0+では **必ず `2` を指定**
 
 **重要**:
-
 - `config-version: 1` は古い形式（dbt 0.x系）
 - dbt 1.0+では `2` のみサポート
 
 **検証結果**:
-
 ```yaml
 # ✅ 正しい設定（dbt 1.0+）
 config-version: 2
@@ -158,20 +145,17 @@ config-version: 1
 ### 1.3 version
 
 **設定例**:
-
 ```yaml
 version: '0.1'
 version: '1.0.0'
 ```
 
 **役割**:
-
 - プロジェクト自体のバージョン番号
 - ドキュメント生成時に表示
 - セマンティックバージョニング推奨
 
 **ベストプラクティス**:
-
 ```yaml
 # ✅ セマンティックバージョニング
 version: '1.0.0'    # メジャー.マイナー.パッチ
@@ -187,7 +171,6 @@ version: '1'        # マイナーバージョンも記載推奨
 ```
 
 **影響範囲**:
-
 - `dbt docs generate` での表示
 - プロジェクトリリース管理
 - チーム内のバージョン追跡
@@ -197,13 +180,11 @@ version: '1'        # マイナーバージョンも記載推奨
 ### 1.4 profile
 
 **設定例**:
-
 ```yaml
-profile: "dbt"
+profile: 'dbt'
 ```
 
 **役割**:
-
 - `profiles.yml` のどのプロファイルを使うかを指定
 - BigQuery接続情報の参照先
 
@@ -222,10 +203,9 @@ graph LR
 ```
 
 **ベストプラクティス**:
-
 ```yaml
 # dbt_project.yml
-profile: "analytics_platform"
+profile: 'analytics_platform'
 
 # profiles.yml
 analytics_platform:
@@ -240,14 +220,13 @@ analytics_platform:
 ```
 
 **よくある間違い**:
-
 ```yaml
 # ❌ プロファイル名の不一致
 # dbt_project.yml
-profile: "my_project"
+profile: 'my_project'
 
 # profiles.yml
-my-project: # ハイフンとアンダースコアの不一致
+my-project:  # ハイフンとアンダースコアの不一致
   ...
 
 # Error: Could not find profile named 'my_project'
@@ -286,7 +265,6 @@ graph TD
 ### 2.1 model-paths
 
 **設定例**:
-
 ```yaml
 # デフォルト
 model-paths: ["models"]
@@ -296,12 +274,10 @@ model-paths: ["models", "custom_models"]
 ```
 
 **役割**:
-
 - dbtモデル（.sqlファイル）の配置場所
 - 複数ディレクトリを指定可能
 
 **推奨ディレクトリ構造**:
-
 ```
 models/
 ├── staging/          # ステージング層（ビュー）
@@ -317,7 +293,6 @@ models/
 ```
 
 **ベストプラクティス**:
-
 ```yaml
 # ✅ シンプル（ほとんどのプロジェクト）
 model-paths: ["models"]
@@ -334,7 +309,6 @@ model-paths: ["../shared_models"]  # パッケージ管理を使うべき
 ### 2.2 seed-paths
 
 **設定例**:
-
 ```yaml
 seed-paths: ["seeds"]
 
@@ -343,12 +317,10 @@ seed-paths: ["seeds", "data"]
 ```
 
 **役割**:
-
 - CSVファイルをBigQueryテーブルとしてロードする配置場所
 - `dbt seed` コマンドで実行
 
 **推奨ディレクトリ構造**:
-
 ```
 seeds/
 ├── raw_customers.csv
@@ -359,7 +331,6 @@ seeds/
 ```
 
 **ベストプラクティス**:
-
 ```yaml
 # ✅ シンプル
 seed-paths: ["seeds"]
@@ -370,7 +341,6 @@ seed-paths: ["seeds"]
 ```
 
 **よくある間違い**:
-
 ```
 ❌ 大規模CSVをseedsに配置
    → BigQueryへのロードが遅い、gitリポジトリが肥大化
@@ -384,18 +354,15 @@ seed-paths: ["seeds"]
 ### 2.3 test-paths
 
 **設定例**:
-
 ```yaml
 test-paths: ["tests"]
 ```
 
 **役割**:
-
 - データテスト（singular tests）の配置場所
 - `.sql` ファイルで独自のテストを定義
 
 **推奨ディレクトリ構造**:
-
 ```
 tests/
 ├── assert_positive_value_for_total_amount.sql
@@ -406,7 +373,6 @@ tests/
 ```
 
 **データテストの例**:
-
 ```sql
 -- tests/assert_positive_value_for_total_amount.sql
 select
@@ -417,7 +383,6 @@ where total_amount <= 0
 ```
 
 **ベストプラクティス**:
-
 ```yaml
 # ✅ シンプル
 test-paths: ["tests"]
@@ -433,19 +398,16 @@ test-paths: ["tests"]
 ### 2.4 analysis-paths
 
 **設定例**:
-
 ```yaml
 analysis-paths: ["analysis"]
 ```
 
 **役割**:
-
 - アドホック分析用のSQLクエリを配置
 - `dbt compile` で実行されるが、BigQueryには作成されない
 - 分析用の再利用可能なクエリ
 
 **使用例**:
-
 ```sql
 -- analysis/customer_cohort_analysis.sql
 select
@@ -457,7 +419,6 @@ order by 1
 ```
 
 **実行方法**:
-
 ```bash
 # コンパイルのみ（BigQueryには作成されない）
 dbt compile --select analysis.customer_cohort_analysis
@@ -470,7 +431,6 @@ bq query < target/compiled/jaffle_shop/analysis/customer_cohort_analysis.sql
 ```
 
 **ベストプラクティス**:
-
 ```yaml
 # ✅ 分析クエリの管理
 analysis-paths: ["analysis"]
@@ -486,18 +446,15 @@ analysis-paths: ["analysis"]
 ### 2.5 macro-paths
 
 **設定例**:
-
 ```yaml
 macro-paths: ["macros"]
 ```
 
 **役割**:
-
 - Jinjaマクロ（再利用可能な関数）の配置場所
 - プロジェクト全体で使用可能
 
 **推奨ディレクトリ構造**:
-
 ```
 macros/
 ├── utils/
@@ -510,7 +467,6 @@ macros/
 ```
 
 **マクロの例**:
-
 ```sql
 -- macros/utils/date_utils.sql
 {% macro get_fiscal_quarter(date_column) %}
@@ -524,7 +480,6 @@ macros/
 ```
 
 **使用例**:
-
 ```sql
 -- models/orders.sql
 select
@@ -539,18 +494,15 @@ from {{ ref('stg_orders') }}
 ### 2.6 snapshot-paths
 
 **設定例**:
-
 ```yaml
 snapshot-paths: ["snapshots"]
 ```
 
 **役割**:
-
 - スナップショット（SCD Type 2）の定義を配置
 - 履歴データの管理
 
 **スナップショットの例**:
-
 ```sql
 -- snapshots/customers_snapshot.sql
 {% snapshot customers_snapshot %}
@@ -576,7 +528,6 @@ select * from {{ source('raw', 'customers') }}
 ### 3.1 target-path
 
 **設定例**:
-
 ```yaml
 # デフォルト
 target-path: "target"
@@ -586,12 +537,10 @@ target-path: "build"
 ```
 
 **役割**:
-
 - `dbt compile`, `dbt run` の出力先
 - コンパイル済みSQL、manifest.json等を格納
 
 **target/ディレクトリの内容**:
-
 ```
 target/
 ├── compiled/          # コンパイル済みSQL
@@ -604,7 +553,6 @@ target/
 ```
 
 **ベストプラクティス**:
-
 ```yaml
 # ✅ デフォルトを推奨
 target-path: "target"
@@ -618,21 +566,18 @@ target/
 ### 3.2 clean-targets
 
 **設定例**:
-
 ```yaml
 clean-targets:
   - "target"
-  - "dbt_modules" # dbt 0.x系の古いパッケージディレクトリ
+  - "dbt_modules"  # dbt 0.x系の古いパッケージディレクトリ
   - "logs"
 ```
 
 **役割**:
-
 - `dbt clean` コマンドで削除されるディレクトリ
 - ビルドアーティファクトのクリーンアップ
 
 **実行例**:
-
 ```bash
 # クリーンアップ実行
 dbt clean
@@ -645,7 +590,6 @@ dbt clean
 ```
 
 **ベストプラクティス**:
-
 ```yaml
 # ✅ 推奨設定
 clean-targets:
@@ -664,7 +608,6 @@ clean-targets:
 ### 4.1 require-dbt-version
 
 **設定例**:
-
 ```yaml
 # 範囲指定
 require-dbt-version: [">=1.0.0", "<2.0.0"]
@@ -680,12 +623,10 @@ require-dbt-version:
 ```
 
 **役割**:
-
 - プロジェクトが必要とするdbtバージョンを制約
 - チーム全体でバージョンを統一
 
 **検証結果**:
-
 ```yaml
 # ✅ バージョンが条件を満たす場合
 require-dbt-version: ">=1.11.0"
@@ -698,7 +639,6 @@ require-dbt-version: ">=2.0.0"
 ```
 
 **ベストプラクティス**:
-
 ```yaml
 # ✅ メジャーバージョンで制約
 require-dbt-version: [">=1.0.0", "<2.0.0"]
@@ -715,7 +655,6 @@ require-dbt-version: "==1.11.5"  # マイナーアップデートもブロック
 ### 4.2 query-comment
 
 **設定例**:
-
 ```yaml
 # デフォルト（dbtのコメントを挿入）
 query-comment: "/* dbt model: {{ node.name }} */"
@@ -728,12 +667,10 @@ query-comment: null
 ```
 
 **役割**:
-
 - BigQueryで実行されるSQLに自動的にコメントを挿入
 - ジョブトラッキング、デバッグに有用
 
 **BigQueryでの確認**:
-
 ```sql
 -- dbtが生成したSQLに以下のコメントが挿入される
 /* dbt model: customers */
@@ -743,14 +680,12 @@ CREATE OR REPLACE TABLE `project.dataset.customers` AS (
 ```
 
 **BigQueryコンソールでの利用**:
-
 ```
 BigQueryコンソール → ジョブ履歴 → クエリ
 → コメントでdbtモデルを特定可能
 ```
 
 **ベストプラクティス**:
-
 ```yaml
 # ✅ プロジェクト情報を含める
 query-comment: |
@@ -772,21 +707,18 @@ query-comment: "/* password:*** */"  # ❌
 ### 4.3 vars
 
 **設定例**:
-
 ```yaml
 vars:
-  start_date: "2024-01-01"
-  end_date: "2024-12-31"
+  start_date: '2024-01-01'
+  end_date: '2024-12-31'
   include_test_data: false
 ```
 
 **役割**:
-
 - プロジェクト全体で使用できるグローバル変数
 - 環境ごとに異なる値を設定可能
 
 **モデルでの使用例**:
-
 ```sql
 -- models/filtered_orders.sql
 select *
@@ -799,7 +731,6 @@ where order_date >= '{{ var("start_date") }}'
 ```
 
 **コマンドラインでのオーバーライド**:
-
 ```bash
 # varsをオーバーライド
 dbt run --vars '{"start_date": "2025-01-01", "end_date": "2025-12-31"}'
@@ -809,7 +740,6 @@ dbt run --vars '{"include_test_data": true}'
 ```
 
 **ベストプラクティス**:
-
 ```yaml
 # ✅ 環境ごとの設定
 vars:
@@ -838,10 +768,10 @@ vars:
 # ====================
 # プロジェクト識別
 # ====================
-name: "analytics_platform"
+name: 'analytics_platform'
 config-version: 2
-version: "1.0.0"
-profile: "analytics"
+version: '1.0.0'
+profile: 'analytics'
 
 # ====================
 # パス設定（デフォルト推奨）
@@ -984,21 +914,21 @@ graph TB
 
 ### 検証結果サマリー
 
-| 設定項目              | 重要度 | 推奨値                                   | 主な用途         |
-| --------------------- | ------ | ---------------------------------------- | ---------------- |
-| `name`                | ⭐⭐⭐ | プロジェクト名（小文字\_アンダースコア） | プロジェクト識別 |
-| `config-version`      | ⭐⭐⭐ | `2`                                      | dbt 1.0+ 必須    |
-| `version`             | ⭐⭐   | セマンティックバージョニング             | リリース管理     |
-| `profile`             | ⭐⭐⭐ | profiles.ymlと一致                       | BigQuery接続     |
-| `model-paths`         | ⭐⭐⭐ | `["models"]`                             | モデル配置       |
-| `seed-paths`          | ⭐⭐   | `["seeds"]`                              | CSV配置          |
-| `test-paths`          | ⭐⭐   | `["tests"]`                              | データテスト配置 |
-| `macro-paths`         | ⭐⭐   | `["macros"]`                             | マクロ配置       |
-| `target-path`         | ⭐⭐   | `"target"`                               | ビルド出力先     |
-| `clean-targets`       | ⭐⭐   | `["target", "logs"]`                     | クリーンアップ   |
-| `require-dbt-version` | ⭐⭐⭐ | `[">=1.11.0", "<2.0.0"]`                 | バージョン制約   |
-| `query-comment`       | ⭐⭐⭐ | モデル名+実行日時                        | BigQuery監査     |
-| `vars`                | ⭐⭐   | 環境依存値                               | グローバル変数   |
+| 設定項目 | 重要度 | 推奨値 | 主な用途 |
+|---------|--------|--------|---------|
+| `name` | ⭐⭐⭐ | プロジェクト名（小文字_アンダースコア） | プロジェクト識別 |
+| `config-version` | ⭐⭐⭐ | `2` | dbt 1.0+ 必須 |
+| `version` | ⭐⭐ | セマンティックバージョニング | リリース管理 |
+| `profile` | ⭐⭐⭐ | profiles.ymlと一致 | BigQuery接続 |
+| `model-paths` | ⭐⭐⭐ | `["models"]` | モデル配置 |
+| `seed-paths` | ⭐⭐ | `["seeds"]` | CSV配置 |
+| `test-paths` | ⭐⭐ | `["tests"]` | データテスト配置 |
+| `macro-paths` | ⭐⭐ | `["macros"]` | マクロ配置 |
+| `target-path` | ⭐⭐ | `"target"` | ビルド出力先 |
+| `clean-targets` | ⭐⭐ | `["target", "logs"]` | クリーンアップ |
+| `require-dbt-version` | ⭐⭐⭐ | `[">=1.11.0", "<2.0.0"]` | バージョン制約 |
+| `query-comment` | ⭐⭐⭐ | モデル名+実行日時 | BigQuery監査 |
+| `vars` | ⭐⭐ | 環境依存値 | グローバル変数 |
 
 ### 重要なベストプラクティス
 
