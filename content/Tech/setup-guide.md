@@ -43,6 +43,7 @@ ssh-keygen -t rsa -C "my_personal_github_key" -f github_private
 ```
 
 **SSH config** (`~/.ssh/config`):
+
 ```
 Host private.github.com
   HostName github.com
@@ -53,6 +54,7 @@ Host private.github.com
 ```
 
 **接続テスト**:
+
 ```bash
 ssh -T git@private.github.com
 ```
@@ -182,6 +184,7 @@ clean: ## 生成ファイルを削除
 ### 7. 初期コンテンツの作成
 
 **Obsidian Vaultにindex.mdを作成**:
+
 ```bash
 /Users/yada/Documents/ObsidianVault/publish/index.md
 ```
@@ -232,6 +235,7 @@ make publish
 ```
 
 自動的に以下が実行されます：
+
 1. Obsidian Vault → content へ同期
 2. Git commit & push
 3. GitHub Actions でビルド
@@ -239,14 +243,14 @@ make publish
 
 ## 🔧 コマンド一覧
 
-| コマンド | 説明 |
-|---------|------|
-| `make help` | コマンド一覧を表示 |
-| `make sync` | Obsidianから同期のみ |
-| `make serve` | ローカルサーバー起動 |
-| `make build` | ビルドのみ |
-| `make publish` | GitHubに公開 |
-| `make clean` | 生成ファイル削除 |
+| コマンド       | 説明                 |
+| -------------- | -------------------- |
+| `make help`    | コマンド一覧を表示   |
+| `make sync`    | Obsidianから同期のみ |
+| `make serve`   | ローカルサーバー起動 |
+| `make build`   | ビルドのみ           |
+| `make publish` | GitHubに公開         |
+| `make clean`   | 生成ファイル削除     |
 
 ## 📂 ディレクトリ構造
 
@@ -329,4 +333,4 @@ ssh -T git@private.github.com
 
 ---
 
-*作成日: 2026年2月14日*
+_作成日: 2026年2月14日_
