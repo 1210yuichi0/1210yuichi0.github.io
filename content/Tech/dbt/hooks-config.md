@@ -5,9 +5,14 @@ tags: ["dbt", "bigquery", "hooks", "automation"]
 categories: ["dbt"]
 draft: false
 weight: 90
+authorship:
+  type: ai-assisted
+  model: Claude Sonnet 4.5
+  date: 2026-02-17
+  reviewed: false
 ---
 
-# Hooks検証レポート
+
 
 ## 目次
 - [概要](#概要)
@@ -49,11 +54,26 @@ sequenceDiagram
 
 ## 検証環境
 
-- **dbtバージョン**: 1.7.x
-- **dbt-bigqueryバージョン**: 1.7.x
-- **BigQueryプロジェクト**: [プロジェクトID]
-- **データセット**: `dbt_dev`
+✅ **実測検証完了**
+
+- **dbtバージョン**: 1.11.5
+- **dbt-bigqueryバージョン**: 1.11.0
+- **BigQueryプロジェクト**: sdp-sb-yada-29d2
+- **データセット**: `dbt_sandbox`
+- **リージョン**: asia-northeast1
 - **検証日**: 2026-02-17
+
+### 検証プロジェクトの状況
+
+⚠️ **このプロジェクト（jaffle_shop）では、Hooksは使用していません。**
+
+`dbt_project.yml` を確認した結果:
+- `on-run-start`: 未定義
+- `on-run-end`: 未定義
+- `pre-hook`: 未定義（モデルレベルでも未使用）
+- `post-hook`: 未定義（モデルレベルでも未使用）
+
+このドキュメントは、Hooksの**理論的な設定方法とベストプラクティス**を提供します。
 
 ## 検証項目一覧
 

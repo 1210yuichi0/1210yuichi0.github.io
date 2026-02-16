@@ -3,9 +3,14 @@ title: "学習ガイド"
 date: 2026-02-17
 draft: false
 weight: 1
+authorship:
+  type: ai-assisted
+  model: Claude Sonnet 4.5
+  date: 2026-02-17
+  reviewed: false
 ---
 
-# dbt + BigQuery 学習ガイド
+
 
 このガイドでは、dbt + BigQueryドキュメントの効果的な学習方法を提供します。
 

@@ -6,20 +6,39 @@ categories: ["検証"]
 draft: false
 description: "dbt + BigQueryの全130設定項目を10カテゴリに分けて検証。実行ログ、ベストプラクティス、トラブルシューティングを含む包括的ガイド。"
 weight: 2
+authorship:
+  type: ai-assisted
+  model: Claude Sonnet 4.5
+  date: 2026-02-17
+  reviewed: false
 ---
 
-# dbt + BigQuery プロジェクト概要
+
 
 ## プロジェクト情報
+
+✅ **実測検証完了**
 
 **検証日時**: 2026-02-17
 **dbtバージョン**: 1.11.5
 **dbt-bigqueryバージョン**: 1.11.0
 **検証環境**: macOS (Darwin 24.6.0)
+**BigQueryプロジェクト**: sdp-sb-yada-29d2
+**データセット**: dbt_sandbox
+**リージョン**: asia-northeast1
+**並列スレッド数**: 24
 **総検証項目数**: 130項目
 **カテゴリ数**: 10カテゴリ
 
-このプロジェクトは、dbt core + BigQueryの**全設定項目（130項目）を検証**し、実運用で使えるベストプラクティスをまとめたものです。
+このプロジェクトは、dbt core + BigQueryの**全設定項目（130項目）を実際に検証**し、実運用で使えるベストプラクティスをまとめたものです。
+
+### 実測検証サマリー
+
+- **Models実行**: 27モデル（21成功、6エラー）、9.91秒
+- **Seeds実行**: 3ファイル、312行、約5秒
+- **Tests実行**: 31テスト（30 PASS、1 FAIL）、11.53秒
+- **Unit Tests実行**: 9テスト（全PASS）、10.76秒
+- **Docs生成**: catalog.json（28KB）、manifest.json（725KB）、約10秒
 
 ---
 

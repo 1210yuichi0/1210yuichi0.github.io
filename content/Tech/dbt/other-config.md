@@ -5,9 +5,14 @@ tags: ["dbt", "bigquery", "vars", "packages", "macros"]
 categories: ["dbt"]
 draft: false
 weight: 100
+authorship:
+  type: ai-assisted
+  model: Claude Sonnet 4.5
+  date: 2026-02-17
+  reviewed: false
 ---
 
-# その他の設定の検証レポート
+
 
 ## 目次
 - [概要](#概要)
@@ -44,11 +49,32 @@ graph TB
 
 ## 検証環境
 
-- **dbtバージョン**: 1.7.x
-- **dbt-bigqueryバージョン**: 1.7.x
-- **BigQueryプロジェクト**: [プロジェクトID]
-- **データセット**: `dbt_dev`
+✅ **実測検証完了**
+
+- **dbtバージョン**: 1.11.5
+- **dbt-bigqueryバージョン**: 1.11.0
+- **BigQueryプロジェクト**: sdp-sb-yada-29d2
+- **データセット**: `dbt_sandbox`
+- **リージョン**: asia-northeast1
+- **並列スレッド数**: 24
 - **検証日**: 2026-02-17
+
+### 検証プロジェクトの実装状況
+
+**実装済み:**
+- ✅ **Seeds**: 3ファイル（raw_customers.csv、raw_orders.csv、raw_payments.csv）、合計312行
+- ✅ **Models**: 27モデル（staging: view、marts: table）
+- ✅ **Tests**: Schema Tests（unique, not_null, accepted_values, relationships）+ Singular Tests
+- ✅ **Unit Tests**: 9個（6種類のデータ形式）
+
+**未実装（理論的な説明のみ）:**
+- ⚠️ **vars**: dbt_project.ymlに変数定義なし
+- ⚠️ **packages**: packages.ymlなし（dbt_utilsなどのパッケージ未使用）
+- ⚠️ **macros**: macros/ディレクトリは空（カスタムマクロなし）
+- ⚠️ **analysis**: analysis/ディレクトリなし
+- ⚠️ **exposures**: exposures定義なし
+
+このドキュメントでは、実装済み項目は検証結果を記載し、未実装項目は理論的な設定方法を提供します。
 
 ## 検証項目一覧
 

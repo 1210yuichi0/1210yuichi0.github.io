@@ -5,9 +5,14 @@ tags: ["dbt", "bigquery", "unit-tests", "testing", "quality"]
 categories: ["dbt"]
 draft: false
 weight: 42
+authorship:
+  type: ai-assisted
+  model: Claude Sonnet 4.5
+  date: 2026-02-17
+  reviewed: false
 ---
 
-# dbt Unit Tests BigQuery 検証ガイド
+
 
 ## 検証概要
 
@@ -373,7 +378,7 @@ unit_tests:
 
 ## 3. Contract + Unit Tests
 
-### 3.1 最強の組み合わせ
+### 3.1 効果的な組み合わせ
 
 ```mermaid
 flowchart TB

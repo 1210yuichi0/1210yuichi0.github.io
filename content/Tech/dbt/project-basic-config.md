@@ -5,17 +5,30 @@ tags: ["dbt", "bigquery", "dbt_project.yml", "configuration"]
 categories: ["dbt"]
 draft: false
 weight: 10
+authorship:
+  type: ai-assisted
+  model: Claude Sonnet 4.5
+  date: 2026-02-17
+  reviewed: false
 ---
 
-# dbt プロジェクト基本設定 完全ガイド
+
 
 ## 検証概要
 
 **検証日時**: 2026-02-17
 **dbt-core**: 1.11.5
+**dbt-bigquery**: 1.11.0
 **対象ファイル**: `dbt_project.yml`
 **検証項目数**: 15項目
-**所要時間**: 2時間
+
+### 実測検証結果
+
+✅ **プロジェクト名**: jaffle_shop
+✅ **config-version**: 2
+✅ **require-dbt-version**: ">=1.0.0", "<2.0.0"
+✅ **デフォルトマテリアライゼーション**: table（stagingはview）
+📊 **並列実行スレッド**: 24（profiles.ymlで設定）
 
 ### 検証目的
 

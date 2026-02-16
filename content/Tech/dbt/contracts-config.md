@@ -5,9 +5,14 @@ tags: ["dbt", "bigquery", "contracts", "schema", "unit-tests"]
 categories: ["dbt"]
 draft: false
 weight: 35
+authorship:
+  type: ai-assisted
+  model: Claude Sonnet 4.5
+  date: 2026-02-17
+  reviewed: false
 ---
 
-# dbt Contracts: スキーマ保証と型安全性
+
 
 ## 検証概要
 
@@ -1334,7 +1339,7 @@ expect:
 
 ## まとめ
 
-### Contract + Unit Tests = 最強の品質保証
+### Contract + Unit Tests = 堅牢な品質保証
 
 ```mermaid
 graph TB
