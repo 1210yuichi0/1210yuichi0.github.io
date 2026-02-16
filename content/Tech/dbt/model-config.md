@@ -1,31 +1,17 @@
 ---
-title: "BigQuery + dbt モデル設定完全ガイド"
+title: "dbt + BigQuery #03: モデル設定"
 date: 2026-02-17
-tags:
-  [
-    "dbt",
-    "bigquery",
-    "data-modeling",
-    "performance",
-    "partitioning",
-    "clustering",
-    "materialization",
-  ]
-categories: ["verification", "data-engineering"]
+tags: ["dbt", "bigquery", "materialization", "partitioning", "clustering"]
+categories: ["dbt完全ガイド"]
 draft: false
-authorship:
-  type: ai-assisted
-  model: Claude Sonnet 4.5
-  date: 2026-02-17
-  reviewed: false
-summary: "dbt + BigQueryのモデル設定30項目を徹底検証。Materialization、パーティション、クラスタリング、増分戦略の実際の挙動とベストプラクティスを、7つのMermaid図と共に詳解。"
+weight: 30
 ---
 
 # BigQuery + dbt モデル設定完全ガイド
 
 ## 検証概要
 
-**検証日時**: 2026-02-17
+**検証日時**: 2026-02-16
 **環境**: dbt 1.11.5 + dbt-bigquery 1.11.0
 **BigQueryプロジェクト**: your-gcp-project-id
 **データセット**: dbt_sandbox
@@ -50,13 +36,13 @@ pie title 検証結果 (19モデル)
 
 **成功率**: 84% (16/19モデル)
 
-| カテゴリ        | 検証項目数 | 成功 | 失敗 | 成功率 |
-| --------------- | ---------- | ---- | ---- | ------ |
-| Materialization | 5          | 5    | 0    | 100%   |
-| パーティション  | 6          | 4    | 2    | 67%    |
-| クラスタリング  | 3          | 3    | 0    | 100%   |
-| 増分戦略        | 3          | 2    | 1    | 67%    |
-| その他の設定    | 2          | 2    | 0    | 100%   |
+| カテゴリ | 検証項目数 | 成功 | 失敗 | 成功率 |
+|---------|----------|------|------|--------|
+| Materialization | 5 | 5 | 0 | 100% |
+| パーティション | 6 | 4 | 2 | 67% |
+| クラスタリング | 3 | 3 | 0 | 100% |
+| 増分戦略 | 3 | 2 | 1 | 67% |
+| その他の設定 | 2 | 2 | 0 | 100% |
 
 ---
 
@@ -102,14 +88,12 @@ flowchart TD
 **検証モデル**: [mat_table_demo.sql](../../models/verification/mat_table_demo.sql)
 
 **設定**:
-
 ```yaml
 config:
   materialized: table
 ```
 
 **BigQueryでの実装**:
-
 ```sql
 CREATE OR REPLACE TABLE `your-gcp-project-id.dbt_sandbox.mat_table_demo`
 AS (
@@ -120,13 +104,11 @@ AS (
 ```
 
 **検証結果**: ✅ **成功**
-
 - 実行時間: 3.84秒
 - 処理データ: 99行、3.3 KiB
 - BigQueryでの作成: テーブルとして物理的に保存
 
 **ユースケース**:
-
 - ✅ 集計結果の保存（fact/dimテーブル）
 - ✅ 複雑なJOINの結果をキャッシュ
 - ✅ クエリパフォーマンス重視の場合
@@ -145,14 +127,12 @@ AS (
 **検証モデル**: [mat_view_demo.sql](../../models/verification/mat_view_demo.sql)
 
 **設定**:
-
 ```yaml
 config:
   materialized: view
 ```
 
 **BigQueryでの実装**:
-
 ```sql
 CREATE OR REPLACE VIEW `your-gcp-project-id.dbt_sandbox.mat_view_demo`
 AS (
@@ -163,13 +143,11 @@ AS (
 ```
 
 **検証結果**: ✅ **成功**
-
 - 実行時間: 2.48秒
 - 処理データ: 0行（ビューはデータを保存しない）
 - BigQueryでの作成: ビュー定義のみ保存
 
 **ユースケース**:
-
 - ✅ リアルタイム性が必要な場合
 - ✅ ストレージコスト削減
 - ✅ stagingモデル（データ変換層）
@@ -188,7 +166,6 @@ AS (
 **検証モデル**: [mat_incremental_demo.sql](../../models/verification/mat_incremental_demo.sql)
 
 **設定**:
-
 ```yaml
 config:
   materialized: incremental
@@ -199,7 +176,6 @@ config:
 **BigQueryでの実装**:
 
 初回実行（full-refresh）:
-
 ```sql
 CREATE TABLE `your-gcp-project-id.dbt_sandbox.mat_incremental_demo`
 AS (
@@ -209,7 +185,6 @@ AS (
 ```
 
 2回目以降（増分更新）:
-
 ```sql
 MERGE INTO `your-gcp-project-id.dbt_sandbox.mat_incremental_demo` AS target
 USING (
@@ -223,13 +198,11 @@ WHEN NOT MATCHED THEN INSERT *
 ```
 
 **検証結果**: ✅ **成功**
-
 - 初回実行時間: 4.09秒
 - 処理データ: 99行、3.3 KiB
 - 増分更新: MERGE文で効率的に更新
 
 **ユースケース**:
-
 - ✅ 大規模テーブルの効率的な更新
 - ✅ SCD Type 1（最新状態のみ保持）
 - ✅ イベントデータの追記
@@ -249,7 +222,6 @@ WHEN NOT MATCHED THEN INSERT *
 **消費モデル**: [mat_ephemeral_consumer.sql](../../models/verification/mat_ephemeral_consumer.sql)
 
 **設定**:
-
 ```yaml
 config:
   materialized: ephemeral
@@ -272,12 +244,10 @@ GROUP BY customer_id
 ```
 
 **検証結果**: ✅ **成功**
-
 - BigQueryにテーブル/ビューは作成されない
 - 参照元モデルのCTEとして展開される
 
 **ユースケース**:
-
 - ✅ 中間計算ステップ（他のモデルからのみ参照）
 - ✅ コード再利用（DRY原則）
 - ✅ ストレージコスト削減
@@ -290,7 +260,6 @@ GROUP BY customer_id
 | ✅ 中間データの管理不要 | ❌ デバッグが難しい |
 
 **重要な注意点**:
-
 - Ephemeralは複数のモデルから参照されると、**それぞれでCTEとして展開される**（重複計算）
 - パフォーマンスが重要な場合は table または view を検討
 
@@ -301,7 +270,6 @@ GROUP BY customer_id
 **検証モデル**: [mat_matview_demo.sql](../../models/verification/mat_matview_demo.sql)
 
 **設定**:
-
 ```yaml
 config:
   materialized: materialized_view
@@ -310,7 +278,6 @@ config:
 ```
 
 **BigQueryでの実装**:
-
 ```sql
 CREATE MATERIALIZED VIEW `your-gcp-project-id.dbt_sandbox.mat_matview_demo`
 OPTIONS (
@@ -328,12 +295,10 @@ AS (
 ```
 
 **検証結果**: ✅ **成功**
-
 - 実行時間: 2.93秒
 - BigQueryが自動でリフレッシュ（30分ごと）
 
 **ユースケース**:
-
 - ✅ 集計クエリの高速化
 - ✅ リアルタイム性とパフォーマンスの両立
 - ✅ ダッシュボードのバックエンド
@@ -346,7 +311,6 @@ AS (
 | ✅ 管理コスト低 | ❌ リフレッシュコスト |
 
 **BigQuery Materialized Viewの制約**:
-
 - 集計（GROUP BY）は可能だが、複雑なJOINに制限あり
 - サポートされる関数に制限あり（詳細は[公式ドキュメント](https://cloud.google.com/bigquery/docs/materialized-views-intro)参照）
 
@@ -374,13 +338,13 @@ graph LR
     style Ephemeral fill:#f0f0f0
 ```
 
-| 方式                  | ストレージ | クエリ速度 | データ鮮度          | コスト | 推奨ケース                       |
-| --------------------- | ---------- | ---------- | ------------------- | ------ | -------------------------------- |
-| **table**             | 💾💾💾     | ⚡⚡⚡     | 🕐 更新時           | 💰💰   | 集計テーブル、パフォーマンス重視 |
-| **view**              | -          | ⚡         | 🕐🕐🕐 リアルタイム | 💰     | stagingレイヤー、リアルタイム性  |
-| **incremental**       | 💾💾💾     | ⚡⚡⚡     | 🕐 更新時           | 💰     | 大規模データ、効率的更新         |
-| **ephemeral**         | -          | ⚡⚡       | 🕐🕐🕐 リアルタイム | -      | 中間計算、コード再利用           |
-| **materialized_view** | 💾💾       | ⚡⚡⚡     | 🕐🕐 自動更新       | 💰💰   | 集計+リアルタイム性              |
+| 方式 | ストレージ | クエリ速度 | データ鮮度 | コスト | 推奨ケース |
+|------|----------|----------|----------|--------|----------|
+| **table** | 💾💾💾 | ⚡⚡⚡ | 🕐 更新時 | 💰💰 | 集計テーブル、パフォーマンス重視 |
+| **view** | - | ⚡ | 🕐🕐🕐 リアルタイム | 💰 | stagingレイヤー、リアルタイム性 |
+| **incremental** | 💾💾💾 | ⚡⚡⚡ | 🕐 更新時 | 💰 | 大規模データ、効率的更新 |
+| **ephemeral** | - | ⚡⚡ | 🕐🕐🕐 リアルタイム | - | 中間計算、コード再利用 |
+| **materialized_view** | 💾💾 | ⚡⚡⚡ | 🕐🕐 自動更新 | 💰💰 | 集計+リアルタイム性 |
 
 ---
 
@@ -424,7 +388,6 @@ flowchart TD
 **検証モデル**: [partition_date_demo.sql](../../models/verification/partition_date_demo.sql)
 
 **設定**:
-
 ```yaml
 config:
   materialized: table
@@ -435,19 +398,16 @@ config:
 ```
 
 **検証結果**: ✅ **成功**
-
 - 実行時間: 5.10秒
 - パーティション: 日付ごとに作成
 - BigQueryコンソールで確認: パーティション情報が表示される
 
 **ユースケース**:
-
 - ✅ 日次バッチ処理
 - ✅ 時系列分析
 - ✅ ログデータ、イベントデータ
 
 **コスト削減効果**:
-
 ```sql
 -- パーティションフィルタあり（推奨）
 SELECT * FROM partition_date_demo
@@ -467,7 +427,6 @@ WHERE customer_id = 1
 **検証モデル**: [partition_timestamp_demo.sql](../../models/verification/partition_timestamp_demo.sql)
 
 **設定（失敗例）**:
-
 ```yaml
 config:
   materialized: table
@@ -478,7 +437,6 @@ config:
 ```
 
 **検証結果**: ❌ **失敗**
-
 ```
 Database Error:
 PARTITION BY expression must be DATE(<timestamp_column>),
@@ -488,7 +446,6 @@ TIMESTAMP_TRUNC(<timestamp_column>, DAY/HOUR/MONTH/YEAR), ...
 **原因**: BigQueryはTIMESTAMP列を直接パーティションキーにできない
 
 **正しい設定**:
-
 ```sql
 {{
   config(
@@ -511,7 +468,6 @@ FROM {{ ref('stg_orders') }}
 ```
 
 **重要な学び**:
-
 - ⚠️ TIMESTAMP列は `DATE()` または `TIMESTAMP_TRUNC()` で変換が必要
 - ⚠️ dbt-bigqueryの `data_type: timestamp` は **直接は使えない**
 
@@ -522,7 +478,6 @@ FROM {{ ref('stg_orders') }}
 **検証モデル**: [partition_int_demo.sql](../../models/verification/partition_int_demo.sql)
 
 **設定**:
-
 ```yaml
 config:
   materialized: table
@@ -536,7 +491,6 @@ config:
 ```
 
 **BigQueryでの実装**:
-
 ```sql
 CREATE TABLE `dbt_sandbox.partition_int_demo`
 PARTITION BY RANGE_BUCKET(customer_id, GENERATE_ARRAY(0, 1000, 10))
@@ -544,18 +498,15 @@ AS (...)
 ```
 
 **検証結果**: ✅ **成功**
-
 - 実行時間: 4.16秒
 - パーティション: customer_id を 10刻みで分割（0-9, 10-19, ...）
 
 **ユースケース**:
-
 - ✅ ユーザーID範囲による分割
 - ✅ 地域コード、店舗IDなどの範囲分割
 - ✅ 時系列以外のパーティショニング
 
 **注意点**:
-
 - 範囲外の値（<0 または >=1000）は特別なパーティションに格納される
 - `interval` は均等分割のみ（カスタム境界値は `GENERATE_ARRAY` で指定）
 
@@ -566,7 +517,6 @@ AS (...)
 **検証モデル**: [partition_ingestion_demo.sql](../../models/verification/partition_ingestion_demo.sql)
 
 **設定（失敗例）**:
-
 ```yaml
 config:
   materialized: table
@@ -576,7 +526,6 @@ config:
 ```
 
 **検証結果**: ❌ **失敗**
-
 ```
 Runtime Error: Could not parse partition config
 ```
@@ -584,7 +533,6 @@ Runtime Error: Could not parse partition config
 **原因**: dbt-bigquery 1.11.0でのTime-ingestionパーティション設定構文が不明確
 
 **BigQueryでの正しいSQL**:
-
 ```sql
 CREATE TABLE `dbt_sandbox.partition_ingestion_demo`
 PARTITION BY _PARTITIONTIME  -- 疑似列を使用
@@ -592,7 +540,6 @@ AS (...)
 ```
 
 **dbtでの代替方法**:
-
 ```sql
 -- 方法1: post-hookで設定
 {{
@@ -612,7 +559,6 @@ FROM {{ ref('source') }}
 ```
 
 **重要な学び**:
-
 - ⚠️ Time-ingestion パーティションはdbt-bigqueryで直接サポートが不完全
 - ✅ 代替: `CURRENT_DATE()` や `CURRENT_TIMESTAMP()` を列として追加してパーティション
 
@@ -623,7 +569,6 @@ FROM {{ ref('source') }}
 **検証モデル**: [partition_filter_required_demo.sql](../../models/verification/partition_filter_required_demo.sql)
 
 **設定**:
-
 ```yaml
 config:
   materialized: table
@@ -634,12 +579,10 @@ config:
 ```
 
 **検証結果**: ✅ **成功**
-
 - テーブル作成成功
 - パーティションフィルタなしのクエリは **エラーになる**
 
 **クエリ例**:
-
 ```sql
 -- ✅ 成功（パーティションフィルタあり）
 SELECT * FROM partition_filter_required_demo
@@ -652,13 +595,11 @@ WHERE customer_id = 1;
 ```
 
 **ユースケース**:
-
 - ✅ 大規模テーブルで意図しない全件スキャンを防止
 - ✅ コスト管理が重要なプロジェクト
 - ✅ アナリストが直接クエリする環境
 
 **推奨設定**:
-
 - 本番環境の大規模factテーブルには **必ず設定すべき**
 - 開発環境では柔軟性のため `false` も検討
 
@@ -669,7 +610,6 @@ WHERE customer_id = 1;
 **検証モデル**: [partition_expiration_demo.sql](../../models/verification/partition_expiration_demo.sql)
 
 **設定**:
-
 ```yaml
 config:
   materialized: table
@@ -680,18 +620,15 @@ config:
 ```
 
 **検証結果**: ✅ **成功**
-
 - 実行時間: 5.22秒
 - 7日以上前のパーティションは自動削除される
 
 **ユースケース**:
-
 - ✅ ログデータ（保持期間: 30日、90日など）
 - ✅ 一時的な分析テーブル
 - ✅ GDPRなどの法的要件（データ削除）
 
 **コスト削減効果**:
-
 ```
 データ保持期間 7日:
 - ストレージコスト: 1/52 (365日 → 7日)
@@ -699,7 +636,6 @@ config:
 ```
 
 **注意点**:
-
 - ⚠️ 削除は **取り消せない**（バックアップ推奨）
 - ⚠️ テーブルレベルの `hours_to_expiration` とは併用できない
 
@@ -729,14 +665,14 @@ graph TB
     style Ingestion fill:#ffe1e1
 ```
 
-| パーティション方式            | 状態 | 推奨度     | ユースケース                      |
-| ----------------------------- | ---- | ---------- | --------------------------------- |
-| **DATE**                      | ✅   | ⭐⭐⭐⭐⭐ | 日次データ、時系列分析            |
-| **TIMESTAMP**                 | ⚠️   | ⭐⭐       | DATE変換が必要（推奨しない）      |
-| **INT64 RANGE**               | ✅   | ⭐⭐⭐⭐   | ユーザーID範囲、地域コード        |
-| **Time-ingestion**            | ❌   | ⭐         | dbtサポート不完全（代替手段推奨） |
-| **require_partition_filter**  | ✅   | ⭐⭐⭐⭐⭐ | 大規模テーブルに必須              |
-| **partition_expiration_days** | ✅   | ⭐⭐⭐⭐   | ログ、一時データ                  |
+| パーティション方式 | 状態 | 推奨度 | ユースケース |
+|------------------|------|--------|------------|
+| **DATE** | ✅ | ⭐⭐⭐⭐⭐ | 日次データ、時系列分析 |
+| **TIMESTAMP** | ⚠️ | ⭐⭐ | DATE変換が必要（推奨しない） |
+| **INT64 RANGE** | ✅ | ⭐⭐⭐⭐ | ユーザーID範囲、地域コード |
+| **Time-ingestion** | ❌ | ⭐ | dbtサポート不完全（代替手段推奨） |
+| **require_partition_filter** | ✅ | ⭐⭐⭐⭐⭐ | 大規模テーブルに必須 |
+| **partition_expiration_days** | ✅ | ⭐⭐⭐⭐ | ログ、一時データ |
 
 ---
 
@@ -773,20 +709,17 @@ graph LR
 **検証モデル**: [cluster_single_demo.sql](../../models/verification/cluster_single_demo.sql)
 
 **設定**:
-
 ```yaml
 config:
   materialized: table
-  cluster_by: ["customer_id"]
+  cluster_by: ['customer_id']
 ```
 
 **検証結果**: ✅ **成功**
-
 - 実行時間: 3.99秒
 - クラスタリング列: customer_id
 
 **効果**:
-
 ```sql
 -- クラスタリングの効果
 SELECT * FROM cluster_single_demo
@@ -795,7 +728,6 @@ WHERE customer_id = 1;
 ```
 
 **ユースケース**:
-
 - ✅ 特定カラムでのフィルタが多い
 - ✅ WHERE句でよく使う列
 
@@ -806,15 +738,13 @@ WHERE customer_id = 1;
 **検証モデル**: [cluster_multi_demo.sql](../../models/verification/cluster_multi_demo.sql)
 
 **設定**:
-
 ```yaml
 config:
   materialized: table
-  cluster_by: ["customer_id", "status", "order_date"]
+  cluster_by: ['customer_id', 'status', 'order_date']
 ```
 
 **検証結果**: ✅ **成功**
-
 - 実行時間: 3.77秒
 - クラスタリング列: customer_id → status → order_date の順
 
@@ -832,7 +762,6 @@ WHERE order_date = '2024-01-01';
 ```
 
 **最適な列順の決め方**:
-
 1. **カーディナリティが高い列**を先頭に（例: user_id）
 2. **よくフィルタする列**を前に
 3. **時系列列**は最後に
@@ -844,18 +773,16 @@ WHERE order_date = '2024-01-01';
 **検証モデル**: [cluster_part_demo.sql](../../models/verification/cluster_part_demo.sql)
 
 **設定**:
-
 ```yaml
 config:
   materialized: table
   partition_by:
     field: order_date
     data_type: date
-  cluster_by: ["customer_id", "status"]
+  cluster_by: ['customer_id', 'status']
 ```
 
 **検証結果**: ✅ **成功**
-
 - 実行時間: 5.07秒
 - パーティション: order_date（日単位）
 - クラスタリング: 各パーティション内で customer_id → status 順
@@ -875,7 +802,6 @@ graph TD
 ```
 
 **パフォーマンス効果**:
-
 ```
 クエリ例:
 SELECT * FROM cluster_part_demo
@@ -889,13 +815,11 @@ WHERE order_date = '2024-01-01'  -- パーティションで99%削減
 ```
 
 **ユースケース**:
-
 - ✅ 大規模factテーブル（数億〜数兆行）
 - ✅ 時系列データ + ユーザー別分析
 - ✅ ログデータの効率的な検索
 
 **推奨設定**:
-
 ```yaml
 # 大規模テーブルのベストプラクティス
 config:
@@ -903,7 +827,7 @@ config:
   partition_by:
     field: event_date
     data_type: date
-  cluster_by: ["user_id", "event_type", "country"]
+  cluster_by: ['user_id', 'event_type', 'country']
   require_partition_filter: true
   partition_expiration_days: 90
 ```
@@ -912,15 +836,14 @@ config:
 
 ### 3.3 クラスタリング設定まとめ
 
-| クラスタリング            | 処理データ削減 | コスト削減 | 推奨ケース               |
-| ------------------------- | -------------- | ---------- | ------------------------ |
-| なし                      | 0%             | -          | 小規模テーブル（< 1GB）  |
-| 単一列                    | 50-70%         | ⭐⭐⭐     | 特定列でのフィルタが多い |
-| 複数列（2-4列）           | 70-90%         | ⭐⭐⭐⭐   | 複合条件のクエリが多い   |
-| パーティション + クラスタ | 95-99%         | ⭐⭐⭐⭐⭐ | 大規模テーブル必須       |
+| クラスタリング | 処理データ削減 | コスト削減 | 推奨ケース |
+|--------------|--------------|----------|-----------|
+| なし | 0% | - | 小規模テーブル（< 1GB） |
+| 単一列 | 50-70% | ⭐⭐⭐ | 特定列でのフィルタが多い |
+| 複数列（2-4列） | 70-90% | ⭐⭐⭐⭐ | 複合条件のクエリが多い |
+| パーティション + クラスタ | 95-99% | ⭐⭐⭐⭐⭐ | 大規模テーブル必須 |
 
 **重要な制約**:
-
 - クラスタリング列は **最大4列まで**
 - 列の **順序が重要**（カーディナリティ高 → 低）
 - パーティション列はクラスタリング列に **含めない**
@@ -962,7 +885,6 @@ flowchart TD
 **検証モデル**: [incr_merge_demo.sql](../../models/verification/incr_merge_demo.sql)
 
 **設定**:
-
 ```yaml
 config:
   materialized: incremental
@@ -973,7 +895,6 @@ config:
 **BigQueryでの実装**:
 
 初回実行:
-
 ```sql
 CREATE TABLE `dbt_sandbox.incr_merge_demo` AS (
   SELECT * FROM source
@@ -981,7 +902,6 @@ CREATE TABLE `dbt_sandbox.incr_merge_demo` AS (
 ```
 
 2回目以降:
-
 ```sql
 MERGE INTO `dbt_sandbox.incr_merge_demo` AS target
 USING (
@@ -996,12 +916,10 @@ WHEN NOT MATCHED THEN
 ```
 
 **検証結果**: ✅ **成功**
-
 - 初回: テーブル作成（3.80秒）
 - 2回目: MERGE実行
 
 **ユースケース**:
-
 - ✅ SCD Type 1（最新状態のみ保持）
 - ✅ レコードが更新される場合
 - ✅ ユーザーマスタ、商品マスタ
@@ -1020,7 +938,6 @@ WHEN NOT MATCHED THEN
 **検証モデル**: [incr_insert_overwrite_demo.sql](../../models/verification/incr_insert_overwrite_demo.sql)
 
 **設定**:
-
 ```yaml
 config:
   materialized: incremental
@@ -1031,7 +948,6 @@ config:
 ```
 
 **BigQueryでの実装**:
-
 ```sql
 -- 2回目以降: 該当パーティションのみ削除→挿入
 DELETE FROM `dbt_sandbox.incr_insert_overwrite_demo`
@@ -1044,12 +960,10 @@ WHERE DATE(order_date) >= DATE_SUB(CURRENT_DATE(), INTERVAL 7 DAY);
 ```
 
 **検証結果**: ✅ **成功**
-
 - 実行時間: 4.55秒
 - 直近7日分のパーティションを置換
 
 **ユースケース**:
-
 - ✅ 日次バッチ処理
 - ✅ データの完全置換が必要
 - ✅ 冪等性が重要な処理
@@ -1062,7 +976,6 @@ WHERE DATE(order_date) >= DATE_SUB(CURRENT_DATE(), INTERVAL 7 DAY);
 | ✅ シンプルなロジック | ❌ 誤って全削除のリスク |
 
 **重要な注意点**:
-
 ```sql
 -- ⚠️ 危険: WHERE句がないと全パーティション削除！
 {% if is_incremental() %}
@@ -1077,25 +990,22 @@ WHERE DATE(order_date) >= DATE_SUB(CURRENT_DATE(), INTERVAL 7 DAY);
 **検証モデル**: [incr_microbatch_demo.sql](../../models/verification/incr_microbatch_demo.sql)
 
 **設定**:
-
 ```yaml
 config:
   materialized: incremental
   incremental_strategy: microbatch
   event_time: order_date
   batch_size: day
-  begin: "2023-01-01"
+  begin: '2023-01-01'
   lookback: 3
 ```
 
 **検証結果**: ⚠️ **部分的に成功**
-
 - 1143バッチを処理（2023-01-01 〜 2026-02-16）
 - ほとんどのバッチはSKIPPED（データなし）
 - エラーあり（一部バッチで失敗）
 
 **dbtの処理**:
-
 ```
 Batch 1 of 1143: 2023-01-01
 Batch 2 of 1143: 2023-01-02
@@ -1104,7 +1014,6 @@ Batch 1143 of 1143: 2026-02-16
 ```
 
 **ユースケース**:
-
 - ✅ 大規模履歴データ（数年分）
 - ✅ バックフィル（過去データの再処理）
 - ✅ 段階的なデータ処理
@@ -1117,7 +1026,6 @@ Batch 1143 of 1143: 2026-02-16
 | ✅ lookbackで過去再処理 | ❌ データ範囲外はエラー |
 
 **重要な学び**:
-
 - `begin` は必須（開始日時を指定）
 - データが存在しない期間はSKIPPEDになる
 - `lookback` で過去N日分を再処理可能
@@ -1147,12 +1055,12 @@ graph TB
     style Micro fill:#f5e1ff
 ```
 
-| 戦略                 | SQL             | 速度     | unique_key | パーティション | ユースケース               |
-| -------------------- | --------------- | -------- | ---------- | -------------- | -------------------------- |
-| **merge**            | MERGE INTO      | ⚡⚡     | 必須       | 任意           | SCD Type 1、マスタテーブル |
-| **insert_overwrite** | DELETE + INSERT | ⚡⚡⚡   | 不要       | 必須           | 日次バッチ、冪等性重視     |
-| **append**           | INSERT          | ⚡⚡⚡⚡ | 不要       | 任意           | ログデータ、追記専用       |
-| **microbatch**       | 複数バッチ      | ⚡       | 任意       | 推奨           | 大規模履歴、バックフィル   |
+| 戦略 | SQL | 速度 | unique_key | パーティション | ユースケース |
+|------|-----|------|-----------|--------------|------------|
+| **merge** | MERGE INTO | ⚡⚡ | 必須 | 任意 | SCD Type 1、マスタテーブル |
+| **insert_overwrite** | DELETE + INSERT | ⚡⚡⚡ | 不要 | 必須 | 日次バッチ、冪等性重視 |
+| **append** | INSERT | ⚡⚡⚡⚡ | 不要 | 任意 | ログデータ、追記専用 |
+| **microbatch** | 複数バッチ | ⚡ | 任意 | 推奨 | 大規模履歴、バックフィル |
 
 ---
 
@@ -1163,7 +1071,6 @@ graph TB
 **検証モデル**: [labels_demo.sql](../../models/verification/labels_demo.sql)
 
 **設定**:
-
 ```yaml
 config:
   materialized: table
@@ -1174,18 +1081,15 @@ config:
 ```
 
 **検証結果**: ✅ **成功**
-
 - BigQueryテーブルにラベルが付与される
 - コンソールで確認可能
 
 **ユースケース**:
-
 - ✅ コスト配分（部門別、プロジェクト別）
 - ✅ テーブル管理（環境、チーム別）
 - ✅ 検索性向上
 
 **BigQueryでの活用**:
-
 ```sql
 -- ラベルでテーブルを検索
 SELECT table_name, option_value AS team
@@ -1201,7 +1105,6 @@ WHERE option_name = 'labels'
 **検証モデル**: [expiration_demo.sql](../../models/verification/expiration_demo.sql)
 
 **設定**:
-
 ```yaml
 config:
   materialized: table
@@ -1209,17 +1112,14 @@ config:
 ```
 
 **検証結果**: ✅ **成功**
-
 - テーブル作成から24時間後に自動削除される
 
 **ユースケース**:
-
 - ✅ 一時的な分析テーブル
 - ✅ 中間テーブル（ETL処理）
 - ✅ テストデータ
 
 **注意点**:
-
 - ⚠️ `partition_expiration_days` とは併用できない
 - ⚠️ dbt runのたびに期限がリセットされる
 
@@ -1271,7 +1171,7 @@ models:
       partition_by:
         field: order_date
         data_type: date
-      cluster_by: ["customer_id", "product_id", "region"]
+      cluster_by: ['customer_id', 'product_id', 'region']
       require_partition_filter: true
       partition_expiration_days: 365
       labels:
@@ -1332,7 +1232,6 @@ graph TD
 ```
 
 **優先順位**:
-
 1. **Materialization** - 最重要（table/view/incremental）
 2. **Partition** - 大規模データ（>10GB）で必須
 3. **Clustering** - パーティション後の最適化
@@ -1343,14 +1242,14 @@ graph TD
 
 ### 6.3 よくある間違いと対策
 
-| 間違い                           | 問題               | 正しい方法                 |
-| -------------------------------- | ------------------ | -------------------------- |
-| すべてtable                      | ストレージコスト増 | stagingはview              |
-| すべてview                       | クエリ遅延         | mart層はtable/incremental  |
-| パーティションなし大規模テーブル | コスト爆発         | 10GB超はパーティション必須 |
-| クラスタリング列順序誤り         | 効果半減           | カーディナリティ高→低の順  |
-| mergeで大規模データ              | 処理遅延           | insert_overwrite検討       |
-| TIMESTAMP直接パーティション      | エラー             | DATE()でラップ             |
+| 間違い | 問題 | 正しい方法 |
+|--------|------|----------|
+| すべてtable | ストレージコスト増 | stagingはview |
+| すべてview | クエリ遅延 | mart層はtable/incremental |
+| パーティションなし大規模テーブル | コスト爆発 | 10GB超はパーティション必須 |
+| クラスタリング列順序誤り | 効果半減 | カーディナリティ高→低の順 |
+| mergeで大規模データ | 処理遅延 | insert_overwrite検討 |
+| TIMESTAMP直接パーティション | エラー | DATE()でラップ |
 
 ---
 

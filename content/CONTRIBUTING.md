@@ -54,6 +54,55 @@ grep -r "^title: " content/ | while IFS=: read -r file title; do
 done
 ```
 
+### index.mdファイルの使用ルール
+
+**❌ indexファイルに詳細なドキュメントを書かない**
+
+`index.md` や `_index.md` は、フォルダの概要やナビゲーションのためのファイルです。詳細なドキュメントは書かず、以下のように使用します：
+
+**✅ 良い使い方**:
+
+```markdown
+---
+title: dbt関連記事
+---
+
+dbtに関する検証レポートとガイドの一覧です。
+
+## 記事一覧
+
+- [[Tech/dbt/dbt-unit-tests-bigquery-verification|dbt unit tests検証]]
+- [[Tech/dbt/bigquery-dbt-model-config-verification|dbtモデル設定ガイド]]
+- [[Tech/dbt/dbt-project-config-verification|dbtプロジェクト設定]]
+
+## 関連リンク
+
+- [dbt公式ドキュメント](https://docs.getdbt.com/)
+```
+
+**❌ 悪い使い方**:
+
+```markdown
+---
+title: dbt関連記事
+---
+
+# dbt unit testsの詳細な使い方
+
+unit testsは、dbt 1.8+で導入された機能で...
+（数百行の詳細なドキュメント）
+```
+
+**理由**:
+- indexファイルは**目次・ナビゲーション**の役割
+- 詳細な内容は別ファイルに分けることで、管理しやすくなる
+- URLが `folder/` と `folder/article-name` で明確に区別される
+
+**ルール**:
+- indexファイルの本文は **200行以内** に収める
+- 詳細な技術ドキュメントは別ファイルとして作成
+- indexファイルには概要とリンク集のみを記載
+
 ## 📝 Frontmatter設定
 
 ### 基本構造
