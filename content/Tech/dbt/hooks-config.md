@@ -2,7 +2,7 @@
 title: "フック設定"
 date: 2026-02-17
 tags: ["dbt", "bigquery", "hooks", "automation"]
-categories: ["dbt完全ガイド"]
+categories: ["dbt"]
 draft: false
 weight: 90
 ---

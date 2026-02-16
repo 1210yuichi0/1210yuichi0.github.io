@@ -2,7 +2,7 @@
 title: "シード設定"
 date: 2026-02-17
 tags: ["dbt", "bigquery", "seeds", "csv"]
-categories: ["dbt完全ガイド"]
+categories: ["dbt"]
 draft: false
 weight: 80
 ---

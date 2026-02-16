@@ -2,12 +2,12 @@
 title: "テスト設定"
 date: 2026-02-17
 tags: ["dbt", "bigquery", "testing", "data-quality", "schema-tests"]
-categories: ["dbt完全ガイド"]
+categories: ["dbt"]
 draft: false
 weight: 40
 ---
 
-# カテゴリ4: テスト設定 - 完全検証レポート
+# カテゴリ4: テスト設定 - 検証レポート
 
 ## 検証概要
 

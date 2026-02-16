@@ -2,7 +2,7 @@
 title: "モデル設定"
 date: 2026-02-17
 tags: ["dbt", "bigquery", "materialization", "partitioning", "clustering"]
-categories: ["dbt完全ガイド"]
+categories: ["dbt"]
 draft: false
 weight: 30
 ---

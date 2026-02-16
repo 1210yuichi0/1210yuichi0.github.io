@@ -1,13 +1,13 @@
 ---
-title: "Unit Tests完全検証"
+title: "Unit Tests検証"
 date: 2026-02-17
 tags: ["dbt", "bigquery", "unit-tests", "testing", "quality"]
-categories: ["dbt完全ガイド"]
+categories: ["dbt"]
 draft: false
 weight: 42
 ---
 
-# dbt Unit Tests BigQuery 完全検証ガイド
+# dbt Unit Tests BigQuery 検証ガイド
 
 ## 検証概要
 

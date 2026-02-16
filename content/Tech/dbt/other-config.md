@@ -2,7 +2,7 @@
 title: "その他の設定"
 date: 2026-02-17
 tags: ["dbt", "bigquery", "vars", "packages", "macros"]
-categories: ["dbt完全ガイド"]
+categories: ["dbt"]
 draft: false
 weight: 100
 ---
