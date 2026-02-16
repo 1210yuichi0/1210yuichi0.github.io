@@ -726,8 +726,6 @@ table {
       }
 
       & > .tags {
-        position: relative;
-        z-index: 1;
         grid-column: 1 / -1;
         grid-row: 2;
         justify-content: flex-start;
@@ -741,6 +739,11 @@ table {
           grid-column: 1;
           padding-left: $mobile-padding;
           padding-right: $mobile-padding;
+        }
+
+        li a {
+          position: relative;
+          z-index: 1;
         }
       }
     }
