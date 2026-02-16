@@ -86,19 +86,20 @@ flowchart TD
 
 ### 1.2 認証方法の比較表
 
-| 認証方法 | セキュリティ | セットアップ難易度 | 推奨環境 | コスト | 更新頻度 |
-|---------|------------|----------------|---------|-------|---------|
-| OAuth - gcloud | ⭐⭐ | 簡単 | ローカル開発 | 無料 | 1時間ごと自動更新 |
-| OAuth - refresh token | ⭐⭐⭐ | 中 | CI/CD | 無料 | トークン期限まで有効 |
-| OAuth - temporary token | ⭐ | 簡単 | テスト用途のみ | 無料 | 短期間（数分） |
-| Service Account File | ⭐⭐⭐ | 中 | 本番（ファイル管理） | 無料 | 無期限（ローテーション推奨） |
-| Service Account JSON | ⭐⭐⭐⭐ | 中 | 本番（環境変数） | 無料 | 無期限（ローテーション推奨） |
+| 認証方法                | セキュリティ | セットアップ難易度 | 推奨環境             | コスト | 更新頻度                     |
+| ----------------------- | ------------ | ------------------ | -------------------- | ------ | ---------------------------- |
+| OAuth - gcloud          | ⭐⭐         | 簡単               | ローカル開発         | 無料   | 1時間ごと自動更新            |
+| OAuth - refresh token   | ⭐⭐⭐       | 中                 | CI/CD                | 無料   | トークン期限まで有効         |
+| OAuth - temporary token | ⭐           | 簡単               | テスト用途のみ       | 無料   | 短期間（数分）               |
+| Service Account File    | ⭐⭐⭐       | 中                 | 本番（ファイル管理） | 無料   | 無期限（ローテーション推奨） |
+| Service Account JSON    | ⭐⭐⭐⭐     | 中                 | 本番（環境変数）     | 無料   | 無期限（ローテーション推奨） |
 
 ---
 
 ### 1.3 認証方法1: OAuth - gcloud認証（ローカル開発）
 
 **特徴**:
+
 - `gcloud auth application-default login` で認証
 - 最も簡単にセットアップ可能
 - トークンは自動的に更新される（1時間ごと）
@@ -123,7 +124,7 @@ dbt:
   outputs:
     dev:
       type: bigquery
-      method: oauth  # OAuth認証を使用
+      method: oauth # OAuth認証を使用
       project: your-gcp-project-id
       dataset: dbt_dev
       location: asia-northeast1
@@ -137,12 +138,14 @@ dbt:
 ```
 
 **メリット**:
+
 - ✅ セットアップが非常に簡単
 - ✅ 認証情報の管理が不要（gcloudが自動管理）
 - ✅ トークンの自動更新
 - ✅ 個人のGoogleアカウントの権限をそのまま使用
 
 **デメリット**:
+
 - ❌ 本番環境では使用不可（個人アカウント依存）
 - ❌ CI/CDでは使いにくい
 - ❌ チーム開発時の権限管理が煩雑
@@ -154,6 +157,7 @@ dbt:
 ### 1.4 認証方法2: OAuth - refresh token（CI/CD）
 
 **特徴**:
+
 - `gcloud auth application-default login` 後に生成されるrefresh tokenを使用
 - CI/CDでも利用可能
 - トークンは環境変数やSecretsで管理
@@ -180,7 +184,7 @@ dbt:
   outputs:
     ci:
       type: bigquery
-      method: oauth-secrets  # refresh token方式
+      method: oauth-secrets # refresh token方式
       project: your-gcp-project-id
       dataset: dbt_ci
       location: asia-northeast1
@@ -206,11 +210,13 @@ env:
 ```
 
 **メリット**:
+
 - ✅ CI/CDで利用可能
 - ✅ 長期間有効（refresh tokenは期限が長い）
 - ✅ ユーザー権限をそのまま使用
 
 **デメリット**:
+
 - ❌ tokenの管理が必要
 - ❌ 本番環境では非推奨（個人アカウント依存）
 - ❌ tokenの漏洩リスク
@@ -222,6 +228,7 @@ env:
 ### 1.5 認証方法3: OAuth - temporary token（非推奨）
 
 **特徴**:
+
 - 一時的なアクセストークンを使用
 - 短期間のテスト用途のみ
 
@@ -235,15 +242,17 @@ dbt:
       method: oauth
       project: your-gcp-project-id
       dataset: dbt_temp
-      token: "ya29.xxxxxxxxxxxxxxxxxxxxx"  # 一時トークン
+      token: "ya29.xxxxxxxxxxxxxxxxxxxxx" # 一時トークン
 
   target: temp
 ```
 
 **メリット**:
+
 - ✅ すぐに試せる
 
 **デメリット**:
+
 - ❌ トークンの有効期限が非常に短い（数分〜1時間）
 - ❌ 自動更新されない
 - ❌ 本番・開発どちらも非推奨
@@ -255,6 +264,7 @@ dbt:
 ### 1.6 認証方法4: Service Account - JSONファイル（本番環境）
 
 **特徴**:
+
 - サービスアカウントのJSONキーファイルを使用
 - ファイルシステム上に配置
 - 最も一般的な本番環境での認証方法
@@ -284,12 +294,12 @@ dbt:
   outputs:
     prod:
       type: bigquery
-      method: service-account  # サービスアカウント認証
+      method: service-account # サービスアカウント認証
       project: your-gcp-project-id
       dataset: dbt_prod
       location: asia-northeast1
       threads: 16
-      priority: batch  # 本番はbatchを推奨
+      priority: batch # 本番はbatchを推奨
 
       # サービスアカウントJSONファイルのパス
       keyfile: /path/to/secure/location/your-sa-key.json
@@ -299,18 +309,20 @@ dbt:
       job_retries: 1
 
       # コスト制御
-      maximum_bytes_billed: 1099511627776  # 1TB
+      maximum_bytes_billed: 1099511627776 # 1TB
 
   target: prod
 ```
 
 **メリット**:
+
 - ✅ 本番環境で推奨
 - ✅ 個人アカウントに依存しない
 - ✅ 権限の細かい制御が可能
 - ✅ 監査ログで追跡可能
 
 **デメリット**:
+
 - ❌ ファイルの管理が必要
 - ❌ キーファイルの漏洩リスク
 - ❌ ローテーションの手動実施
@@ -322,6 +334,7 @@ dbt:
 ### 1.7 認証方法5: Service Account - JSON文字列（推奨）
 
 **特徴**:
+
 - サービスアカウントのJSONをそのまま環境変数に設定
 - ファイルシステム不要
 - 最も安全な本番環境での認証方法
@@ -345,7 +358,7 @@ dbt:
   outputs:
     prod:
       type: bigquery
-      method: service-account-json  # JSON文字列を使用
+      method: service-account-json # JSON文字列を使用
       project: your-gcp-project-id
       dataset: dbt_prod
       location: asia-northeast1
@@ -370,7 +383,7 @@ name: dbt production run
 
 on:
   schedule:
-    - cron: '0 1 * * *'  # 毎日午前1時（UTC）
+    - cron: "0 1 * * *" # 毎日午前1時（UTC）
 
 jobs:
   dbt-run:
@@ -381,7 +394,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.12'
+          python-version: "3.12"
 
       - name: Install dbt
         run: pip install dbt-bigquery
@@ -395,12 +408,14 @@ jobs:
 ```
 
 **メリット**:
+
 - ✅ ファイルシステム不要（コンテナ環境に最適）
 - ✅ CI/CDで最も推奨される方法
 - ✅ Secretsで管理しやすい
 - ✅ Workload Identity Federationとの組み合わせで更に安全
 
 **デメリット**:
+
 - ❌ YAMLに直接書くと漏洩リスク（必ず環境変数経由で使用）
 
 **推奨用途**: 本番環境（特にCI/CD、コンテナ環境）
@@ -445,21 +460,25 @@ graph TB
 **説明**: データウェアハウスの種類を指定
 
 **設定値**:
+
 ```yaml
-type: bigquery  # BigQueryの場合、必ず "bigquery"
+type: bigquery # BigQueryの場合、必ず "bigquery"
 ```
 
 **検証結果**:
+
 - ✅ `bigquery` 以外を指定すると、dbtはBigQuery以外のアダプタを探す
 - ✅ dbt-bigqueryがインストールされていない場合はエラー
 
 **エラー例**:
+
 ```
 Runtime Error
   Could not find adapter type 'bigquery'!
 ```
 
 **ベストプラクティス**:
+
 - 常に `bigquery` を指定
 - コピペミスに注意（`big_query` や `BigQuery` は不可）
 
@@ -470,6 +489,7 @@ Runtime Error
 **説明**: 認証方法を指定
 
 **設定値**:
+
 ```yaml
 method: oauth                   # OAuth - gcloud
 method: oauth-secrets          # OAuth - refresh token
@@ -478,17 +498,20 @@ method: service-account-json   # Service Account - JSON
 ```
 
 **検証結果**:
+
 - ✅ `oauth`: `gcloud auth application-default login` が実行済みであること
 - ✅ `service-account`: `keyfile` パラメータが必須
 - ✅ `service-account-json`: `keyfile_json` パラメータが必須
 
 **エラー例（methodとパラメータの不一致）**:
+
 ```
 Runtime Error
   Service account authentication requires 'keyfile' or 'keyfile_json'
 ```
 
 **ベストプラクティス**:
+
 - ローカル開発: `oauth`
 - CI/CD・本番: `service-account-json`
 
@@ -499,16 +522,19 @@ Runtime Error
 **説明**: BigQueryプロジェクトID
 
 **設定値**:
+
 ```yaml
-project: your-gcp-project-id  # GCPプロジェクトID
+project: your-gcp-project-id # GCPプロジェクトID
 ```
 
 **検証結果**:
+
 - ✅ プロジェクトIDは、GCPコンソールのプロジェクト選択画面で確認可能
 - ✅ プロジェクト名（表示名）ではなく、プロジェクトID（一意の識別子）を使用
 - ✅ 環境変数での動的設定も可能: `"{{ env_var('GCP_PROJECT_ID') }}"`
 
 **よくある間違い**:
+
 ```yaml
 # ❌ プロジェクト名を使用（これは間違い）
 project: My Project
@@ -518,6 +544,7 @@ project: my-project-12345
 ```
 
 **ベストプラクティス**:
+
 - 環境変数で管理すると、環境ごとの切り替えが簡単
 - profiles.ymlに直接書く場合は、Gitにコミットしないよう注意（`.gitignore`に追加）
 
@@ -530,30 +557,34 @@ project: my-project-12345
 **説明**: BigQueryのデータセット名（dbtの用語では "schema"）
 
 **設定値**:
+
 ```yaml
-schema: dbt_dev       # または dataset: dbt_dev（どちらも可）
-dataset: dbt_prod     # schemaのエイリアス
+schema: dbt_dev # または dataset: dbt_dev（どちらも可）
+dataset: dbt_prod # schemaのエイリアス
 ```
 
 **検証結果**:
+
 - ✅ `schema` と `dataset` は同じ意味（どちらを使っても良い）
 - ✅ データセットが存在しない場合、dbtが自動作成する（権限があれば）
 - ✅ モデルごとに異なるschemaを使用可能（`{{ target.schema }}_staging` など）
 
 **ベストプラクティス**:
+
 ```yaml
 # 環境別にデータセットを分ける
 dbt:
   outputs:
     dev:
-      dataset: dbt_dev        # 開発環境
+      dataset: dbt_dev # 開発環境
     staging:
-      dataset: dbt_staging    # ステージング環境
+      dataset: dbt_staging # ステージング環境
     prod:
-      dataset: dbt_prod       # 本番環境
+      dataset: dbt_prod # 本番環境
 ```
 
 **権限エラー例**:
+
 ```
 Access Denied: BigQuery BigQuery: User does not have permission to create dataset
 ```
@@ -567,6 +598,7 @@ Access Denied: BigQuery BigQuery: User does not have permission to create datase
 **説明**: BigQueryのデータロケーション（リージョン/マルチリージョン）
 
 **設定値**:
+
 ```yaml
 location: asia-northeast1   # 東京リージョン
 location: US                # 米国マルチリージョン
@@ -574,26 +606,29 @@ location: EU                # 欧州マルチリージョン
 ```
 
 **検証結果**:
+
 - ✅ データセットのロケーションと一致している必要がある
 - ✅ 既存データセットのロケーションは変更不可
 - ✅ ロケーションが一致しないとクエリが失敗する
 
 **エラー例（ロケーション不一致）**:
+
 ```
 Location mismatch: BigQuery dataset 'dbt_prod' is in 'US' but query is in 'asia-northeast1'
 ```
 
 **主要なロケーション**:
 
-| ロケーション | 説明 | ユースケース |
-|------------|------|------------|
-| `US` | 米国マルチリージョン | グローバルアプリ |
-| `EU` | 欧州マルチリージョン | GDPR対応 |
-| `asia-northeast1` | 東京リージョン | 日本向けサービス |
-| `asia-northeast2` | 大阪リージョン | DR構成 |
-| `us-central1` | アイオワ | 低コスト |
+| ロケーション      | 説明                 | ユースケース     |
+| ----------------- | -------------------- | ---------------- |
+| `US`              | 米国マルチリージョン | グローバルアプリ |
+| `EU`              | 欧州マルチリージョン | GDPR対応         |
+| `asia-northeast1` | 東京リージョン       | 日本向けサービス |
+| `asia-northeast2` | 大阪リージョン       | DR構成           |
+| `us-central1`     | アイオワ             | 低コスト         |
 
 **ベストプラクティス**:
+
 - 日本のユーザー向けサービス: `asia-northeast1`
 - コスト重視: `US`（ストレージ料金が安い）
 - データ主権: 該当地域のリージョン
@@ -605,6 +640,7 @@ Location mismatch: BigQuery dataset 'dbt_prod' is in 'US' but query is in 'asia-
 **説明**: dbtが並列実行する最大スレッド数
 
 **設定値**:
+
 ```yaml
 threads: 4    # ローカル開発
 threads: 8    # CI/CD
@@ -614,33 +650,36 @@ threads: 32   # 大規模プロジェクト
 
 **検証結果**:
 
-| threads | 実行時間（100モデル） | BigQueryの同時クエリ数 | 推奨環境 |
-|---------|-------------------|---------------------|---------|
-| 1 | 100分 | 1 | デバッグ時のみ |
-| 4 | 25分 | 最大4 | ローカル開発 |
-| 8 | 12.5分 | 最大8 | CI/CD |
-| 16 | 6.25分 | 最大16 | 本番環境 |
-| 32 | 3.125分 | 最大32 | 大規模プロジェクト |
+| threads | 実行時間（100モデル） | BigQueryの同時クエリ数 | 推奨環境           |
+| ------- | --------------------- | ---------------------- | ------------------ |
+| 1       | 100分                 | 1                      | デバッグ時のみ     |
+| 4       | 25分                  | 最大4                  | ローカル開発       |
+| 8       | 12.5分                | 最大8                  | CI/CD              |
+| 16      | 6.25分                | 最大16                 | 本番環境           |
+| 32      | 3.125分               | 最大32                 | 大規模プロジェクト |
 
 **BigQueryの制限**:
+
 - 同時クエリ数の上限: プロジェクトあたり100（デフォルト）
 - インタラクティブクエリ: 100
 - バッチクエリ: 無制限（ただしスロット制限あり）
 
 **ベストプラクティス**:
+
 ```yaml
 # 環境別の推奨値
 dbt:
   outputs:
     dev:
-      threads: 4    # ローカル開発（マシンスペックに応じて）
+      threads: 4 # ローカル開発（マシンスペックに応じて）
     ci:
-      threads: 8    # CI/CD（GitHub Actionsなど）
+      threads: 8 # CI/CD（GitHub Actionsなど）
     prod:
-      threads: 16   # 本番（高速実行）
+      threads: 16 # 本番（高速実行）
 ```
 
 **注意点**:
+
 - threadsを増やしすぎると、BigQueryの同時クエリ上限に到達
 - ローカルマシンのCPUコア数以上に設定しても効果は薄い
 - エラー発生時はthreads=1にするとデバッグしやすい
@@ -652,6 +691,7 @@ dbt:
 **説明**: BigQueryクエリの優先度
 
 **設定値**:
+
 ```yaml
 priority: interactive   # インタラクティブクエリ（高優先度）
 priority: batch        # バッチクエリ（低優先度）
@@ -659,12 +699,13 @@ priority: batch        # バッチクエリ（低優先度）
 
 **検証結果**:
 
-| priority | 実行優先度 | スロット予約 | キュー待ち | コスト | 推奨用途 |
-|----------|----------|------------|----------|-------|---------|
-| `interactive` | 高 | あり | 短い | 同じ | 開発・即座の結果が必要 |
-| `batch` | 低 | なし | 長い可能性 | 同じ | 本番・夜間バッチ |
+| priority      | 実行優先度 | スロット予約 | キュー待ち | コスト | 推奨用途               |
+| ------------- | ---------- | ------------ | ---------- | ------ | ---------------------- |
+| `interactive` | 高         | あり         | 短い       | 同じ   | 開発・即座の結果が必要 |
+| `batch`       | 低         | なし         | 長い可能性 | 同じ   | 本番・夜間バッチ       |
 
 **BigQueryでの挙動**:
+
 - **interactive**: すぐに実行されるが、スロットが埋まっていると失敗する可能性
 - **batch**: キューに入り、スロットが空くまで待つ（最大24時間）
 
@@ -682,18 +723,20 @@ dbt run --target prod
 ```
 
 **ベストプラクティス**:
+
 ```yaml
 dbt:
   outputs:
     dev:
-      priority: interactive   # 開発環境（すぐに結果が必要）
+      priority: interactive # 開発環境（すぐに結果が必要）
     ci:
-      priority: interactive   # CI/CD（PRのフィードバックを早く）
+      priority: interactive # CI/CD（PRのフィードバックを早く）
     prod:
-      priority: batch        # 本番（夜間バッチ、コスト優先）
+      priority: batch # 本番（夜間バッチ、コスト優先）
 ```
 
 **注意点**:
+
 - コスト的な差はない（On-Demand価格は同じ）
 - Flat-Rate（定額課金）の場合、batchはスロットの空きを利用するため効率的
 
@@ -706,6 +749,7 @@ dbt:
 **説明**: クエリの最大実行時間（秒）
 
 **設定値**:
+
 ```yaml
 job_execution_timeout_seconds: 300    # 5分（デフォルト）
 job_execution_timeout_seconds: 1800   # 30分
@@ -715,31 +759,34 @@ job_execution_timeout_seconds: 21600  # 6時間（BigQueryの最大値）
 
 **検証結果**:
 
-| タイムアウト値 | 推奨用途 | リスク |
-|-------------|---------|-------|
-| 300秒（5分） | ローカル開発、小規模モデル | 長時間クエリが失敗 |
-| 1800秒（30分） | 中規模モデル | バランスが良い |
-| 3600秒（1時間） | 大規模モデル、増分処理 | 問題検出が遅れる |
-| 21600秒（6時間） | 超大規模バッチ | 非推奨（早期発見すべき） |
+| タイムアウト値   | 推奨用途                   | リスク                   |
+| ---------------- | -------------------------- | ------------------------ |
+| 300秒（5分）     | ローカル開発、小規模モデル | 長時間クエリが失敗       |
+| 1800秒（30分）   | 中規模モデル               | バランスが良い           |
+| 3600秒（1時間）  | 大規模モデル、増分処理     | 問題検出が遅れる         |
+| 21600秒（6時間） | 超大規模バッチ             | 非推奨（早期発見すべき） |
 
 **タイムアウト時のエラー**:
+
 ```
 Runtime Error
   BigQuery job <job_id> exceeded maximum execution time
 ```
 
 **ベストプラクティス**:
+
 ```yaml
 # 環境別の推奨設定
 dbt:
   outputs:
     dev:
-      job_execution_timeout_seconds: 600    # 10分（開発時は早めに失敗）
+      job_execution_timeout_seconds: 600 # 10分（開発時は早めに失敗）
     prod:
-      job_execution_timeout_seconds: 3600   # 1時間（本番は余裕を持たせる）
+      job_execution_timeout_seconds: 3600 # 1時間（本番は余裕を持たせる）
 ```
 
 **注意点**:
+
 - タイムアウト後もBigQueryではクエリが実行中の場合がある（キャンセルされない）
 - コストに注意（長時間実行 = 高コスト）
 
@@ -750,6 +797,7 @@ dbt:
 **説明**: ジョブ失敗時の自動リトライ回数
 
 **設定値**:
+
 ```yaml
 job_retries: 0   # リトライなし
 job_retries: 1   # 1回リトライ（推奨）
@@ -761,11 +809,13 @@ job_retries: 3   # 3回リトライ（最大推奨値）
 一時的なエラー（ネットワーク障害、BigQueryの内部エラー）が発生した場合、自動的にリトライします。
 
 **リトライ対象のエラー例**:
+
 - `500 Internal Server Error`
 - `503 Service Unavailable`
 - `Exceeded rate limits`（レート制限）
 
 **リトライしないエラー例**:
+
 - SQL構文エラー
 - 権限エラー
 - データセットが存在しないエラー
@@ -782,11 +832,13 @@ job_retries: 3   # 3回リトライ（最大推奨値）
 ```
 
 **ベストプラクティス**:
+
 ```yaml
-job_retries: 1   # 本番環境では必ず設定（一時的なエラーを吸収）
+job_retries: 1 # 本番環境では必ず設定（一時的なエラーを吸収）
 ```
 
 **注意点**:
+
 - リトライ回数が多すぎると、問題の発見が遅れる
 - リトライ間隔は指数バックオフ（1秒、2秒、4秒...）
 
@@ -797,11 +849,13 @@ job_retries: 1   # 本番環境では必ず設定（一時的なエラーを吸�
 **説明**: ジョブ作成時のタイムアウト（ジョブがBigQueryで受け付けられるまでの時間）
 
 **設定値**:
+
 ```yaml
-job_creation_timeout_seconds: 120   # デフォルト（2分）
+job_creation_timeout_seconds: 120 # デフォルト（2分）
 ```
 
 **検証結果**:
+
 - ✅ BigQueryが混雑している場合、ジョブの作成自体に時間がかかることがある
 - ✅ 通常は変更不要（デフォルトで十分）
 
@@ -814,16 +868,19 @@ job_creation_timeout_seconds: 120   # デフォルト（2分）
 **説明**: クエリを実行するプロジェクト（課金先プロジェクト）
 
 **設定値**:
+
 ```yaml
-project: data-warehouse-project      # データが存在するプロジェクト
-execution_project: billing-project   # 課金先プロジェクト
+project: data-warehouse-project # データが存在するプロジェクト
+execution_project: billing-project # 課金先プロジェクト
 ```
 
 **検証結果**:
+
 - ✅ データセットが存在するプロジェクトと、課金先プロジェクトを分けられる
 - ✅ クロスプロジェクトクエリの課金を制御できる
 
 **ユースケース**:
+
 ```mermaid
 flowchart LR
     User[dbt実行者] -->|クエリ実行| ExecProj[execution_project<br/>billing-project<br/>💰 課金先]
@@ -836,6 +893,7 @@ flowchart LR
 ```
 
 **ベストプラクティス**:
+
 - 通常は設定不要（`project` と同じプロジェクトで課金）
 - 大企業で課金管理を分ける場合のみ使用
 
@@ -848,6 +906,7 @@ flowchart LR
 **説明**: クエリごとの最大スキャンバイト数（コスト上限）
 
 **設定値**:
+
 ```yaml
 maximum_bytes_billed: 1000000000      # 1GB
 maximum_bytes_billed: 1099511627776   # 1TB（推奨）
@@ -856,15 +915,16 @@ maximum_bytes_billed: 10995116277760  # 10TB（大規模）
 
 **検証結果**:
 
-| 設定値 | スキャン上限 | On-Demand料金上限（$6.25/TB） | 推奨用途 |
-|-------|------------|-------------------------|---------|
-| 1GB | 1GB | $0.006 | テスト環境 |
-| 10GB | 10GB | $0.06 | 開発環境 |
-| 100GB | 100GB | $0.625 | 小規模本番 |
-| 1TB | 1TB | $6.25 | 中規模本番 |
-| 10TB | 10TB | $62.5 | 大規模本番 |
+| 設定値 | スキャン上限 | On-Demand料金上限（$6.25/TB） | 推奨用途   |
+| ------ | ------------ | ----------------------------- | ---------- |
+| 1GB    | 1GB          | $0.006                        | テスト環境 |
+| 10GB   | 10GB         | $0.06                         | 開発環境   |
+| 100GB  | 100GB        | $0.625                        | 小規模本番 |
+| 1TB    | 1TB          | $6.25                         | 中規模本番 |
+| 10TB   | 10TB         | $62.5                         | 大規模本番 |
 
 **上限を超えた場合のエラー**:
+
 ```
 Query exceeded limit for bytes billed: 1000000000. 5000000000 or higher required.
 ```
@@ -876,7 +936,7 @@ Query exceeded limit for bytes billed: 1000000000. 5000000000 or higher required
 dbt:
   outputs:
     dev:
-      maximum_bytes_billed: 10737418240  # 10GB上限
+      maximum_bytes_billed: 10737418240 # 10GB上限
 ```
 
 ```bash
@@ -889,17 +949,19 @@ dbt run --select large_fact_table
 ```
 
 **ベストプラクティス**:
+
 ```yaml
 dbt:
   outputs:
     dev:
-      maximum_bytes_billed: 107374182400   # 100GB（開発環境）
+      maximum_bytes_billed: 107374182400 # 100GB（開発環境）
     prod:
-      maximum_bytes_billed: 1099511627776  # 1TB（本番環境）
+      maximum_bytes_billed: 1099511627776 # 1TB（本番環境）
       # または設定しない（上限なし）
 ```
 
 **注意点**:
+
 - パーティション・クラスタリングされたテーブルはスキャン量が少ない
 - `SELECT *` は避け、必要な列のみ選択
 - 開発環境では厳しめに設定し、コスト意識を高める
@@ -911,8 +973,9 @@ dbt:
 **説明**: `maximum_bytes_billed` の旧バージョン（GB単位）
 
 **設定値**:
+
 ```yaml
-maximum_gb_billed: 100   # 非推奨（maximum_bytes_billedを使用）
+maximum_gb_billed: 100 # 非推奨（maximum_bytes_billedを使用）
 ```
 
 **ベストプラクティス**: 使用しない（`maximum_bytes_billed` を使用）
@@ -926,8 +989,9 @@ maximum_gb_billed: 100   # 非推奨（maximum_bytes_billedを使用）
 **説明**: サービスアカウントのなりすまし（権限の委譲）
 
 **設定値**:
+
 ```yaml
-method: oauth   # 個人アカウントで認証
+method: oauth # 個人アカウントで認証
 impersonate_service_account: dbt-runner@your-project.iam.gserviceaccount.com
 ```
 
@@ -943,11 +1007,13 @@ flowchart LR
 ```
 
 **メリット**:
+
 - ✅ 開発者は個人アカウントで認証（OAuth）
 - ✅ BigQueryへのアクセスはサービスアカウントの権限を使用
 - ✅ 監査ログで実行者を追跡可能
 
 **必要な権限**:
+
 ```bash
 # 開発者に付与する権限
 gcloud iam service-accounts add-iam-policy-binding \
@@ -957,6 +1023,7 @@ gcloud iam service-accounts add-iam-policy-binding \
 ```
 
 **ベストプラクティス**:
+
 - チーム開発で権限を統一したい場合に使用
 - 本番環境では使用せず、直接サービスアカウント認証を推奨
 
@@ -967,15 +1034,18 @@ gcloud iam service-accounts add-iam-policy-binding \
 **説明**: Python/Dataprocモデル実行時のGCSバケット
 
 **設定値**:
+
 ```yaml
 gcs_bucket: dbt-python-temp-bucket
 ```
 
 **ユースケース**:
+
 - dbtのPythonモデル実行時に使用
 - DataprocでのPySpark実行に必要
 
 **ベストプラクティス**:
+
 - Pythonモデルを使用しない場合は設定不要
 
 ---
@@ -985,6 +1055,7 @@ gcs_bucket: dbt-python-temp-bucket
 **説明**: Dataproc（Sparkクラスタ）の設定
 
 **設定値**:
+
 ```yaml
 # Dataproc クラスタを使用する場合
 dataproc_region: asia-northeast1
@@ -997,6 +1068,7 @@ dataproc_batch:
 ```
 
 **ベストプラクティス**:
+
 - Pythonモデルを使用しない場合は設定不要
 
 ---
@@ -1006,6 +1078,7 @@ dataproc_batch:
 **説明**: OAuth認証時のスコープ
 
 **設定値**:
+
 ```yaml
 scopes:
   - https://www.googleapis.com/auth/bigquery
@@ -1049,13 +1122,13 @@ dbt:
       type: bigquery
       method: oauth
       project: your-gcp-project-id
-      dataset: dbt_dev_{{ env_var('USER') }}  # ユーザー名を含める
+      dataset: dbt_dev_{{ env_var('USER') }} # ユーザー名を含める
       location: asia-northeast1
       threads: 4
       priority: interactive
       job_execution_timeout_seconds: 600
-      job_retries: 0  # 開発時はエラーをすぐに確認
-      maximum_bytes_billed: 107374182400  # 100GB上限
+      job_retries: 0 # 開発時はエラーをすぐに確認
+      maximum_bytes_billed: 107374182400 # 100GB上限
 
   target: dev
 ```
@@ -1072,7 +1145,7 @@ dbt:
       dataset: dbt_ci
       location: asia-northeast1
       threads: 8
-      priority: interactive  # PRのフィードバックを早く
+      priority: interactive # PRのフィードバックを早く
       job_execution_timeout_seconds: 1800
       job_retries: 1
       keyfile_json: "{{ env_var('DBT_BIGQUERY_KEYFILE_JSON') }}"
@@ -1092,10 +1165,10 @@ dbt:
       dataset: dbt_prod
       location: asia-northeast1
       threads: 16
-      priority: batch  # 夜間バッチ実行
+      priority: batch # 夜間バッチ実行
       job_execution_timeout_seconds: 3600
       job_retries: 1
-      maximum_bytes_billed: 1099511627776  # 1TB上限
+      maximum_bytes_billed: 1099511627776 # 1TB上限
       keyfile_json: "{{ env_var('DBT_BIGQUERY_KEYFILE_JSON') }}"
 
   target: prod
@@ -1166,6 +1239,7 @@ done
 ```
 
 **推奨値**:
+
 - モデル数 < 50: `threads: 4`
 - モデル数 50-100: `threads: 8`
 - モデル数 100-500: `threads: 16`
@@ -1180,6 +1254,7 @@ done
 #### エラー1: OAuth認証失敗
 
 **エラーメッセージ**:
+
 ```
 Runtime Error
   Could not find Application Default Credentials
@@ -1188,6 +1263,7 @@ Runtime Error
 **原因**: `gcloud auth application-default login` が実行されていない
 
 **解決策**:
+
 ```bash
 gcloud auth application-default login
 ```
@@ -1197,6 +1273,7 @@ gcloud auth application-default login
 #### エラー2: サービスアカウント認証失敗
 
 **エラーメッセージ**:
+
 ```
 Runtime Error
   Service account authentication requires 'keyfile' or 'keyfile_json'
@@ -1205,6 +1282,7 @@ Runtime Error
 **原因**: `method: service-account` なのに `keyfile` が指定されていない
 
 **解決策**:
+
 ```yaml
 # profiles.yml
 method: service-account
@@ -1216,6 +1294,7 @@ keyfile: /path/to/your-sa-key.json
 #### エラー3: 権限不足
 
 **エラーメッセージ**:
+
 ```
 Access Denied: BigQuery BigQuery: User does not have bigquery.tables.create permission
 ```
@@ -1223,6 +1302,7 @@ Access Denied: BigQuery BigQuery: User does not have bigquery.tables.create perm
 **原因**: サービスアカウントに必要な権限がない
 
 **解決策**:
+
 ```bash
 # 必要な権限を付与
 gcloud projects add-iam-policy-binding your-gcp-project-id \
@@ -1239,6 +1319,7 @@ gcloud projects add-iam-policy-binding your-gcp-project-id \
 ### 8.2 ロケーションエラー
 
 **エラーメッセージ**:
+
 ```
 Location mismatch: dataset is in 'US' but query is in 'asia-northeast1'
 ```
@@ -1246,7 +1327,7 @@ Location mismatch: dataset is in 'US' but query is in 'asia-northeast1'
 **解決策1**: profiles.ymlのlocationを修正
 
 ```yaml
-location: US  # データセットのロケーションに合わせる
+location: US # データセットのロケーションに合わせる
 ```
 
 **解決策2**: データセットを再作成（ロケーションを変更）
@@ -1264,6 +1345,7 @@ bq mk --location=asia-northeast1 your-gcp-project-id:dbt_dev
 ### 8.3 タイムアウトエラー
 
 **エラーメッセージ**:
+
 ```
 Runtime Error
   BigQuery job exceeded maximum execution time
@@ -1272,7 +1354,7 @@ Runtime Error
 **解決策1**: タイムアウト時間を延長
 
 ```yaml
-job_execution_timeout_seconds: 7200  # 2時間
+job_execution_timeout_seconds: 7200 # 2時間
 ```
 
 **解決策2**: クエリを最適化
@@ -1292,6 +1374,7 @@ WHERE partition_date >= '2024-01-01'  -- パーティションフィルタ
 ### 8.4 コスト上限エラー
 
 **エラーメッセージ**:
+
 ```
 Query exceeded limit for bytes billed: 10737418240
 ```
@@ -1299,7 +1382,7 @@ Query exceeded limit for bytes billed: 10737418240
 **解決策1**: 上限を引き上げる
 
 ```yaml
-maximum_bytes_billed: 107374182400  # 100GB
+maximum_bytes_billed: 107374182400 # 100GB
 ```
 
 **解決策2**: クエリを最適化（パーティション・クラスタリング）
@@ -1334,7 +1417,7 @@ dbt:
       job_creation_timeout_seconds: 120
 
       # コスト制御
-      maximum_bytes_billed: 1099511627776  # 1TB
+      maximum_bytes_billed: 1099511627776 # 1TB
 
       # 高度な設定
       impersonate_service_account: "dbt-runner@project.iam.gserviceaccount.com"
@@ -1378,7 +1461,7 @@ dbt:
       threads: 4
       priority: interactive
       job_execution_timeout_seconds: 600
-      maximum_bytes_billed: 107374182400  # 100GB
+      maximum_bytes_billed: 107374182400 # 100GB
 
     # CI/CD
     ci:
@@ -1404,7 +1487,7 @@ dbt:
       priority: batch
       job_execution_timeout_seconds: 3600
       job_retries: 1
-      maximum_bytes_billed: 1099511627776  # 1TB
+      maximum_bytes_billed: 1099511627776 # 1TB
       keyfile_json: "{{ env_var('DBT_BIGQUERY_KEYFILE_JSON') }}"
 
   target: dev
@@ -1465,7 +1548,6 @@ flowchart TB
 5. **エラーハンドリング**:
    - `job_retries: 1` で一時的なエラーを吸収
    - `job_execution_timeout_seconds: 3600` で適切なタイムアウト
-
 
 **検証日**: 2026-02-17
 **作成者**: dbt検証プロジェクト
