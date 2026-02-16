@@ -438,4 +438,4 @@ pre-commit フックを使った禁止ワードチェックは、シンプルな
 **関連記事:**
 
 - [[CONTRIBUTING|コンテンツ作成ガイドライン]]
-- [[tech/setup-guide|Scrap Notes 構築手順]]
+- [[Tech/setup-guide|Scrap Notes 構築手順]]

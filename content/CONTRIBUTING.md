@@ -118,7 +118,7 @@ content/
 **内部リンク** (Obsidian形式):
 
 ```markdown
-[[tech/git-memo|Gitメモ]]
+[[Tech/git-memo|Gitメモ]]
 ```
 
 **外部リンク**:
