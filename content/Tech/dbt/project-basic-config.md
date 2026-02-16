@@ -1,5 +1,5 @@
 ---
-title: "dbt + BigQuery #01: プロジェクト基本設定"
+title: "dbt + BigQuery: プロジェクト基本設定"
 date: 2026-02-17
 tags: ["dbt", "bigquery", "dbt_project.yml", "configuration"]
 categories: ["dbt完全ガイド"]
@@ -7,7 +7,7 @@ draft: false
 weight: 10
 ---
 
-# Category 1: dbt プロジェクト基本設定 完全ガイド
+# dbt プロジェクト基本設定 完全ガイド
 
 ## 検証概要
 

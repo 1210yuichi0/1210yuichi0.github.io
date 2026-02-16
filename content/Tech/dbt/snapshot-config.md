@@ -1,5 +1,5 @@
 ---
-title: "dbt + BigQuery #07: スナップショット設定"
+title: "dbt + BigQuery: スナップショット設定"
 date: 2026-02-17
 tags: ["dbt", "bigquery", "snapshots", "scd-type-2"]
 categories: ["dbt完全ガイド"]
@@ -7,7 +7,7 @@ draft: false
 weight: 70
 ---
 
-# Category 7: スナップショット設定の検証レポート
+# スナップショット設定の検証レポート
 
 ## 目次
 - [概要](#概要)

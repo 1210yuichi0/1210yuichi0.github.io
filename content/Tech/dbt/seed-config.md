@@ -1,5 +1,5 @@
 ---
-title: "dbt + BigQuery #08: シード設定"
+title: "dbt + BigQuery: シード設定"
 date: 2026-02-17
 tags: ["dbt", "bigquery", "seeds", "csv"]
 categories: ["dbt完全ガイド"]
@@ -7,7 +7,7 @@ draft: false
 weight: 80
 ---
 
-# Category 8: シード設定の検証レポート
+# シード設定の検証レポート
 
 ## 目次
 - [概要](#概要)

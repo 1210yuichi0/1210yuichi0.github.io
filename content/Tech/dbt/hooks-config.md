@@ -1,5 +1,5 @@
 ---
-title: "dbt + BigQuery #09: フック設定"
+title: "dbt + BigQuery: フック設定"
 date: 2026-02-17
 tags: ["dbt", "bigquery", "hooks", "automation"]
 categories: ["dbt完全ガイド"]
@@ -7,7 +7,7 @@ draft: false
 weight: 90
 ---
 
-# Category 9: フック設定の検証レポート
+# フック設定の検証レポート
 
 ## 目次
 - [概要](#概要)
