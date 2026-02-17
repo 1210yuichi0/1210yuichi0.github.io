@@ -16,10 +16,10 @@ authorship:
 
 ## 検証概要
 
-**検証日時**: 2026-02-17
-**dbtバージョン**: 1.11.5
-**dbt-bigqueryバージョン**: 1.11.0
-**検証環境**: macOS (Darwin 24.6.0)
+**検証日時**: 2026-02-17  
+**dbtバージョン**: 1.11.5  
+**dbt-bigqueryバージョン**: 1.11.0  
+**検証環境**: macOS (Darwin 24.6.0)  
 **対象設定**: dbt docs、descriptions、meta、exposures、doc blocks
 
 ### 検証目的

@@ -18,10 +18,10 @@ authorship:
 
 ## 検証概要
 
-**検証日時**: 2026-02-17
-**dbtバージョン**: 1.11.5
-**dbt-bigqueryバージョン**: 1.11.0
-**BigQueryプロジェクト**: sdp-sb-yada-29d2
+**検証日時**: 2026-02-17  
+**dbtバージョン**: 1.11.5  
+**dbt-bigqueryバージョン**: 1.11.0  
+**BigQueryプロジェクト**: sdp-sb-yada-29d2  
 **参照**: [GCP公式ドキュメント](https://cloud.google.com/bigquery/docs/partitioned-tables)
 
 ### 実測検証結果

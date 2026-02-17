@@ -16,19 +16,19 @@ authorship:
 
 ## 検証概要
 
-**検証日時**: 2026-02-17 22:30-22:35 JST
-**dbtバージョン**: 1.11.5
-**dbt-bigqueryバージョン**: 1.11.0
-**BigQueryプロジェクト**: sdp-sb-yada-29d2
-**データセット**: dbt_sandbox
-**リージョン**: asia-northeast1
+**検証日時**: 2026-02-17 22:30-22:35 JST  
+**dbtバージョン**: 1.11.5  
+**dbt-bigqueryバージョン**: 1.11.0  
+**BigQueryプロジェクト**: sdp-sb-yada-29d2  
+**データセット**: dbt_sandbox  
+**リージョン**: asia-northeast1  
 **参照元**: [公式ドキュメント](https://docs.getdbt.com/reference/resource-configs/contract)
 
 ### 実測検証結果
 
-✅ **Contract正常動作**: 5行、4.01秒
-❌ **Contract違反エラー**: Compilation Error（BigQuery実行前に検出）
-✅ **unit test + Contract**: PASS、4.18秒
+✅ **Contract正常動作**: 5行、4.01秒  
+❌ **Contract違反エラー**: Compilation Error（BigQuery実行前に検出）  
+✅ **unit test + Contract**: PASS、4.18秒  
 
 ### Contractsとは
 

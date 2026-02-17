@@ -23,9 +23,9 @@ dbt core + BigQueryの全設定項目（130項目）を**実際に検証**し、
 
 **検証日**: 2026-02-17
 **環境**: dbt 1.11.5 + dbt-bigquery 1.11.0
-**BigQueryプロジェクト**: sdp-sb-yada-29d2
-**データセット**: dbt_sandbox
-**リージョン**: asia-northeast1
+**BigQueryプロジェクト**: sdp-sb-yada-29d2  
+**データセット**: dbt_sandbox  
+**リージョン**: asia-northeast1  
 
 ### 主要指標
 

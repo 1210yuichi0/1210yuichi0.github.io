@@ -16,12 +16,12 @@ authorship:
 
 ## 検証概要
 
-**検証日時**: 2026-02-17
-**dbtバージョン**: 1.11.5
-**dbt-bigqueryバージョン**: 1.11.0
-**BigQueryプロジェクト**: sdp-sb-yada-29d2（マスク済み）
-**データセット**: dbt_sandbox
-**リージョン**: asia-northeast1
+**検証日時**: 2026-02-17  
+**dbtバージョン**: 1.11.5  
+**dbt-bigqueryバージョン**: 1.11.0  
+**BigQueryプロジェクト**: sdp-sb-yada-29d2（マスク済み）  
+**データセット**: dbt_sandbox  
+**リージョン**: asia-northeast1  
 **参照元**: [公式ドキュメント](https://docs.getdbt.com/docs/build/unit-tests)
 
 ### 実測検証結果

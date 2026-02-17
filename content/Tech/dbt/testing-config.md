@@ -16,17 +16,17 @@ authorship:
 
 ## 検証概要
 
-**検証日時**: 2026-02-17 22:52 JST
-**dbtバージョン**: 1.11.5
-**dbt-bigqueryバージョン**: 1.11.0
-**検証環境**: macOS (Darwin 24.6.0)
-**BigQueryプロジェクト**: sdp-sb-yada-29d2
-**データセット**: dbt_sandbox
+**検証日時**: 2026-02-17 22:52 JST  
+**dbtバージョン**: 1.11.5  
+**dbt-bigqueryバージョン**: 1.11.0  
+**検証環境**: macOS (Darwin 24.6.0)  
+**BigQueryプロジェクト**: sdp-sb-yada-29d2  
+**データセット**: dbt_sandbox  
 **対象設定**: Data Tests（Schema Tests）、Singular Tests、Test Configuration
 
 ### 実測検証結果
 
-✅ **全31テスト実行完了**: 30 PASS, 1 FAIL
+✅ **全31テスト実行完了**: 30 PASS, 1 FAIL  
 ⏱️ **実行時間**: 11.53秒
 🎯 **成功率**: 96.8% (30/31)
 📊 **並列実行**: 24スレッド
