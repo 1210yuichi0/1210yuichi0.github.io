@@ -54,7 +54,13 @@ draft: false
 ├── CHECKLIST.md                  # このファイル
 ├── project-basic-config.md       # Category 1 (22KB)
 ├── bigquery-connection.md        # Category 2 (39KB)
-├── model-config.md               # Category 3 (38KB)
+├── models/                       # Category 3 (分割済み)
+│   ├── index.md                 # ナビゲーションハブ
+│   ├── materialization.md       # マテリアライゼーション
+│   ├── partitioning.md          # パーティショニング
+│   ├── clustering.md            # クラスタリング
+│   ├── incremental-strategies.md # 増分戦略
+│   └── advanced-settings.md     # 高度な設定
 ├── testing-config.md             # Category 4 (39KB)
 ├── documentation-config.md       # Category 5 (23KB)
 ├── performance-optimization.md   # Category 6 (42KB)
