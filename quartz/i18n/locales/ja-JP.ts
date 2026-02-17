@@ -22,7 +22,7 @@ export default {
       quote: "引用",
     },
     backlinks: {
-      title: "バックリンク",
+      title: "Backlinks",
       noBacklinksFound: "バックリンクはありません",
     },
     themeToggle: {
@@ -33,7 +33,7 @@ export default {
       title: "リーダーモード",
     },
     explorer: {
-      title: "エクスプローラー",
+      title: "Explorer",
     },
     footer: {
       createdWith: "作成",
@@ -54,7 +54,7 @@ export default {
       searchBarPlaceholder: "検索ワードを入力",
     },
     tableOfContents: {
-      title: "目次",
+      title: "Table of Contents",
     },
     contentMeta: {
       readingTime: ({ minutes }) => `${minutes} min read`,
