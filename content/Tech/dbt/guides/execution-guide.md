@@ -222,7 +222,7 @@ dbt compile --profiles-dir . --target sandbox
 - `query-comment`: SQLコメント挿入
 - `vars`: グローバル変数
 
-**詳細**: [Category 1レポート](project-basic-config.md)
+**詳細**: [Category 1レポート](../categories/project-basic-config.md)
 
 ---
 
@@ -255,7 +255,7 @@ dbt run --select stg_customers --profiles-dir . --target sandbox
 - `maximum_bytes_billed`: コスト上限
 - `threads`: 並列実行数
 
-**詳細**: [Category 2レポート](bigquery-connection.md)
+**詳細**: [Category 2レポート](../categories/bigquery-connection.md)
 
 ---
 
@@ -377,7 +377,7 @@ dbt test --select test_type:unit --profiles-dir . --target sandbox
 # 17:30:15  Completed successfully
 ```
 
-**詳細**: [Category 4レポート](testing-config.md)
+**詳細**: [Category 4レポート](../categories/testing-config.md)
 
 ---
 
@@ -407,7 +407,7 @@ dbt docs serve --profiles-dir . --port 8080
 open http://localhost:8080
 ```
 
-**詳細**: [Category 5レポート](documentation-config.md)
+**詳細**: [Category 5レポート](../categories/documentation-config.md)
 
 ---
 
@@ -435,7 +435,7 @@ dbt run --select customers --profiles-dir . --target sandbox --log-level debug
 # DEBUG: BigQuery adapter: Query complete, processed 5.2 MB in 3.2s
 ```
 
-**詳細**: [Category 6レポート](performance-optimization.md)
+**詳細**: [Category 6レポート](../categories/performance-optimization.md)
 
 ---
 
@@ -464,7 +464,7 @@ dbt snapshot --profiles-dir . --target sandbox
 # 17:35:05  1 of 1 OK snapshotted dbt_sandbox_snapshots.customers_snapshot ........... [MERGE (5 inserted, 3 updated) in 5.0s]
 ```
 
-**詳細**: [Category 7レポート](snapshot-config.md)
+**詳細**: [Category 7レポート](../categories/snapshot-config.md)
 
 ---
 
@@ -483,7 +483,7 @@ dbt seed --select raw_customers --profiles-dir . --target sandbox
 dbt seed --full-refresh --profiles-dir . --target sandbox
 ```
 
-**詳細**: [Category 8レポート](seed-config.md)
+**詳細**: [Category 8レポート](../categories/seed-config.md)
 
 ---
 
@@ -505,7 +505,7 @@ dbt run --profiles-dir . --target sandbox
 # 17:30:51  1 of 1 OK hook: dbt.on-run-end.0 ......................................... [OK in 1.0s]
 ```
 
-**詳細**: [Category 9レポート](hooks-config.md)
+**詳細**: [Category 9レポート](../categories/hooks-config.md)
 
 ---
 
@@ -530,7 +530,7 @@ dbt deps
 # 17:30:05  Up to date!
 ```
 
-**詳細**: [Category 10レポート](other-config.md)
+**詳細**: [Category 10レポート](../categories/other-config.md)
 
 ---
 
@@ -784,7 +784,7 @@ grep -i "fail" logs/verification/*.log
 - エラーが出たらトラブルシューティングを参照
 
 **次のステップ**:
-- [統合インデックス](_index.md)で全体像を把握
+- [プロジェクト概要](../overview.md)で全体像を把握
 - 各カテゴリの詳細レポートで深掘り
 - ベストプラクティスを自プロジェクトに適用
 

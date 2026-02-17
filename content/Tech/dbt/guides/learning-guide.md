@@ -21,18 +21,18 @@ authorship:
 ### 初学者向け（1週間）
 
 **Day 1-2**: 基本設定と接続
-- [プロジェクト基本設定](../project-basic-config.md): dbt_project.yml の理解
-- [BigQuery接続設定](../bigquery-connection.md): 認証方法（OAuth vs Service Account）
+- [プロジェクト基本設定](../categories/project-basic-config.md): dbt_project.yml の理解
+- [BigQuery接続設定](../categories/bigquery-connection.md): 認証方法（OAuth vs Service Account）
 
 **Day 3-4**: Models
 - [Models](../categories/models/): マテリアライゼーション、パーティション、クラスタリング
 
 **Day 5**: Tests
-- [Tests](../testing-config.md): Schema Tests、データ品質の保証
+- [Tests](../categories/testing-config.md): Schema Tests、データ品質の保証
 
 **Day 6**: ドキュメントとパフォーマンス
-- [ドキュメント設定](../documentation-config.md): dbt docs の生成
-- [パフォーマンス最適化](../performance-optimization.md): クエリ最適化の基本
+- [ドキュメント設定](../categories/documentation-config.md): dbt docs の生成
+- [パフォーマンス最適化](../categories/performance-optimization.md): クエリ最適化の基本
 
 **Day 7**: 総復習と実践プロジェクト
 
@@ -42,16 +42,16 @@ authorship:
 
 **Day 1**: 高度なモデル設定・最適化
 - [Models](../categories/models/): 増分戦略の使い分け
-- [パフォーマンス最適化](../performance-optimization.md): パフォーマンスチューニング
+- [パフォーマンス最適化](../categories/performance-optimization.md): パフォーマンスチューニング
 
 **Day 2**: 高度なテストとSnapshots
-- [Tests](../testing-config.md): Singular Tests、Unit Tests
-- [Snapshots](../snapshot-config.md): SCD Type 2実装
+- [Tests](../categories/testing-config.md): Singular Tests、Unit Tests
+- [Snapshots](../categories/snapshot-config.md): SCD Type 2実装
 
 **Day 3**: HooksとSeeds
-- [Hooks](../hooks-config.md): カスタムフック
-- [Seeds](../seed-config.md): CSVデータのロード
-- [その他の設定](../other-config.md): dbtパッケージ管理
+- [Hooks](../categories/hooks-config.md): カスタムフック
+- [Seeds](../categories/seed-config.md): CSVデータのロード
+- [その他の設定](../categories/other-config.md): dbtパッケージ管理
 
 ---
 
@@ -61,11 +61,11 @@ authorship:
 
 | 目的 | 参照先 |
 |------|--------|
-| **コスト最適化** | [BigQuery接続設定](../bigquery-connection.md), [Models](../categories/models/), [パフォーマンス最適化](../performance-optimization.md) |
-| **データ品質** | [Tests](../testing-config.md), [Contract設定](../contracts-config.md) |
-| **運用自動化** | [Hooks](../hooks-config.md) |
-| **履歴管理** | [Snapshots](../snapshot-config.md) |
-| **BigQuery全機能** | [BigQuery設定リファレンス](../bigquery-configs-complete.md) |
+| **コスト最適化** | [BigQuery接続設定](../categories/bigquery-connection.md), [Models](../categories/models/), [パフォーマンス最適化](../categories/performance-optimization.md) |
+| **データ品質** | [Tests](../categories/testing-config.md), [Contract設定](../features/contracts-config.md) |
+| **運用自動化** | [Hooks](../categories/hooks-config.md) |
+| **履歴管理** | [Snapshots](../categories/snapshot-config.md) |
+| **BigQuery全機能** | [BigQuery設定リファレンス](../features/bigquery-configs-complete.md) |
 
 ---
 
@@ -126,13 +126,13 @@ authorship:
 
 | 調べたい内容 | 参照先 |
 |------------|-------|
-| 認証方法の設定 | [BigQuery接続設定](../bigquery-connection.md) |
+| 認証方法の設定 | [BigQuery接続設定](../categories/bigquery-connection.md) |
 | パーティション・クラスタリング | [Models](../categories/models/) |
-| テストの書き方 | [Tests](../testing-config.md) |
-| パフォーマンス改善 | [パフォーマンス最適化](../performance-optimization.md) |
-| 履歴データ管理（SCD Type 2） | [Snapshots](../snapshot-config.md) |
-| スキーマ保証 | [Contract設定](../contracts-config.md) |
-| Unit Testsの実装 | [Unit Tests検証](../unit-tests-verification.md) |
+| テストの書き方 | [Tests](../categories/testing-config.md) |
+| パフォーマンス改善 | [パフォーマンス最適化](../categories/performance-optimization.md) |
+| 履歴データ管理（SCD Type 2） | [Snapshots](../categories/snapshot-config.md) |
+| スキーマ保証 | [Contract設定](../features/contracts-config.md) |
+| Unit Testsの実装 | [Unit Tests検証](../features/unit-tests-verification.md) |
 
 ### 検証を再実行したい方
 
