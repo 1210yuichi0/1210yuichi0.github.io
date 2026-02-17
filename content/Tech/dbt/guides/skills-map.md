@@ -40,7 +40,7 @@ authorship:
 | ------------------------- | ---------------------------------------- | ------------------------------------------------------------- | -------- |
 | ✅ **プロジェクト設定**   | dbt_project.yml の理解と設定             | [プロジェクト基本設定](../categories/project-basic-config.md) | 2時間    |
 | ✅ **BigQuery接続**       | 認証方法（OAuth, Service Account）の設定 | [BigQuery接続設定](../categories/bigquery-connection.md)      | 2時間    |
-| ✅ **基本的なモデル作成** | table, view マテリアライゼーション       | [Models](../categories/model-config.md)                       | 3時間    |
+| ✅ **基本的なモデル作成** | table, view マテリアライゼーション       | [Models](../categories/models/)                       | 3時間    |
 | ✅ **Seeds の使用**       | CSVファイルのロード                      | [Seeds](../categories/seed-config.md)                         | 1時間    |
 
 #### 推奨スキル
@@ -71,7 +71,7 @@ authorship:
 | ------------------------- | ------------------------------------ | ---------------------------------------------------------------------------------- | -------- |
 | ✅ **パーティショニング** | DATE, INT64 range パーティション設計 | [パーティショニング＆クラスタリング](../features/partitioning-clustering-guide.md) | 3時間    |
 | ✅ **クラスタリング**     | 単一列・複数列クラスタリング         | [パーティショニング＆クラスタリング](../features/partitioning-clustering-guide.md) | 2時間    |
-| ✅ **増分戦略**           | merge, insert_overwrite の使い分け   | [Models](../categories/model-config.md)                                            | 3時間    |
+| ✅ **増分戦略**           | merge, insert_overwrite の使い分け   | [Models](../categories/models/)                                            | 3時間    |
 | ✅ **包括的なテスト**     | Schema/Singular Tests の実装         | [Tests](../categories/testing-config.md)                                           | 3時間    |
 
 #### 推奨スキル

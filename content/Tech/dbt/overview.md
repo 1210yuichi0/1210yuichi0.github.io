@@ -103,7 +103,7 @@ authorship:
 
 ## 📖 詳細ガイド
 
-学習パス、クイックスタート、活用例などの詳細は [ガイドREADME](guides/README.md) を参照してください。
+学習パス、クイックスタート、活用例などの詳細は [学習ガイド](guides/learning-guide.md) を参照してください。
 
 ---
 
