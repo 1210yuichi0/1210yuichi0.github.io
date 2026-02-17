@@ -12,6 +12,22 @@ authorship:
   reviewed: false
 ---
 
+# 学べること
+
+- **vars（変数）、packages、dispatchの活用方法**
+- **analysis、macros、quotingの実装パターン**
+- **プロジェクトの柔軟性と再利用性の向上**
+- **高度な設定のベストプラクティス**
+
+# はじめに
+
+dbtのその他の重要な設定項目（vars、packages、dispatch、analysis、macros、quoting）は、プロジェクトの柔軟性、再利用性、保守性を向上させます。本記事では、これらの機能を検証し、実務で使える高度な設定方法を明らかにします。
+
+**検証環境**:
+- dbtバージョン: 1.11.5
+- dbt-bigqueryバージョン: 1.11.0
+- 検証日時: 2026-02-17
+
 ## 目次
 
 - [概要](#概要)
