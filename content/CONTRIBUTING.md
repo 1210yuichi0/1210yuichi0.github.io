@@ -194,20 +194,31 @@ unit testsは、dbt 1.8+で導入された機能で...
 
 ```
 content/
-├── dbt-setup/              # 1階層: 環境・接続設定 (7ファイル)
+├── dbt/                    # 1階層: メインエントリー (2ファイル)
+│   ├── index.md
+│   └── overview.md
+├── dbt-connection/         # 1階層: 接続設定 (2ファイル)
 │   ├── project-basic-config.md
-│   ├── bigquery-connection.md
-│   └── performance-optimization.md
-├── dbt-models/             # 1階層: モデル・変換 (11ファイル)
+│   └── bigquery-connection.md
+├── dbt-bigquery/           # 1階層: BigQuery機能 (2ファイル)
+│   ├── bigquery-configs-complete.md
+│   └── bigquery-python-udf-deep-dive.md
+├── dbt-config/             # 1階層: 基本設定 (5ファイル)
+│   ├── performance-optimization.md
+│   ├── other-config.md
+│   └── seed-config.md
+├── dbt-models/             # 1階層: モデル設定 (6ファイル)
 │   ├── models.md
 │   ├── models-materialization.md
-│   └── partitioning-clustering-guide.md
-├── dbt-testing/            # 1階層: テスト・品質 (2ファイル)
+│   └── models-partitioning.md
+├── dbt-performance/        # 1階層: パフォーマンス (3ファイル)
+│   ├── partitioning-clustering-guide.md
+│   └── snapshot-config.md
+├── dbt-testing/            # 1階層: テスト (4ファイル)
 │   ├── testing-config.md
 │   └── unit-tests-verification.md
-└── dbt-guides/             # 1階層: ガイド・チュートリアル (10ファイル)
-    ├── index.md
-    ├── overview.md
+└── dbt-tutorials/          # 1階層: チュートリアル (6ファイル)
+    ├── quick-reference.md
     └── tutorial-01-setup.md
 ```
 
@@ -231,7 +242,9 @@ content/
 
 - **content/直下に機能別フォルダ作成（1階層のみ）**
 - 2階層以上は禁止
-- フォルダ名: 機能を明確に表す名前（dbt-setup, dbt-models など）
+- フォルダ名: 機能を明確に表す名前（dbt-connection, dbt-models など）
+- 1フォルダあたり: 約2〜6ファイルを目安（最大15ファイル）
+- ファイル数が多い場合: 機能別に細分化して複数フォルダに分割
 
 ---
 
