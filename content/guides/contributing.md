@@ -104,28 +104,34 @@ done
 
 ### index.mdファイルの使用ルール
 
-**⛔ \_index.mdは使用禁止**
+**⛔ index.mdはホームページ（content/index.md）のみ**
 
-`_index.md` ファイルは使用しないでください。代わりに通常のマークダウンファイルを使用します。
+`index.md` ファイルはサイトのホームページ（`content/index.md`）でのみ使用します。
+サブフォルダには `index.md` を作成しないでください。
 
 **❌ 禁止**:
 
 ```
-content/Tech/dbt/_index.md  # 使用禁止
+content/_index.md              # ⛔ _index.mdは使用禁止
+content/Ideas/index.md         # ⛔ サブフォルダのindex.mdは不要
+content/dbt/index.md           # ⛔ サブフォルダのindex.mdは不要
+content/Tech/dbt/index.md      # ⛔ サブフォルダのindex.mdは不要
 ```
 
 **✅ 推奨**:
 
 ```
-content/Tech/dbt/index.md   # OK: フォルダトップページ
-content/Tech/dbt/README.md  # OK: フォルダ概要
+content/index.md               # ✅ ホームページのみOK
+content/dbt/overview.md        # ✅ 通常の記事ファイル
+content/Tech/README.md         # ✅ README.mdは許可（ナビゲーション用）
 ```
 
 **理由**:
 
-- `_index.md` は特殊なファイル名で管理が複雑
-- 通常のファイル名の方が明確で管理しやすい
-- Quartzでは通常のマークダウンファイルで十分機能する
+- `index.md` はホームページ専用
+- サブフォルダには通常のマークダウンファイルを使用
+- `README.md` はフォルダ概要・ナビゲーション用として許可
+- ファイル構成がシンプルで管理しやすい
 
 ---
 
@@ -763,13 +769,13 @@ make publish
 `forbidden-words.txt` ファイルで禁止ワードを管理：
 
 ```txt
-# 個人情報保護
-password
-secret
-api_key
+# 個人情報保護関連ワードの例
+forbidden_word_1
+forbidden_word_2
+forbidden_word_3
 
-# カスタムワード
-your_forbidden_word
+# カスタムワードの例
+custom_forbidden_word
 ```
 
 ### 動作
