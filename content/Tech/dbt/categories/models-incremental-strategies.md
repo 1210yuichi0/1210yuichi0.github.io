@@ -319,7 +319,7 @@ graph TD
 - [dbt Incremental Models](https://docs.getdbt.com/docs/build/incremental-models)
 - [dbt-bigquery Incremental Strategies](https://docs.getdbt.com/reference/resource-configs/bigquery-configs#merge-behavior-incremental-models)
 - [BigQuery MERGE Statement](https://cloud.google.com/bigquery/docs/reference/standard-sql/dml-syntax#merge_statement)
-- [Models Index](index.md) - カテゴリ全体の概要
+- [Models Index](models.md) - カテゴリ全体の概要
 
 ---
 

@@ -102,16 +102,16 @@ authorship:
 
 ### Models (30項目)
 
-**参照:** [Models](../categories/models/) / [パーティショニング＆クラスタリング](../features/partitioning-clustering-guide.md)
+**参照:** [Models](../categories/models.md) / [パーティショニング＆クラスタリング](../features/partitioning-clustering-guide.md)
 
 #### マテリアライゼーション (5種類)
 
 | # | タイプ | 用途 | 参照 |
 |---|--------|------|------|
-| 1 | `table` | 大量データ、頻繁にクエリ | [Models](../categories/models/) |
-| 2 | `view` | 軽量、リアルタイム性重視 | [Models](../categories/models/) |
-| 3 | `incremental` | 大規模データの段階的更新 | [Models](../categories/models/) |
-| 4 | `ephemeral` | 中間テーブル（CTEとして展開） | [Models](../categories/models/) |
+| 1 | `table` | 大量データ、頻繁にクエリ | [Models](../categories/models.md) |
+| 2 | `view` | 軽量、リアルタイム性重視 | [Models](../categories/models.md) |
+| 3 | `incremental` | 大規模データの段階的更新 | [Models](../categories/models.md) |
+| 4 | `ephemeral` | 中間テーブル（CTEとして展開） | [Models](../categories/models.md) |
 | 5 | `materialized_view` | 自動更新ビュー | [BigQuery設定](../features/bigquery-configs-complete.md) |
 
 #### パーティショニング (4種類)
@@ -135,26 +135,26 @@ authorship:
 
 | # | 戦略 | 用途 | 参照 |
 |---|------|------|------|
-| 13 | `merge` | UPSERT処理（デフォルト） | [Models](../categories/models/) |
-| 14 | `insert_overwrite` | パーティション上書き | [Models](../categories/models/) |
-| 15 | `microbatch` | 小バッチ段階的処理 | [Models](../categories/models/) |
+| 13 | `merge` | UPSERT処理（デフォルト） | [Models](../categories/models.md) |
+| 14 | `insert_overwrite` | パーティション上書き | [Models](../categories/models.md) |
+| 15 | `microbatch` | 小バッチ段階的処理 | [Models](../categories/models.md) |
 
 #### その他のモデル設定
 
 | # | 設定項目 | 内容 | 参照 |
 |---|---------|------|------|
-| 16 | `schema` | スキーマ名指定 | [Models](../categories/models/) |
-| 17 | `alias` | テーブルエイリアス | [Models](../categories/models/) |
-| 18 | `database` | データベース名指定 | [Models](../categories/models/) |
-| 19 | `tags` | タグ付け | [Models](../categories/models/) |
-| 20 | `enabled` | モデルの有効/無効 | [Models](../categories/models/) |
+| 16 | `schema` | スキーマ名指定 | [Models](../categories/models.md) |
+| 17 | `alias` | テーブルエイリアス | [Models](../categories/models.md) |
+| 18 | `database` | データベース名指定 | [Models](../categories/models.md) |
+| 19 | `tags` | タグ付け | [Models](../categories/models.md) |
+| 20 | `enabled` | モデルの有効/無効 | [Models](../categories/models.md) |
 | 21 | `pre-hook` | 実行前処理 | [Hooks](../categories/hooks-config.md) |
 | 22 | `post-hook` | 実行後処理 | [Hooks](../categories/hooks-config.md) |
-| 23 | `grants` | 権限設定 | [Models](../categories/models/) |
+| 23 | `grants` | 権限設定 | [Models](../categories/models.md) |
 | 24 | `persist_docs` | ドキュメント永続化 | [ドキュメント](../categories/documentation-config.md) |
-| 25 | `full_refresh` | 強制フル更新 | [Models](../categories/models/) |
-| 26 | `unique_key` | ユニークキー指定 | [Models](../categories/models/) |
-| 27 | `on_schema_change` | スキーマ変更時の挙動 | [Models](../categories/models/) |
+| 25 | `full_refresh` | 強制フル更新 | [Models](../categories/models.md) |
+| 26 | `unique_key` | ユニークキー指定 | [Models](../categories/models.md) |
+| 27 | `on_schema_change` | スキーマ変更時の挙動 | [Models](../categories/models.md) |
 | 28 | `hours_to_expiration` | テーブル有効期限 | [BigQuery設定](../features/bigquery-configs-complete.md) |
 | 29 | `kms_key_name` | 暗号化キー | [BigQuery設定](../features/bigquery-configs-complete.md) |
 | 30 | `labels` | BigQueryラベル | [BigQuery設定](../features/bigquery-configs-complete.md) |
@@ -354,7 +354,7 @@ authorship:
 |------|---------|------|
 | スキャン量削減 | パーティショニング | [パーティション＆クラスタ](../features/partitioning-clustering-guide.md) |
 | フィルタ効率化 | クラスタリング | [パーティション＆クラスタ](../features/partitioning-clustering-guide.md) |
-| 段階的更新 | incremental モデル | [Models](../categories/models/) |
+| 段階的更新 | incremental モデル | [Models](../categories/models.md) |
 | コスト上限設定 | `maximum_bytes_billed` | [BigQuery接続](../categories/bigquery-connection.md) |
 | バッチ優先度 | `priority: batch` | [BigQuery接続](../categories/bigquery-connection.md) |
 
@@ -375,7 +375,7 @@ authorship:
 | 並列実行 | threads 設定 | [パフォーマンス最適化](../categories/performance-optimization.md) |
 | マテビュー活用 | materialized_view | [BigQuery設定](../features/bigquery-configs-complete.md) |
 | クエリ最適化 | パーティション+クラスタ | [パーティション＆クラスタ](../features/partitioning-clustering-guide.md) |
-| 増分処理 | incremental 戦略 | [Models](../categories/models/) |
+| 増分処理 | incremental 戦略 | [Models](../categories/models.md) |
 
 ### 履歴管理
 

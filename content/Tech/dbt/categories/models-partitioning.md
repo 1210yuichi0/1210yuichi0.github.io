@@ -331,7 +331,7 @@ config:
 
 - [BigQuery Partitioned Tables](https://cloud.google.com/bigquery/docs/partitioned-tables)
 - [dbt-bigquery Partition Configuration](https://docs.getdbt.com/reference/resource-configs/bigquery-configs#partition-clause)
-- [Models Index](index.md) - カテゴリ全体の概要
+- [Models Index](models.md) - カテゴリ全体の概要
 - [パーティショニング＆クラスタリングガイド](../../features/partitioning-clustering-guide.md) - 専門ガイド
 
 ---

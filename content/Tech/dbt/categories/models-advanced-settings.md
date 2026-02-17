@@ -346,7 +346,7 @@ graph TD
 - [BigQuery Labels](https://cloud.google.com/bigquery/docs/labels-intro)
 - [BigQuery Table Expiration](https://cloud.google.com/bigquery/docs/managing-tables#table-expiration)
 - [dbt-bigquery Configuration](https://docs.getdbt.com/reference/resource-configs/bigquery-configs)
-- [Models Index](index.md) - カテゴリ全体の概要
+- [Models Index](models.md) - カテゴリ全体の概要
 - [クイックリファレンス](../../guides/quick-reference.md) - 全設定項目の逆引き
 
 ---

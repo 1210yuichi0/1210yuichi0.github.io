@@ -48,7 +48,7 @@ authorship:
 | -------------------------------------- | ------------------------ | ---------- | -------- | ------- |
 | [](categories/project-basic-config.md) | **プロジェクト基本設定** | 15項目     | 2時間    | ✅ 完了 |
 | [](categories/bigquery-connection.md)  | **BigQuery接続設定**     | 20項目     | 2時間    | ✅ 完了 |
-| [](categories/models/)                 | **Models**               | 30項目     | 4時間    | ✅ 完了 |
+| [](categories/models.md)               | **Models**               | 30項目     | 4時間    | ✅ 完了 |
 
 **カテゴリ1-3の主な内容**:
 
