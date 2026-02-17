@@ -330,7 +330,7 @@ dbt run --select labels_demo --profiles-dir . --target sandbox
 dbt run --select expiration_demo --profiles-dir . --target sandbox
 ```
 
-**詳細**: [Category 3レポート](model-config.md)
+**詳細**: [Category 3レポート](../categories/models/)
 
 ---
 

@@ -25,7 +25,7 @@ authorship:
 - [BigQuery接続設定](../bigquery-connection.md): 認証方法（OAuth vs Service Account）
 
 **Day 3-4**: Models
-- [Models](../model-config.md): マテリアライゼーション、パーティション、クラスタリング
+- [Models](../categories/models/): マテリアライゼーション、パーティション、クラスタリング
 
 **Day 5**: Tests
 - [Tests](../testing-config.md): Schema Tests、データ品質の保証
@@ -41,7 +41,7 @@ authorship:
 ### 中級者向け（3日間）
 
 **Day 1**: 高度なモデル設定・最適化
-- [Models](../model-config.md): 増分戦略の使い分け
+- [Models](../categories/models/): 増分戦略の使い分け
 - [パフォーマンス最適化](../performance-optimization.md): パフォーマンスチューニング
 
 **Day 2**: 高度なテストとSnapshots
@@ -61,7 +61,7 @@ authorship:
 
 | 目的 | 参照先 |
 |------|--------|
-| **コスト最適化** | [BigQuery接続設定](../bigquery-connection.md), [Models](../model-config.md), [パフォーマンス最適化](../performance-optimization.md) |
+| **コスト最適化** | [BigQuery接続設定](../bigquery-connection.md), [Models](../categories/models/), [パフォーマンス最適化](../performance-optimization.md) |
 | **データ品質** | [Tests](../testing-config.md), [Contract設定](../contracts-config.md) |
 | **運用自動化** | [Hooks](../hooks-config.md) |
 | **履歴管理** | [Snapshots](../snapshot-config.md) |
@@ -127,7 +127,7 @@ authorship:
 | 調べたい内容 | 参照先 |
 |------------|-------|
 | 認証方法の設定 | [BigQuery接続設定](../bigquery-connection.md) |
-| パーティション・クラスタリング | [Models](../model-config.md) |
+| パーティション・クラスタリング | [Models](../categories/models/) |
 | テストの書き方 | [Tests](../testing-config.md) |
 | パフォーマンス改善 | [パフォーマンス最適化](../performance-optimization.md) |
 | 履歴データ管理（SCD Type 2） | [Snapshots](../snapshot-config.md) |
