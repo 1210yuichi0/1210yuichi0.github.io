@@ -208,8 +208,8 @@ content/
 ```
 content/
 ├── Tech/                    # 1階層
-│   ├── dbt/                 # 2階層
-│   │   ├── categories/      # 3階層 ⚠️ 原則禁止
+│   ├── dbt/                 # 2階層 ⚠️ 推奨上限（これ以上NG）
+│   │   ├── categories/      # 3階層 ❌ 原則禁止
 │   │   │   ├── models/      # 4階層 ❌ NG
 │   │   │   │   └── materialization.md
 ```
