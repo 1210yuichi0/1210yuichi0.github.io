@@ -45,7 +45,7 @@ authorship:
 
 ### プロジェクト基本設定 (15項目)
 
-**参照:** [プロジェクト基本設定](../dbt-setup/project-basic-config.md)
+**参照:** [プロジェクト基本設定](../dbt-connection/project-basic-config.md)
 
 | #   | 検証項目                | 内容                         |
 | --- | ----------------------- | ---------------------------- |
@@ -69,7 +69,7 @@ authorship:
 
 ### BigQuery接続設定 (20項目)
 
-**参照:** [BigQuery接続設定](../dbt-setup/bigquery-connection.md)
+**参照:** [BigQuery接続設定](../dbt-connection/bigquery-connection.md)
 
 #### 認証方法 (5種類)
 
@@ -105,34 +105,34 @@ authorship:
 
 ### Models (30項目)
 
-**参照:** [Models](../dbt-models/models.md) / [パーティショニング＆クラスタリング](../dbt-models/partitioning-clustering-guide.md)
+**参照:** [Models](../dbt-models/models.md) / [パーティショニング＆クラスタリング](../dbt-performance/partitioning-clustering-guide.md)
 
 #### マテリアライゼーション (5種類)
 
-| #   | タイプ              | 用途                          | 参照                                                      |
-| --- | ------------------- | ----------------------------- | --------------------------------------------------------- |
-| 1   | `table`             | 大量データ、頻繁にクエリ      | [Models](../dbt-models/models.md)                         |
-| 2   | `view`              | 軽量、リアルタイム性重視      | [Models](../dbt-models/models.md)                         |
-| 3   | `incremental`       | 大規模データの段階的更新      | [Models](../dbt-models/models.md)                         |
-| 4   | `ephemeral`         | 中間テーブル（CTEとして展開） | [Models](../dbt-models/models.md)                         |
-| 5   | `materialized_view` | 自動更新ビュー                | [BigQuery設定](../dbt-setup/bigquery-configs-complete.md) |
+| #   | タイプ              | 用途                          | 参照                                                         |
+| --- | ------------------- | ----------------------------- | ------------------------------------------------------------ |
+| 1   | `table`             | 大量データ、頻繁にクエリ      | [Models](../dbt-models/models.md)                            |
+| 2   | `view`              | 軽量、リアルタイム性重視      | [Models](../dbt-models/models.md)                            |
+| 3   | `incremental`       | 大規模データの段階的更新      | [Models](../dbt-models/models.md)                            |
+| 4   | `ephemeral`         | 中間テーブル（CTEとして展開） | [Models](../dbt-models/models.md)                            |
+| 5   | `materialized_view` | 自動更新ビュー                | [BigQuery設定](../dbt-bigquery/bigquery-configs-complete.md) |
 
 #### パーティショニング (4種類)
 
-| #   | タイプ                        | 用途                           | 参照                                                                       |
-| --- | ----------------------------- | ------------------------------ | -------------------------------------------------------------------------- |
-| 6   | DATE パーティション           | 日付カラムでパーティション     | [パーティション＆クラスタ](../dbt-models/partitioning-clustering-guide.md) |
-| 7   | TIMESTAMP パーティション      | タイムスタンプでパーティション | [パーティション＆クラスタ](../dbt-models/partitioning-clustering-guide.md) |
-| 8   | INT64 range パーティション    | 数値範囲でパーティション       | [パーティション＆クラスタ](../dbt-models/partitioning-clustering-guide.md) |
-| 9   | Time-ingestion パーティション | 取り込み時刻でパーティション   | [パーティション＆クラスタ](../dbt-models/partitioning-clustering-guide.md) |
+| #   | タイプ                        | 用途                           | 参照                                                                            |
+| --- | ----------------------------- | ------------------------------ | ------------------------------------------------------------------------------- |
+| 6   | DATE パーティション           | 日付カラムでパーティション     | [パーティション＆クラスタ](../dbt-performance/partitioning-clustering-guide.md) |
+| 7   | TIMESTAMP パーティション      | タイムスタンプでパーティション | [パーティション＆クラスタ](../dbt-performance/partitioning-clustering-guide.md) |
+| 8   | INT64 range パーティション    | 数値範囲でパーティション       | [パーティション＆クラスタ](../dbt-performance/partitioning-clustering-guide.md) |
+| 9   | Time-ingestion パーティション | 取り込み時刻でパーティション   | [パーティション＆クラスタ](../dbt-performance/partitioning-clustering-guide.md) |
 
 #### クラスタリング
 
-| #   | 設定                    | 内容                        | 参照                                                                       |
-| --- | ----------------------- | --------------------------- | -------------------------------------------------------------------------- |
-| 10  | 単一列クラスタ          | 1カラムでクラスタリング     | [パーティション＆クラスタ](../dbt-models/partitioning-clustering-guide.md) |
-| 11  | 複数列クラスタ          | 最大4カラムでクラスタリング | [パーティション＆クラスタ](../dbt-models/partitioning-clustering-guide.md) |
-| 12  | パーティション+クラスタ | 組み合わせ使用              | [パーティション＆クラスタ](../dbt-models/partitioning-clustering-guide.md) |
+| #   | 設定                    | 内容                        | 参照                                                                            |
+| --- | ----------------------- | --------------------------- | ------------------------------------------------------------------------------- |
+| 10  | 単一列クラスタ          | 1カラムでクラスタリング     | [パーティション＆クラスタ](../dbt-performance/partitioning-clustering-guide.md) |
+| 11  | 複数列クラスタ          | 最大4カラムでクラスタリング | [パーティション＆クラスタ](../dbt-performance/partitioning-clustering-guide.md) |
+| 12  | パーティション+クラスタ | 組み合わせ使用              | [パーティション＆クラスタ](../dbt-performance/partitioning-clustering-guide.md) |
 
 #### 増分戦略 (3種類)
 
@@ -144,23 +144,23 @@ authorship:
 
 #### その他のモデル設定
 
-| #   | 設定項目              | 内容                 | 参照                                                      |
-| --- | --------------------- | -------------------- | --------------------------------------------------------- |
-| 16  | `schema`              | スキーマ名指定       | [Models](../dbt-models/models.md)                         |
-| 17  | `alias`               | テーブルエイリアス   | [Models](../dbt-models/models.md)                         |
-| 18  | `database`            | データベース名指定   | [Models](../dbt-models/models.md)                         |
-| 19  | `tags`                | タグ付け             | [Models](../dbt-models/models.md)                         |
-| 20  | `enabled`             | モデルの有効/無効    | [Models](../dbt-models/models.md)                         |
-| 21  | `pre-hook`            | 実行前処理           | [Hooks](../dbt-models/hooks-config.md)                    |
-| 22  | `post-hook`           | 実行後処理           | [Hooks](../dbt-models/hooks-config.md)                    |
-| 23  | `grants`              | 権限設定             | [Models](../dbt-models/models.md)                         |
-| 24  | `persist_docs`        | ドキュメント永続化   | [ドキュメント](../dbt-models/documentation-config.md)     |
-| 25  | `full_refresh`        | 強制フル更新         | [Models](../dbt-models/models.md)                         |
-| 26  | `unique_key`          | ユニークキー指定     | [Models](../dbt-models/models.md)                         |
-| 27  | `on_schema_change`    | スキーマ変更時の挙動 | [Models](../dbt-models/models.md)                         |
-| 28  | `hours_to_expiration` | テーブル有効期限     | [BigQuery設定](../dbt-setup/bigquery-configs-complete.md) |
-| 29  | `kms_key_name`        | 暗号化キー           | [BigQuery設定](../dbt-setup/bigquery-configs-complete.md) |
-| 30  | `labels`              | BigQueryラベル       | [BigQuery設定](../dbt-setup/bigquery-configs-complete.md) |
+| #   | 設定項目              | 内容                 | 参照                                                         |
+| --- | --------------------- | -------------------- | ------------------------------------------------------------ |
+| 16  | `schema`              | スキーマ名指定       | [Models](../dbt-models/models.md)                            |
+| 17  | `alias`               | テーブルエイリアス   | [Models](../dbt-models/models.md)                            |
+| 18  | `database`            | データベース名指定   | [Models](../dbt-models/models.md)                            |
+| 19  | `tags`                | タグ付け             | [Models](../dbt-models/models.md)                            |
+| 20  | `enabled`             | モデルの有効/無効    | [Models](../dbt-models/models.md)                            |
+| 21  | `pre-hook`            | 実行前処理           | [Hooks](../dbt-config/hooks-config.md)                       |
+| 22  | `post-hook`           | 実行後処理           | [Hooks](../dbt-config/hooks-config.md)                       |
+| 23  | `grants`              | 権限設定             | [Models](../dbt-models/models.md)                            |
+| 24  | `persist_docs`        | ドキュメント永続化   | [ドキュメント](../dbt-config/documentation-config.md)        |
+| 25  | `full_refresh`        | 強制フル更新         | [Models](../dbt-models/models.md)                            |
+| 26  | `unique_key`          | ユニークキー指定     | [Models](../dbt-models/models.md)                            |
+| 27  | `on_schema_change`    | スキーマ変更時の挙動 | [Models](../dbt-models/models.md)                            |
+| 28  | `hours_to_expiration` | テーブル有効期限     | [BigQuery設定](../dbt-bigquery/bigquery-configs-complete.md) |
+| 29  | `kms_key_name`        | 暗号化キー           | [BigQuery設定](../dbt-bigquery/bigquery-configs-complete.md) |
+| 30  | `labels`              | BigQueryラベル       | [BigQuery設定](../dbt-bigquery/bigquery-configs-complete.md) |
 
 ---
 
@@ -207,7 +207,7 @@ authorship:
 
 ### Contracts (スキーマ保証) (5項目)
 
-**参照:** [Contract設定](../dbt-models/contracts-config.md)
+**参照:** [Contract設定](../dbt-performance/contracts-config.md)
 
 | #   | 検証項目                 | 内容                     |
 | --- | ------------------------ | ------------------------ |
@@ -221,7 +221,7 @@ authorship:
 
 ### Snapshots (12項目)
 
-**参照:** [Snapshots](../dbt-models/snapshot-config.md)
+**参照:** [Snapshots](../dbt-performance/snapshot-config.md)
 
 #### 戦略
 
@@ -249,7 +249,7 @@ authorship:
 
 ### Seeds (5項目)
 
-**参照:** [Seeds](../dbt-setup/seed-config.md)
+**参照:** [Seeds](../dbt-config/seed-config.md)
 
 | #   | 検証項目          | 内容                 |
 | --- | ----------------- | -------------------- |
@@ -263,7 +263,7 @@ authorship:
 
 ### Hooks (8項目)
 
-**参照:** [Hooks](../dbt-models/hooks-config.md)
+**参照:** [Hooks](../dbt-config/hooks-config.md)
 
 | #   | Hookタイプ               | タイミング           |
 | --- | ------------------------ | -------------------- |
@@ -280,7 +280,7 @@ authorship:
 
 ### ドキュメント設定 (5項目)
 
-**参照:** [ドキュメント設定](../dbt-models/documentation-config.md)
+**参照:** [ドキュメント設定](../dbt-config/documentation-config.md)
 
 | #   | 検証項目            | 内容                     |
 | --- | ------------------- | ------------------------ |
@@ -294,7 +294,7 @@ authorship:
 
 ### パフォーマンス最適化 (10項目)
 
-**参照:** [パフォーマンス最適化](../dbt-setup/performance-optimization.md)
+**参照:** [パフォーマンス最適化](../dbt-config/performance-optimization.md)
 
 | #   | 最適化項目                 | 内容                     |
 | --- | -------------------------- | ------------------------ |
@@ -313,7 +313,7 @@ authorship:
 
 ### その他の設定 (10項目)
 
-**参照:** [その他の設定](../dbt-setup/other-config.md)
+**参照:** [その他の設定](../dbt-config/other-config.md)
 
 | #   | 設定項目              | 内容                 |
 | --- | --------------------- | -------------------- |
@@ -332,20 +332,20 @@ authorship:
 
 ### BigQuery高度な機能 (10項目)
 
-**参照:** [BigQuery設定リファレンス](../dbt-setup/bigquery-configs-complete.md) / [Python UDF](../dbt-setup/bigquery-python-udf-deep-dive.md)
+**参照:** [BigQuery設定リファレンス](../dbt-bigquery/bigquery-configs-complete.md) / [Python UDF](../dbt-bigquery/bigquery-python-udf-deep-dive.md)
 
-| #   | 機能                  | 内容                     | 参照                                                        |
-| --- | --------------------- | ------------------------ | ----------------------------------------------------------- |
-| 1   | Materialized View     | 自動更新ビュー           | [BigQuery設定](../dbt-setup/bigquery-configs-complete.md)   |
-| 2   | Python UDF            | Pythonカスタム関数       | [Python UDF](../dbt-setup/bigquery-python-udf-deep-dive.md) |
-| 3   | 暗号化（KMS）         | データ暗号化             | [BigQuery設定](../dbt-setup/bigquery-configs-complete.md)   |
-| 4   | テーブル有効期限      | 自動削除設定             | [BigQuery設定](../dbt-setup/bigquery-configs-complete.md)   |
-| 5   | ラベル                | メタデータ管理           | [BigQuery設定](../dbt-setup/bigquery-configs-complete.md)   |
-| 6   | Time Travel           | 過去データアクセス       | [BigQuery設定](../dbt-setup/bigquery-configs-complete.md)   |
-| 7   | Authorized Views      | ビュー経由のアクセス制御 | [BigQuery設定](../dbt-setup/bigquery-configs-complete.md)   |
-| 8   | Row-level Security    | 行レベルセキュリティ     | [BigQuery設定](../dbt-setup/bigquery-configs-complete.md)   |
-| 9   | Column-level Security | 列レベルセキュリティ     | [BigQuery設定](../dbt-setup/bigquery-configs-complete.md)   |
-| 10  | Reservations          | 専用スロット予約         | [BigQuery設定](../dbt-setup/bigquery-configs-complete.md)   |
+| #   | 機能                  | 内容                     | 参照                                                           |
+| --- | --------------------- | ------------------------ | -------------------------------------------------------------- |
+| 1   | Materialized View     | 自動更新ビュー           | [BigQuery設定](../dbt-bigquery/bigquery-configs-complete.md)   |
+| 2   | Python UDF            | Pythonカスタム関数       | [Python UDF](../dbt-bigquery/bigquery-python-udf-deep-dive.md) |
+| 3   | 暗号化（KMS）         | データ暗号化             | [BigQuery設定](../dbt-bigquery/bigquery-configs-complete.md)   |
+| 4   | テーブル有効期限      | 自動削除設定             | [BigQuery設定](../dbt-bigquery/bigquery-configs-complete.md)   |
+| 5   | ラベル                | メタデータ管理           | [BigQuery設定](../dbt-bigquery/bigquery-configs-complete.md)   |
+| 6   | Time Travel           | 過去データアクセス       | [BigQuery設定](../dbt-bigquery/bigquery-configs-complete.md)   |
+| 7   | Authorized Views      | ビュー経由のアクセス制御 | [BigQuery設定](../dbt-bigquery/bigquery-configs-complete.md)   |
+| 8   | Row-level Security    | 行レベルセキュリティ     | [BigQuery設定](../dbt-bigquery/bigquery-configs-complete.md)   |
+| 9   | Column-level Security | 列レベルセキュリティ     | [BigQuery設定](../dbt-bigquery/bigquery-configs-complete.md)   |
+| 10  | Reservations          | 専用スロット予約         | [BigQuery設定](../dbt-bigquery/bigquery-configs-complete.md)   |
 
 ---
 
@@ -353,13 +353,13 @@ authorship:
 
 ### コスト削減
 
-| 施策           | 検証項目               | 参照                                                                       |
-| -------------- | ---------------------- | -------------------------------------------------------------------------- |
-| スキャン量削減 | パーティショニング     | [パーティション＆クラスタ](../dbt-models/partitioning-clustering-guide.md) |
-| フィルタ効率化 | クラスタリング         | [パーティション＆クラスタ](../dbt-models/partitioning-clustering-guide.md) |
-| 段階的更新     | incremental モデル     | [Models](../dbt-models/models.md)                                          |
-| コスト上限設定 | `maximum_bytes_billed` | [BigQuery接続](../dbt-setup/bigquery-connection.md)                        |
-| バッチ優先度   | `priority: batch`      | [BigQuery接続](../dbt-setup/bigquery-connection.md)                        |
+| 施策           | 検証項目               | 参照                                                                            |
+| -------------- | ---------------------- | ------------------------------------------------------------------------------- |
+| スキャン量削減 | パーティショニング     | [パーティション＆クラスタ](../dbt-performance/partitioning-clustering-guide.md) |
+| フィルタ効率化 | クラスタリング         | [パーティション＆クラスタ](../dbt-performance/partitioning-clustering-guide.md) |
+| 段階的更新     | incremental モデル     | [Models](../dbt-models/models.md)                                               |
+| コスト上限設定 | `maximum_bytes_billed` | [BigQuery接続](../dbt-connection/bigquery-connection.md)                        |
+| バッチ優先度   | `priority: batch`      | [BigQuery接続](../dbt-connection/bigquery-connection.md)                        |
 
 ### データ品質
 
@@ -368,32 +368,32 @@ authorship:
 | 一意性チェック | unique テスト        | [Tests](../dbt-testing/testing-config.md)               |
 | NULL値チェック | not_null テスト      | [Tests](../dbt-testing/testing-config.md)               |
 | 外部キー整合性 | relationships テスト | [Tests](../dbt-testing/testing-config.md)               |
-| 型安全性       | Contracts            | [Contracts](../dbt-models/contracts-config.md)          |
+| 型安全性       | Contracts            | [Contracts](../dbt-performance/contracts-config.md)     |
 | ロジック検証   | Unit Tests           | [Unit Tests](../dbt-testing/unit-tests-verification.md) |
 
 ### パフォーマンス
 
-| 施策           | 検証項目                | 参照                                                                       |
-| -------------- | ----------------------- | -------------------------------------------------------------------------- |
-| 並列実行       | threads 設定            | [パフォーマンス最適化](../dbt-setup/performance-optimization.md)           |
-| マテビュー活用 | materialized_view       | [BigQuery設定](../dbt-setup/bigquery-configs-complete.md)                  |
-| クエリ最適化   | パーティション+クラスタ | [パーティション＆クラスタ](../dbt-models/partitioning-clustering-guide.md) |
-| 増分処理       | incremental 戦略        | [Models](../dbt-models/models.md)                                          |
+| 施策           | 検証項目                | 参照                                                                            |
+| -------------- | ----------------------- | ------------------------------------------------------------------------------- |
+| 並列実行       | threads 設定            | [パフォーマンス最適化](../dbt-config/performance-optimization.md)               |
+| マテビュー活用 | materialized_view       | [BigQuery設定](../dbt-bigquery/bigquery-configs-complete.md)                    |
+| クエリ最適化   | パーティション+クラスタ | [パーティション＆クラスタ](../dbt-performance/partitioning-clustering-guide.md) |
+| 増分処理       | incremental 戦略        | [Models](../dbt-models/models.md)                                               |
 
 ### 履歴管理
 
-| 施策        | 検証項目             | 参照                                                      |
-| ----------- | -------------------- | --------------------------------------------------------- |
-| SCD Type 2  | Snapshots            | [Snapshots](../dbt-models/snapshot-config.md)             |
-| Time Travel | BigQuery Time Travel | [BigQuery設定](../dbt-setup/bigquery-configs-complete.md) |
+| 施策        | 検証項目             | 参照                                                         |
+| ----------- | -------------------- | ------------------------------------------------------------ |
+| SCD Type 2  | Snapshots            | [Snapshots](../dbt-performance/snapshot-config.md)           |
+| Time Travel | BigQuery Time Travel | [BigQuery設定](../dbt-bigquery/bigquery-configs-complete.md) |
 
 ### CI/CD
 
-| 施策                | 検証項目               | 参照                                                    |
-| ------------------- | ---------------------- | ------------------------------------------------------- |
-| Unit Tests          | モックデータ検証       | [Unit Tests](../dbt-testing/unit-tests-verification.md) |
-| Contracts           | コンパイル時型チェック | [Contracts](../dbt-models/contracts-config.md)          |
-| Service Account認証 | CI/CD用認証            | [BigQuery接続](../dbt-setup/bigquery-connection.md)     |
+| 施策                | 検証項目               | 参照                                                     |
+| ------------------- | ---------------------- | -------------------------------------------------------- |
+| Unit Tests          | モックデータ検証       | [Unit Tests](../dbt-testing/unit-tests-verification.md)  |
+| Contracts           | コンパイル時型チェック | [Contracts](../dbt-performance/contracts-config.md)      |
+| Service Account認証 | CI/CD用認証            | [BigQuery接続](../dbt-connection/bigquery-connection.md) |
 
 ---
 

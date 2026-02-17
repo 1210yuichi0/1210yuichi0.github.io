@@ -220,7 +220,7 @@ dbt compile --profiles-dir . --target sandbox
 - `query-comment`: SQLコメント挿入
 - `vars`: グローバル変数
 
-**詳細**: [Category 1レポート](../dbt-setup/project-basic-config.md)
+**詳細**: [Category 1レポート](../dbt-connection/project-basic-config.md)
 
 ---
 
@@ -253,7 +253,7 @@ dbt run --select stg_customers --profiles-dir . --target sandbox
 - `maximum_bytes_billed`: コスト上限
 - `threads`: 並列実行数
 
-**詳細**: [Category 2レポート](../dbt-setup/bigquery-connection.md)
+**詳細**: [Category 2レポート](../dbt-connection/bigquery-connection.md)
 
 ---
 
@@ -405,7 +405,7 @@ dbt docs serve --profiles-dir . --port 8080
 open http://localhost:8080
 ```
 
-**詳細**: [Category 5レポート](../dbt-models/documentation-config.md)
+**詳細**: [Category 5レポート](../dbt-config/documentation-config.md)
 
 ---
 
@@ -433,7 +433,7 @@ dbt run --select customers --profiles-dir . --target sandbox --log-level debug
 # DEBUG: BigQuery adapter: Query complete, processed 5.2 MB in 3.2s
 ```
 
-**詳細**: [Category 6レポート](../dbt-setup/performance-optimization.md)
+**詳細**: [Category 6レポート](../dbt-config/performance-optimization.md)
 
 ---
 
@@ -462,7 +462,7 @@ dbt snapshot --profiles-dir . --target sandbox
 # 17:35:05  1 of 1 OK snapshotted dbt_sandbox_snapshots.customers_snapshot ........... [MERGE (5 inserted, 3 updated) in 5.0s]
 ```
 
-**詳細**: [Category 7レポート](../dbt-models/snapshot-config.md)
+**詳細**: [Category 7レポート](../dbt-performance/snapshot-config.md)
 
 ---
 
@@ -481,7 +481,7 @@ dbt seed --select raw_customers --profiles-dir . --target sandbox
 dbt seed --full-refresh --profiles-dir . --target sandbox
 ```
 
-**詳細**: [Category 8レポート](../dbt-setup/seed-config.md)
+**詳細**: [Category 8レポート](../dbt-config/seed-config.md)
 
 ---
 
@@ -503,7 +503,7 @@ dbt run --profiles-dir . --target sandbox
 # 17:30:51  1 of 1 OK hook: dbt.on-run-end.0 ......................................... [OK in 1.0s]
 ```
 
-**詳細**: [Category 9レポート](../dbt-models/hooks-config.md)
+**詳細**: [Category 9レポート](../dbt-config/hooks-config.md)
 
 ---
 
@@ -528,7 +528,7 @@ dbt deps
 # 17:30:05  Up to date!
 ```
 
-**詳細**: [Category 10レポート](../dbt-setup/other-config.md)
+**詳細**: [Category 10レポート](../dbt-config/other-config.md)
 
 ---
 
