@@ -12,6 +12,23 @@ authorship:
   reviewed: false
 ---
 
+# 学べること
+
+- **Schema Tests、Singular Tests、Unit Testsの使い分け**
+- **31テストの実測検証結果（30 PASS、1 FAIL）**
+- **テスト設定（severity、store_failures）の実装パターン**
+- **データ品質保証のベストプラクティス**
+
+# はじめに
+
+dbtのテスト機能は、データ品質を保証するための中核です。本記事では、Schema Tests、Singular Tests、Unit Testsの3種類のテストを実際に検証し、実務で使える設定パターンとベストプラクティスを明らかにします。
+
+**検証環境**:
+- dbtバージョン: 1.11.5
+- dbt-bigqueryバージョン: 1.11.0
+- 検証日時: 2026-02-17
+- 検証結果: 31テスト（30 PASS、1 FAIL）
+
 ## 検証概要
 
 **検証日時**: 2026-02-17 22:52 JST  

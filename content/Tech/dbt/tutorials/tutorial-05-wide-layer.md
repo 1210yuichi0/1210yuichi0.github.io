@@ -4,9 +4,25 @@ date: 2026-02-17
 tags: ["dbt", "bigquery", "wide-layer", "architecture", "best-practices"]
 series: "dbt × BigQueryで始めるデータモデリング"
 series_order: 5
+authorship:
+  type: ai-assisted
+  model: Claude Sonnet 4.5
+  date: 2026-02-17
+  reviewed: false
 ---
 
-# 第5回: Wide層を導入してアーキテクチャを改善する
+# 学べること
+
+- **Wide層によるjoinロジックの一元化**
+- **コード削減60-71%の実現方法**
+- **mart作成の簡素化と保守性の劇的向上**
+- **実践的なアーキテクチャ改善手法**
+
+# はじめに
+
+前回、**joinロジックの分散**という深刻な問題を体験しました。10個のmartで既に保守が困難な状態でした。
+
+本チュートリアルでは、**Wide層**を導入することで、joinロジックを1箇所に集約し、コードを60-71%削減し、保守性を劇的に向上させる方法を実践的に学びます。
 
 ## 概要
 

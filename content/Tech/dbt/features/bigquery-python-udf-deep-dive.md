@@ -11,7 +11,14 @@ authorship:
   reviewed: false
 ---
 
-## はじめに
+# 学べること
+
+- **dbt 1.11のBigQuery Python UDF機能の実装方法**
+- **5つの実用的なUDF（文字列処理、JSON、配列、日付、ML推論）の実装例**
+- **実際の検証結果とパフォーマンス特性**
+- **ユースケース探索と実務での活用方法**
+
+# はじめに
 
 dbt 1.11で導入されたBigQuery Python UDFは、SQLだけでは難しかったデータ処理をPythonで実装できる強力な機能です。
 

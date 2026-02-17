@@ -4,9 +4,25 @@ date: 2026-02-17
 tags: ["dbt", "bigquery", "dimensional-modeling", "data-engineering", "best-practices"]
 series: "dbt × BigQueryで始めるデータモデリング"
 series_order: 4
+authorship:
+  type: ai-assisted
+  model: Claude Sonnet 4.5
+  date: 2026-02-17
+  reviewed: false
 ---
 
-# 第4回: dim/factを拡張してカオスな環境をイメージしよう
+# 学べること
+
+- **joinロジックの分散がもたらす保守性の問題**
+- **実際のビジネス環境でのアンチパターン**
+- **なぜWide層が必要なのかの体感的理解**
+- **カオスな状態からの脱却方法の予習**
+
+# はじめに
+
+前回まで、ディメンショナルモデリングの基本とディメンションの拡張を学びました。しかし、実際のビジネス環境では「今必要な分析だけを作る」アプローチを続けると、やがて **joinロジックの分散** という問題に直面します。
+
+本チュートリアルでは、**意図的にカオスな状態を作り出す**ことで、なぜ次章の「Wide層」が必要なのかを体感的に理解します。
 
 ## 概要
 
