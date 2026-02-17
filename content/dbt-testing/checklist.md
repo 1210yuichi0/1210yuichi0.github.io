@@ -55,7 +55,7 @@ draft: false
 ├── index.md                      # 統合インデックス (11KB)
 ├── execution-guide.md            # 再実行ガイド (25KB)
 ├── README.md                     # このディレクトリの説明
-├── CHECKLIST.md                  # このファイル
+├── checklist.md                  # このファイル
 ├── project-basic-config.md       # Category 1 (22KB)
 ├── bigquery-connection.md        # Category 2 (39KB)
 ├── models/                       # Category 3 (分割済み)
