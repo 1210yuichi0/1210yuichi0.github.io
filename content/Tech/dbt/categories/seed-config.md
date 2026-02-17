@@ -40,9 +40,6 @@ graph TB
     F --> H[国コード、状態マスタ]
     F --> I[テスト用データ]
 
-    style A fill:#e3f2fd
-    style C fill:#e8f5e9
-    style E fill:#fff3e0
 ```
 
 ## 検証環境
@@ -100,8 +97,6 @@ flowchart LR
 
     I --> J[完了]
 
-    style C fill:#e3f2fd
-    style I fill:#e8f5e9
 ```
 
 #### CSVファイルの作成
@@ -271,10 +266,6 @@ flowchart TD
 
     H --> I[明示的型指定]
 
-    style E fill:#ffebee
-    style F fill:#ffebee
-    style G fill:#ffebee
-    style I fill:#e8f5e9
 ```
 
 #### dbt_project.ymlでのcolumn_types設定
@@ -413,8 +404,6 @@ flowchart TD
     C --> F[バッククォートで囲む]
     E --> G[そのまま使用]
 
-    style C fill:#fff3e0
-    style F fill:#ffebee
 ```
 
 #### 予約語を含むCSV
@@ -560,9 +549,6 @@ graph TB
     D --> H["delimiter: '|'"]
     E --> I["delimiter: ';'など"]
 
-    style F fill:#e8f5e9
-    style G fill:#fff3e0
-    style H fill:#e3f2fd
 ```
 
 #### タブ区切りファイル（TSV）
@@ -732,9 +718,6 @@ flowchart TD
     E --> J[完了]
     I --> J
 
-    style C fill:#ffebee
-    style H fill:#fff3e0
-    style J fill:#e8f5e9
 ```
 
 #### 通常のseed実行
@@ -932,8 +915,6 @@ graph TB
     C --> I[頻繁に更新されるデータ]
     C --> J[トランザクションデータ]
 
-    style B fill:#e8f5e9
-    style C fill:#ffebee
 ```
 
 **推奨される使用例**:

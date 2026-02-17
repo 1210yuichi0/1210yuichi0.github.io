@@ -86,9 +86,6 @@ flowchart TD
     Q4 -->|Yes| SA_File[Service Account File<br/>⭐⭐ 従来の方法]
     Q4 -->|No| SA_JSON2[Service Account JSON<br/>⭐⭐⭐ 推奨]
 
-    style OAuth_gcloud fill:#90EE90
-    style WIF fill:#FFD700
-    style SA_JSON fill:#87CEEB
 ```
 
 ### 1.2 認証方法の比較表
@@ -451,9 +448,6 @@ graph TB
     Staging --> SA_JSON
     Prod --> SA_JSON
 
-    style OAuth_G fill:#90EE90
-    style SA_File fill:#87CEEB
-    style SA_JSON fill:#FFD700
 ```
 
 ---
@@ -894,9 +888,6 @@ flowchart LR
     ExecProj -->|データアクセス| DataProj1[project<br/>data-warehouse-1<br/>📊 データ保存先]
     ExecProj -->|データアクセス| DataProj2[project<br/>data-warehouse-2<br/>📊 データ保存先]
 
-    style ExecProj fill:#FFD700
-    style DataProj1 fill:#87CEEB
-    style DataProj2 fill:#87CEEB
 ```
 
 **ベストプラクティス**:
@@ -1010,7 +1001,6 @@ flowchart LR
     Impersonate -->|権限切り替え| SA[Service Account<br/>dbt-runner@project.iam]
     SA -->|BigQueryアクセス| BQ[(BigQuery)]
 
-    style Impersonate fill:#FFD700
 ```
 
 **メリット**:
@@ -1115,9 +1105,6 @@ flowchart TB
         ProdConfig["method: service-account-json<br/>threads: 16<br/>priority: batch<br/>timeout: 3600秒<br/>retries: 1<br/>cost_limit: 1TB"]
     end
 
-    style DevConfig fill:#90EE90
-    style CIConfig fill:#87CEEB
-    style ProdConfig fill:#FFD700
 ```
 
 #### ローカル開発環境
@@ -1530,9 +1517,6 @@ flowchart TB
         BP4[適切なthreadsを設定]
     end
 
-    style Auth4 fill:#FFD700
-    style Required fill:#FF6B6B
-    style BP1 fill:#90EE90
 ```
 
 ### 重要な学び

@@ -76,10 +76,6 @@ flowchart LR
     B --> C[マート層<br/>customers/orders]
     C --> D[BI/ダッシュボード]
 
-    style A fill:#ffebee
-    style B fill:#fff3e0
-    style C fill:#e8f5e9
-    style D fill:#e3f2fd
 ```
 
 ---
@@ -584,14 +580,6 @@ flowchart LR
     F --> G
     F --> H
 
-    style A fill:#ffebee
-    style C fill:#ffebee
-    style E fill:#ffebee
-    style B fill:#fff3e0
-    style D fill:#fff3e0
-    style F fill:#fff3e0
-    style G fill:#e8f5e9
-    style H fill:#e8f5e9
 ```
 
 ---

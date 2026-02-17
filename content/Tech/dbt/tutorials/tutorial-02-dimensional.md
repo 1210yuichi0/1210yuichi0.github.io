@@ -57,13 +57,6 @@ flowchart TD
     E --> F
     F --> G[BI/ダッシュボード]
 
-    style A fill:#ffebee
-    style B fill:#fff3e0
-    style C fill:#e3f2fd
-    style D fill:#e1f5fe
-    style E fill:#fce4ec
-    style F fill:#e8f5e9
-    style G fill:#f3e5f5
 ```
 
 ### 1.2 FactとDimensionの違い
@@ -137,9 +130,6 @@ flowchart LR
     A[Staging<br/>生データ整形] --> B[Component<br/>再利用可能な部品]
     B --> C[Mart<br/>ビジネス向け集計]
 
-    style A fill:#fff3e0
-    style B fill:#e3f2fd
-    style C fill:#e8f5e9
 ```
 
 | レイヤー      | 目的             | テーブル種別    | 例                          |
@@ -476,17 +466,6 @@ flowchart TB
     G --> K[mart_customer_sales_yearly]
     H --> K
 
-    style A fill:#ffebee
-    style C fill:#ffebee
-    style E fill:#ffebee
-    style B fill:#fff3e0
-    style D fill:#fff3e0
-    style F fill:#fff3e0
-    style G fill:#e1f5fe
-    style H fill:#fce4ec
-    style I fill:#e8f5e9
-    style J fill:#e8f5e9
-    style K fill:#e8f5e9
 ```
 
 **依存関係の理解**:
@@ -550,9 +529,6 @@ flowchart LR
     A[fct_orders<br/>既存] --> B[mart_customer_sales_monthly<br/>既存]
     A --> C[mart_product_sales_monthly<br/>✨新規]
 
-    style A fill:#fce4ec
-    style B fill:#e8f5e9
-    style C fill:#fff9c4
 ```
 
 ---

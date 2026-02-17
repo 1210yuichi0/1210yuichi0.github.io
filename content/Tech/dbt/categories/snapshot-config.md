@@ -44,9 +44,6 @@ graph TB
 
     H --> I[履歴データ]
 
-    style B fill:#e1f5ff
-    style E fill:#fff4e6
-    style H fill:#e8f5e9
 ```
 
 ## 検証環境
@@ -128,9 +125,6 @@ flowchart TD
     H --> J
     I --> J
 
-    style E fill:#fff3e0
-    style G fill:#ffebee
-    style J fill:#e8f5e9
 ```
 
 #### スナップショット定義
@@ -260,9 +254,6 @@ flowchart LR
     E -->|Yes| F[レコード更新]
     E -->|No| G[スキップ]
 
-    style C fill:#e3f2fd
-    style D fill:#fff3e0
-    style F fill:#ffebee
 ```
 
 #### Check戦略: 全カラム比較
@@ -353,8 +344,6 @@ graph TB
     H -->|Yes| I[Timestamp推奨]
     H -->|No| J[Check使用]
 
-    style I fill:#e8f5e9
-    style J fill:#fff3e0
 ```
 
 #### 検証結果
@@ -487,8 +476,6 @@ flowchart TD
     F -->|Yes| G[Timestamp戦略使用可能]
     F -->|No| H[Check戦略を使用]
 
-    style G fill:#e8f5e9
-    style H fill:#fff3e0
 ```
 
 #### ソーステーブルの準備
@@ -623,9 +610,6 @@ flowchart TD
     F --> H[削除レコードを履歴として保持]
     D --> I[削除レコードは現在も有効に見える]
 
-    style F fill:#ffebee
-    style H fill:#fff3e0
-    style I fill:#ffccbc
 ```
 
 #### 設定例
@@ -732,9 +716,6 @@ graph TB
     C --> E[同じunique_keyのレコード比較]
     D --> F[バージョン管理]
 
-    style A fill:#e3f2fd
-    style E fill:#fff3e0
-    style F fill:#e8f5e9
 ```
 
 #### 単一カラムのunique_key
@@ -860,8 +841,6 @@ flowchart LR
     E --> G[固定スキーマ]
     F --> H[環境別スキーマ]
 
-    style G fill:#fff3e0
-    style H fill:#e8f5e9
 ```
 
 #### 固定スキーマ
@@ -970,8 +949,6 @@ graph TB
     F --> H[valid_from: 2026-02-01]
     F --> I[valid_to: NULL]
 
-    style B fill:#ffebee
-    style F fill:#e8f5e9
 ```
 
 #### 完全なSCD Type 2実装
@@ -1166,8 +1143,6 @@ flowchart TD
     J --> L
     K --> L
 
-    style G fill:#fff3e0
-    style L fill:#e8f5e9
 ```
 
 #### スナップショット実行コマンド
@@ -1277,9 +1252,6 @@ flowchart TD
     E --> J[is_deletedフラグ]
     J --> K[スナップショットで追跡]
 
-    style C fill:#e8f5e9
-    style E fill:#fff3e0
-    style D fill:#ffebee
 ```
 
 #### ハードデリート処理（invalidate_hard_deletes=true）
@@ -1415,8 +1387,6 @@ graph TB
     C --> F[更新追跡に最適]
     D --> G[特定キー検索に最適]
 
-    style B fill:#e8f5e9
-    style E fill:#e3f2fd
 ```
 
 #### dbt_valid_fromでパーティション
@@ -1519,9 +1489,6 @@ flowchart LR
     C --> F[現在レコード1つのみ]
     D --> G[ビジネスルール]
 
-    style E fill:#e8f5e9
-    style F fill:#fff3e0
-    style G fill:#e3f2fd
 ```
 
 #### スナップショットテスト定義
@@ -1693,8 +1660,6 @@ flowchart TD
     E --> H[パフォーマンス最適化]
     F --> I[確実な変更検出]
 
-    style C fill:#e8f5e9
-    style E fill:#fff3e0
 ```
 
 ### 2. パフォーマンス最適化

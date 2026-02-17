@@ -54,12 +54,6 @@ flowchart TD
     Start --> Q6{自動リフレッシュ必要?}
     Q6 -->|Yes| MatView[Materialized View<br/>materialized: materialized_view]
 
-    style View fill:#e1f5ff
-    style Table fill:#fff4e1
-    style Merge fill:#ffe1f5
-    style InsertOver fill:#ffe1f5
-    style Ephemeral fill:#f0f0f0
-    style MatView fill:#e1ffe1
 ```
 
 # Table と View - 基本のマテリアライゼーション

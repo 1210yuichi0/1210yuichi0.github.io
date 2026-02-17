@@ -67,8 +67,6 @@ flowchart LR
     Manifest --> Serve
     Serve --> WebUI[Webブラウザ<br/>http://localhost:8080]
 
-    style Generate fill:#87CEEB
-    style WebUI fill:#FFD700
 ```
 
 **dbt docs**は、dbtプロジェクトの自動ドキュメント生成ツールです。
@@ -163,8 +161,6 @@ flowchart TB
     Detail --> Tests[テスト一覧]
     Detail --> Lineage[データリネージ]
 
-    style DAG fill:#90EE90
-    style Detail fill:#87CEEB
 ```
 
 ---
@@ -563,9 +559,6 @@ flowchart LR
     Marts --> Report[Exposure<br/>Monthly Report]
     Marts --> API[Exposure<br/>Customer API]
 
-    style Dashboard fill:#FFD700
-    style Report fill:#FFD700
-    style API fill:#FFD700
 ```
 
 ---
@@ -726,10 +719,6 @@ flowchart TB
     Layer --> Model[モデルレベル<br/>customers]
     Model --> Column[カラムレベル<br/>customer_id]
 
-    style Project fill:#FFD700
-    style Layer fill:#87CEEB
-    style Model fill:#90EE90
-    style Column fill:#FFA07A
 ```
 
 **1. プロジェクトレベル（README.md）**:
@@ -1000,11 +989,6 @@ flowchart TB
     Meta --> Quality
     Exposures --> Impact
 
-    style DocsGen fill:#87CEEB
-    style Desc fill:#90EE90
-    style DocBlocks fill:#FFD700
-    style Meta fill:#FFA07A
-    style Exposures fill:#DDA0DD
 ```
 
 ### 重要な学び

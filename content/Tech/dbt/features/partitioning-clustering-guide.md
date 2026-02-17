@@ -78,14 +78,6 @@ flowchart TD
     Q5 -->|Yes| PartCluster[✅ パーティション+クラスタリング<br/>推奨される組み合わせ]
     Q5 -->|No| PartOnly[✅ パーティションのみ]
 
-    style PartDate fill:#90EE90
-    style PartTS fill:#90EE90
-    style PartInt fill:#90EE90
-    style Cluster1 fill:#87CEEB
-    style ClusterM fill:#87CEEB
-    style PartCluster fill:#FFD700
-    style PartIngest fill:#FFD700
-    style ClusterMax fill:#FFD700
 ```
 
 ---
@@ -593,9 +585,6 @@ flowchart LR
     Part --> Cluster[2. クラスタリングプルーニング<br/>WHERE customer_id = 123<br/>→ 該当ブロックのみスキャン]
     Cluster --> Result[3. 最小限のスキャン<br/>コスト: 0.001円<br/>速度: 0.5秒]
 
-    style Part fill:#90EE90
-    style Cluster fill:#87CEEB
-    style Result fill:#FFD700
 ```
 
 **クエリ例**:

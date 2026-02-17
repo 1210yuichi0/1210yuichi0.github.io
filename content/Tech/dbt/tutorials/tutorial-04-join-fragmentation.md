@@ -428,10 +428,6 @@ graph TD
     SPAY --> M3
     SPAY --> M4
 
-    style M1 fill:#ffcccc
-    style M2 fill:#ffcccc
-    style M3 fill:#ffcccc
-    style M4 fill:#ffcccc
 ```
 
 ### 重複するjoinパターンの分析
@@ -564,10 +560,6 @@ graph LR
     WIDE --> M2
     WIDE --> M3
 
-    style WIDE fill:#90EE90
-    style M1 fill:#87CEEB
-    style M2 fill:#87CEEB
-    style M3 fill:#87CEEB
 ```
 
 ### 期待される効果

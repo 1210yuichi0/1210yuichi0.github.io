@@ -70,8 +70,6 @@ flowchart TD
 
     C --> H
 
-    style I fill:#ffebee
-    style H fill:#e8f5e9
 ```
 
 ### 1.2 基本設定
@@ -152,9 +150,6 @@ flowchart LR
     E --> F[下流クエリ<br/>破綻防止]
     E --> G[データ品質<br/>保証]
 
-    style E fill:#e8f5e9
-    style F fill:#e3f2fd
-    style G fill:#fff3e0
 ```
 
 ### 2.2 実践例: Contractとunit testsの併用
@@ -877,9 +872,6 @@ flowchart TD
     F -->|Yes| H[BigQuery実行]
     H --> I[✅ 成功]
 
-    style G fill:#ffebee
-    style I fill:#e8f5e9
-    style E fill:#fff3e0
 ```
 
 **重要な学び**:
@@ -910,10 +902,6 @@ flowchart LR
     D --> D1[全Contract + 全tests<br/>完全検証]
     E --> E1[本番実行<br/>Contract enforced]
 
-    style B1 fill:#fff3e0
-    style C1 fill:#e3f2fd
-    style D1 fill:#e8f5e9
-    style E1 fill:#ffebee
 ```
 
 #### 推奨設定一覧
@@ -1117,10 +1105,6 @@ flowchart TD
 
     Q --> R[本番デプロイ]
 
-    style F fill:#fff3e0
-    style J fill:#e3f2fd
-    style N fill:#e8f5e9
-    style R fill:#ffebee
 ```
 
 **特徴**:
@@ -1157,9 +1141,6 @@ flowchart TD
     H --> F
     L --> I
 
-    style K fill:#e8f5e9
-    style G fill:#fff3e0
-    style J fill:#fff3e0
 ```
 
 ### 5.2 型定義のガイドライン
@@ -1370,7 +1351,6 @@ graph TB
 
     E --> F[データ品質<br/>完全保証]
 
-    style F fill:#e8f5e9
 ```
 
 ### 推奨設定まとめ

@@ -106,9 +106,6 @@ graph TB
     A --> E[データ品質チェック]
     A --> F[通知送信]
 
-    style A fill:#e3f2fd
-    style B fill:#fff3e0
-    style C fill:#e8f5e9
 ```
 
 #### dbt_project.ymlでの設定
@@ -273,8 +270,6 @@ flowchart TD
     E --> I[Slack通知]
     F --> J[一時テーブル削除]
 
-    style B fill:#e3f2fd
-    style G fill:#e8f5e9
 ```
 
 #### dbt_project.ymlでの設定
@@ -615,9 +610,6 @@ graph TB
     A --> E[データ品質チェック]
     A --> F[ドキュメント更新]
 
-    style A fill:#e3f2fd
-    style B fill:#fff3e0
-    style C fill:#e8f5e9
 ```
 
 #### 権限付与のpost-hook
@@ -819,9 +811,6 @@ flowchart LR
     C --> F[データメンテナンス]
     C --> G[スキーマ変更]
 
-    style A fill:#e3f2fd
-    style B fill:#fff3e0
-    style C fill:#e8f5e9
 ```
 
 #### 権限付与operation
@@ -1117,8 +1106,6 @@ graph TB
     D --> F[順次実行]
     E --> F
 
-    style A fill:#e3f2fd
-    style F fill:#e8f5e9
 ```
 
 #### リスト形式の複数フック
@@ -1287,9 +1274,6 @@ flowchart TD
     C --> H[データ検証]
     C --> I[通知]
 
-    style A fill:#e3f2fd
-    style B fill:#fff3e0
-    style C fill:#e8f5e9
 ```
 
 #### ref()とsource()の使用

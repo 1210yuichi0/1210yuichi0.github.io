@@ -52,9 +52,6 @@ flowchart LR
     A[dim_customers] --> B[mart_customer_sales_monthly]
     C[fct_orders] --> B
 
-    style A fill:#e1f5fe
-    style C fill:#fce4ec
-    style B fill:#e8f5e9
 ```
 
 ### 1.2 新しい分析要件
@@ -93,15 +90,6 @@ flowchart TD
     D --> H[mart_order_status_monthly<br/>✨新規]
     E --> I[mart_daily_sales<br/>✨新規]
 
-    style A fill:#fce4ec
-    style B fill:#e1f5fe
-    style C fill:#fff9c4
-    style D fill:#fff9c4
-    style E fill:#fff9c4
-    style F fill:#e8f5e9
-    style G fill:#c8e6c9
-    style H fill:#c8e6c9
-    style I fill:#c8e6c9
 ```
 
 | Dimension               | 目的                 | 行数 | 実行時間 |
@@ -414,11 +402,6 @@ flowchart TD
     A --> D[mart_order_status_monthly<br/>✨新規]
     A --> E[mart_daily_sales<br/>✨新規]
 
-    style A fill:#fce4ec
-    style B fill:#e8f5e9
-    style C fill:#c8e6c9
-    style D fill:#c8e6c9
-    style E fill:#c8e6c9
 ```
 
 **メリット**:

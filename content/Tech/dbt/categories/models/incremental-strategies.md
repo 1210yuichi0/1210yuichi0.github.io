@@ -51,10 +51,6 @@ flowchart TD
     Append --> Use3[ログデータ<br/>追記専用]
     Microbatch --> Use4[大規模履歴データ<br/>段階的処理]
 
-    style Merge fill:#ffe1f5
-    style InsertOver fill:#fff4e1
-    style Append fill:#e1f5ff
-    style Microbatch fill:#f5e1ff
 ```
 
 # Merge 戦略 - レコード更新に対応
@@ -307,10 +303,6 @@ graph TD
     Q1 --> Q3{数年分の履歴?}
     Q3 -->|Yes| Micro[microbatch戦略]
 
-    style Merge fill:#ffe1f5
-    style InsertOver fill:#fff4e1
-    style Append fill:#e1f5ff
-    style Micro fill:#f5e1ff
 ```
 
 ## よくある間違い
