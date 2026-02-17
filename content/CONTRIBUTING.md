@@ -181,41 +181,51 @@ unit testsは、dbt 1.8+で導入された機能で...
 
 ### フォルダ構造のルール
 
-**⛔ フォルダのネストは最小限に**
+**⛔ フォルダ階層のガイドライン**
 
-contentフォルダ内では、深いフォルダ階層を作りません。
+**基本ルール**:
+- `content/Tech/` までは標準構造（必須）
+- `Tech/` 以降は**内容に応じてフォルダ作成OK**
+- ただし**過度なネスト（4階層以上）は避ける**
 
 **✅ 許容される構造**:
 
 ```
 content/
-├── Tech/
-│   ├── dbt/
+├── Tech/                    # 1階層: トップカテゴリ（標準）
+│   ├── dbt/                 # 2階層: トピックフォルダ
 │   │   ├── index.md
-│   │   ├── overview.md
-│   │   ├── categories/
+│   │   ├── categories/      # 3階層: 分類フォルダ（OK）
+│   │   │   ├── models.md
 │   │   │   ├── project-config.md
-│   │   │   └── bigquery-connection.md
-│   │   └── guides/
+│   │   │   └── testing-config.md (15ファイル)
+│   │   └── guides/          # 3階層: 分類フォルダ（OK）
 │   │       └── quick-reference.md
+│   └── git/                 # 2階層: 別トピック
+│       └── git-basics.md
 ```
 
 **❌ 避けるべき構造** - 深すぎるネスト:
 
 ```
 content/
-├── Tech/
-│   ├── dbt/
-│   │   ├── categories/
-│   │   │   ├── models/
-│   │   │   │   ├── materialization/      # ⚠️ 深すぎる
-│   │   │   │   │   └── details.md
+├── Tech/                    # 1階層
+│   ├── dbt/                 # 2階層
+│   │   ├── categories/      # 3階層
+│   │   │   ├── models/      # 4階層 ⚠️ 深すぎる
+│   │   │   │   └── materialization/  # 5階層 ❌ 絶対NG
+│   │   │   │       └── details.md
 ```
 
 **理由**:
 - URL が長くなりすぎる
 - ナビゲーションが複雑になる
 - ファイル管理が困難になる
+
+**ガイドライン**:
+- 1-2階層: 必須（content/Tech/topic/）
+- 3階層: 内容に応じて作成OK（15ファイル超える場合など）
+- 4階層以上: 原則禁止（フラット化を検討）
 
 ---
 
