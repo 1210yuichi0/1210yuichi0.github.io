@@ -4,5 +4,8 @@
 # 禁止ワードチェック
 ./scripts/check-forbidden-words.sh
 
+# CONTRIBUTING.md ルールチェック
+./scripts/check-contributing-rules.sh
+
 # コード整形
 npx lint-staged
