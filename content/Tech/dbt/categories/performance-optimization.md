@@ -43,10 +43,6 @@ graph TB
     D --> I[適切なマテリアライゼーション]
     D --> J[インクリメンタル処理]
 
-    style A fill:#e1f5ff
-    style B fill:#fff4e6
-    style C fill:#f3e5f5
-    style D fill:#e8f5e9
 ```
 
 ## 検証環境
@@ -111,9 +107,6 @@ flowchart LR
     F -->|閾値超過| G[警告/中断]
     F -->|正常範囲| H[処理継続]
 
-    style A fill:#e3f2fd
-    style E fill:#fff3e0
-    style H fill:#e8f5e9
 ```
 
 #### dbt_project.yml設定
@@ -225,9 +218,6 @@ graph TD
 
     H --> J[最適化提案]
 
-    style A fill:#e3f2fd
-    style G fill:#fff3e0
-    style J fill:#ffebee
 ```
 
 #### マクロ: クエリパフォーマンス監視
@@ -347,9 +337,6 @@ graph TB
     H --> J[model_g]
     I --> J
 
-    style A fill:#e3f2fd
-    style C fill:#fff3e0
-    style J fill:#e8f5e9
 ```
 
 #### profiles.yml設定
@@ -440,9 +427,6 @@ flowchart TD
     E --> H[コスト: $0]
     G --> I[コスト: 通常料金]
 
-    style E fill:#e8f5e9
-    style H fill:#c8e6c9
-    style I fill:#fff3e0
 ```
 
 #### キャッシュ設定
@@ -570,10 +554,6 @@ flowchart TD
     I -->|なし| J[ephemeral]
     I -->|あり| E
 
-    style E fill:#e3f2fd
-    style F fill:#fff3e0
-    style H fill:#e8f5e9
-    style J fill:#f3e5f5
 ```
 
 #### マテリアライゼーション比較
@@ -760,9 +740,6 @@ graph TB
 
     F --> J[パーティション有効期限設定]
 
-    style C fill:#e8f5e9
-    style F fill:#e3f2fd
-    style J fill:#fff3e0
 ```
 
 #### パーティション設定例
@@ -923,9 +900,6 @@ flowchart LR
 
     H --> I[最頻出カラムを先頭]
 
-    style E fill:#e8f5e9
-    style G fill:#fff3e0
-    style I fill:#e3f2fd
 ```
 
 #### クラスタリング設定例
@@ -1057,9 +1031,6 @@ flowchart TD
     F --> J[パーティション置換]
     E --> H
 
-    style F fill:#e8f5e9
-    style H fill:#fff3e0
-    style J fill:#e3f2fd
 ```
 
 #### Merge戦略（デフォルト）
@@ -1240,8 +1211,6 @@ graph TB
     H[特性] --> I[View: ストレージ不要、常に最新]
     H --> J[Table: 高速、ストレージ必要]
 
-    style C fill:#ffebee
-    style F fill:#e8f5e9
 ```
 
 #### View設定例
@@ -1391,10 +1360,6 @@ flowchart TD
     K --> L[WITH句使用]
     L --> M[実行]
 
-    style D fill:#ffebee
-    style G fill:#fff3e0
-    style J fill:#e3f2fd
-    style M fill:#e8f5e9
 ```
 
 #### アンチパターン1: SELECT \*の使用
@@ -1660,8 +1625,6 @@ graph LR
     E -->|Yes| F[実装]
     E -->|No| G[保留/別施策]
 
-    style F fill:#e8f5e9
-    style G fill:#ffebee
 ```
 
 ### 4. 環境別の最適化戦略

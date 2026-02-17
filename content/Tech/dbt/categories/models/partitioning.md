@@ -54,12 +54,6 @@ flowchart TD
     Q4 -->|Yes| Filter[require_partition_filter: true]
     Q4 -->|データ保持期間あり| Expiration[partition_expiration_days: N]
 
-    style DatePart fill:#e1ffe1
-    style TimestampPart fill:#ffe1e1
-    style IngestionPart fill:#fff4e1
-    style IntPart fill:#e1f5ff
-    style Filter fill:#ffe1f5
-    style Expiration fill:#f5e1ff
 ```
 
 # DATE と INT64 RANGE パーティション - 推奨パターン

@@ -49,10 +49,6 @@ graph LR
     NoCluster -->|処理| All[全データ<br/>100GB]
     Cluster -->|処理| Part[必要な部分のみ<br/>1GB]
 
-    style Cluster fill:#e1ffe1
-    style Part fill:#e1ffe1
-    style NoCluster fill:#ffe1e1
-    style All fill:#ffe1e1
 ```
 
 # 単一列クラスタリング
@@ -135,7 +131,6 @@ graph TD
 
     Step3 --> Result[例: customer_id, status, order_date]
 
-    style Result fill:#e1ffe1
 ```
 
 **ルール**:
@@ -182,7 +177,6 @@ graph TD
     Step1 --> Step2[Step2: クラスタ絞り込み<br/>1GB → 0.1GB 90%削減]
     Step2 --> Result[最終スキャン: 0.1GB<br/>合計99.9%削減]
 
-    style Result fill:#e1ffe1
 ```
 
 **実測データ削減効果**:

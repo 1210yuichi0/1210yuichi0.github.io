@@ -471,9 +471,6 @@ flowchart LR
     B -->|customer_id| D[必要データのみ<br/>1 GB<br/>90%削減]
     B -->|customer_id+status| E[さらに絞込<br/>0.1 GB<br/>99%削減]
 
-    style C fill:#ffebee
-    style D fill:#fff3e0
-    style E fill:#e8f5e9
 ```
 
 **列順序の重要性**:
@@ -1310,8 +1307,6 @@ flowchart LR
 
     User -.->|直接アクセス不可| RestrictedDS
 
-    style AuthView fill:#e8f5e9
-    style RestrictedDS fill:#ffebee
 ```
 
 **設定手順**:
@@ -1652,11 +1647,6 @@ flowchart TD
     H --> J
     I --> J
 
-    style B fill:#ffebee
-    style D fill:#fff3e0
-    style E fill:#e3f2fd
-    style G fill:#f3e5f5
-    style J fill:#e8f5e9
 ```
 
 ### 環境別推奨設定

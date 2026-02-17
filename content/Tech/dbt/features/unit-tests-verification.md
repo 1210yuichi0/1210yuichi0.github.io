@@ -69,8 +69,6 @@ flowchart LR
     E -->|Yes| F[✅ PASS]
     E -->|No| G[❌ FAIL]
 
-    style F fill:#e8f5e9
-    style G fill:#ffebee
 ```
 
 ### 1.2 基本構文
@@ -136,11 +134,6 @@ flowchart TD
     Q3 -->|Yes| UNNEST[UNNEST形式<br/>型安全]
     Q3 -->|No| SQL[SQL形式<br/>完全制御]
 
-    style Dict fill:#e8f5e9
-    style CSV fill:#fff3e0
-    style SQL fill:#e3f2fd
-    style UNNEST fill:#f3e5f5
-    style Macro fill:#ffe1e1
 ```
 
 ---
@@ -399,8 +392,6 @@ flowchart TB
 
     E --> F[下流破綻ゼロ]
 
-    style E fill:#e8f5e9
-    style F fill:#fff3e0
 ```
 
 ### 3.2 実装例

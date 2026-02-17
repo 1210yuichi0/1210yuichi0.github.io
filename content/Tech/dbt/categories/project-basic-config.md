@@ -75,21 +75,6 @@ graph TD
     Root --> C1 & C2
     Root --> D1 & D2 & D3
 
-    style A1 fill:#e1f5ff
-    style A2 fill:#e1f5ff
-    style A3 fill:#e1f5ff
-    style A4 fill:#e1f5ff
-    style B1 fill:#fff4e1
-    style B2 fill:#fff4e1
-    style B3 fill:#fff4e1
-    style B4 fill:#fff4e1
-    style B5 fill:#fff4e1
-    style B6 fill:#fff4e1
-    style C1 fill:#e1ffe1
-    style C2 fill:#e1ffe1
-    style D1 fill:#ffe1f5
-    style D2 fill:#ffe1f5
-    style D3 fill:#ffe1f5
 ```
 
 ---
@@ -221,10 +206,6 @@ graph LR
     ProfilesYml --> Profile1[dbt:<br/>outputs:<br/>  sandbox<br/>  production]
     Profile1 --> Target1[target: sandbox]
 
-    style DbtProject fill:#e1f5ff
-    style ProfilesYml fill:#fff4e1
-    style Profile1 fill:#e1ffe1
-    style Target1 fill:#ffe1f5
 ```
 
 **ベストプラクティス**:
@@ -279,14 +260,6 @@ graph TD
     Models --> Marts[marts/]
     Models --> Verification[verification/]
 
-    style Root fill:#e1f5ff
-    style Models fill:#fff4e1
-    style Seeds fill:#fff4e1
-    style Tests fill:#fff4e1
-    style Analysis fill:#fff4e1
-    style Macros fill:#fff4e1
-    style Snapshots fill:#fff4e1
-    style Target fill:#e1ffe1
 ```
 
 ### 2.1 model-paths
@@ -937,11 +910,6 @@ graph TD
     Marts --> MartsCore[core/<br/>dim_customers.sql<br/>fact_orders.sql]
     Marts --> MartsFinance[finance/<br/>revenue.sql]
 
-    style Config fill:#e1f5ff
-    style Profiles fill:#ffe1e1
-    style Models fill:#fff4e1
-    style Marts fill:#e1ffe1
-    style Target fill:#ffe1e1
 ```
 
 ---
@@ -972,16 +940,6 @@ graph TB
     E4 --> S4
     E5 --> S5
 
-    style E1 fill:#ffe1e1
-    style E2 fill:#ffe1e1
-    style E3 fill:#ffe1e1
-    style E4 fill:#ffe1e1
-    style E5 fill:#ffe1e1
-    style S1 fill:#e1ffe1
-    style S2 fill:#e1ffe1
-    style S3 fill:#e1ffe1
-    style S4 fill:#e1ffe1
-    style S5 fill:#e1ffe1
 ```
 
 ---

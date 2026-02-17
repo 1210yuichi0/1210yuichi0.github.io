@@ -101,9 +101,6 @@ graph TD
     Cat2 --> Use2[環境管理]
     Cat3 --> Use3[テーブル分類]
 
-    style Use1 fill:#ffe1f5
-    style Use2 fill:#fff4e1
-    style Use3 fill:#e1f5ff
 ```
 
 **推奨ラベル構成**:
@@ -212,11 +209,6 @@ graph TD
     S1 --> M2
     M1 --> M3
 
-    style S1 fill:#e1f5ff
-    style I1 fill:#f0f0f0
-    style M1 fill:#ffe1f5
-    style M2 fill:#fff4e1
-    style M3 fill:#e1ffe1
 ```
 
 ### パターン1: 大規模Factテーブル
@@ -300,11 +292,6 @@ graph TD
     P4 --> P5
     P5 --> End[完了]
 
-    style P1 fill:#ffe1e1
-    style P2 fill:#fff4e1
-    style P3 fill:#e1ffe1
-    style P4 fill:#e1f5ff
-    style P5 fill:#f5e1ff
 ```
 
 **優先順位**:

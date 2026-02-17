@@ -37,13 +37,6 @@ graph TB
     A --> F[macros カスタムマクロ]
     A --> G[quoting 識別子クォート]
 
-    style A fill:#e1f5ff
-    style B fill:#fff4e6
-    style C fill:#f3e5f5
-    style D fill:#e8f5e9
-    style E fill:#fce4ec
-    style F fill:#e0f2f1
-    style G fill:#fff9c4
 ```
 
 ## 検証環境
@@ -114,9 +107,6 @@ flowchart LR
 
     E --> F[モデル/マクロで使用]
 
-    style A fill:#e3f2fd
-    style E fill:#fff3e0
-    style F fill:#e8f5e9
 ```
 
 #### dbt_project.ymlでのvars定義
@@ -308,9 +298,6 @@ flowchart TD
     D --> F[ref関数で参照]
     E --> F
 
-    style B fill:#e3f2fd
-    style C fill:#fff3e0
-    style F fill:#e8f5e9
 ```
 
 #### packages.ymlの設定
@@ -550,10 +537,6 @@ flowchart TD
     C -->|Redshift| F[redshift__macro]
     C -->|その他| G[default__macro]
 
-    style B fill:#e3f2fd
-    style D fill:#fff3e0
-    style E fill:#e8f5e9
-    style F fill:#f3e5f5
 ```
 
 #### dispatchマクロの実装
@@ -720,8 +703,6 @@ graph TB
     D --> F[dbt run実行]
     E --> G[dbt compile実行]
 
-    style C fill:#fff3e0
-    style E fill:#e8f5e9
 ```
 
 #### analysisクエリの作成
@@ -953,10 +934,6 @@ graph TB
     C --> F[計算ロジック、分類ルール]
     D --> G[カスタムテスト、検証]
 
-    style A fill:#e3f2fd
-    style B fill:#fff3e0
-    style C fill:#e8f5e9
-    style D fill:#f3e5f5
 ```
 
 #### ユーティリティマクロ
@@ -1208,8 +1185,6 @@ flowchart TD
     D --> F[database, schema, identifier]
     E --> F
 
-    style A fill:#e3f2fd
-    style F fill:#e8f5e9
 ```
 
 #### dbt_project.ymlでのquoting設定
@@ -1382,9 +1357,6 @@ graph TB
     C --> F[dbt実行のコスト把握]
     D --> G[問題クエリの特定]
 
-    style A fill:#e3f2fd
-    style E fill:#fff3e0
-    style F fill:#e8f5e9
 ```
 
 #### dbt_project.ymlでの設定
@@ -1503,8 +1475,6 @@ graph TB
     C --> G[overview.md]
     C --> H[schema.yml]
 
-    style A fill:#e3f2fd
-    style E fill:#e8f5e9
 ```
 
 #### overview.mdの作成
@@ -1720,9 +1690,6 @@ graph TB
     D --> F[macros/tests/]
     E --> G[tests/]
 
-    style A fill:#e3f2fd
-    style B fill:#fff3e0
-    style C fill:#e8f5e9
 ```
 
 #### 汎用テスト（Generic Test）
@@ -1931,8 +1898,6 @@ graph LR
 
     F[データ系譜] --> G[影響範囲分析]
 
-    style B fill:#e3f2fd
-    style G fill:#e8f5e9
 ```
 
 #### exposuresの定義

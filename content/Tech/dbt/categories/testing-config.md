@@ -184,10 +184,6 @@ flowchart TD
 
     UnitTests --> UT1[モックデータでテスト<br/>models/*.yml]
 
-    style DataTests fill:#87CEEB
-    style UnitTests fill:#FFD700
-    style SchemaTests fill:#90EE90
-    style SingularTests fill:#FFA07A
 ```
 
 ### 1.2 テストタイプの比較表
@@ -217,9 +213,6 @@ flowchart LR
     Warn --> Next
     Fail --> Stop[テスト終了]
 
-    style Pass fill:#90EE90
-    style Warn fill:#FFD700
-    style Fail fill:#FF6B6B
 ```
 
 ---
@@ -699,12 +692,6 @@ graph TB
     UT1 --> UT_Use[開発時・CI/CD]
     DT1 --> DT_Use[本番データ監視]
 
-    style UT1 fill:#FFD700
-    style UT2 fill:#FFD700
-    style UT3 fill:#FFD700
-    style DT1 fill:#87CEEB
-    style DT2 fill:#87CEEB
-    style DT3 fill:#87CEEB
 ```
 
 | 観点               | Unit Tests                   | Data Tests                     |
@@ -988,9 +975,6 @@ flowchart LR
     Select --> TestType[テストタイプ指定<br/>--select test_type:unit]
     Select --> TestName[テスト名指定<br/>--select unique_*]
 
-    style All fill:#87CEEB
-    style Model fill:#90EE90
-    style Tag fill:#FFD700
 ```
 
 **基本コマンド**:
@@ -1111,9 +1095,6 @@ flowchart TB
     Unit --> Integration
     Integration --> E2E
 
-    style Unit fill:#90EE90
-    style Integration fill:#87CEEB
-    style E2E fill:#FFD700
 ```
 
 **推奨比率**:
@@ -1148,9 +1129,6 @@ flowchart LR
     CI1 --> Prod1
     CI2 --> Prod2
 
-    style Dev1 fill:#90EE90
-    style CI1 fill:#87CEEB
-    style Prod1 fill:#FFD700
 ```
 
 **開発環境**:
@@ -1456,9 +1434,6 @@ flowchart TD
     Config --> Schedule[実行スケジュール設定]
     Schedule --> Monitor[監視・アラート設定]
 
-    style UseSchema fill:#90EE90
-    style UseSingular fill:#FFA07A
-    style Config fill:#87CEEB
 ```
 
 ---
@@ -1576,13 +1551,6 @@ flowchart TB
         BP4[テストピラミッドを意識]
     end
 
-    style ST1 fill:#90EE90
-    style ST2 fill:#90EE90
-    style ST3 fill:#90EE90
-    style ST4 fill:#90EE90
-    style STest fill:#FFA07A
-    style Opt1 fill:#87CEEB
-    style BP1 fill:#FFD700
 ```
 
 ### 重要な学び

@@ -77,9 +77,6 @@ graph TD
     DPM --> M3
     DOS --> M3
 
-    style M1 fill:#ffcccc
-    style M2 fill:#ffcccc
-    style M3 fill:#ffcccc
 ```
 
 #### After: Wide Layer Architecture
@@ -116,10 +113,6 @@ graph TD
     WIDE --> M2
     WIDE --> M3
 
-    style WIDE fill:#90EE90
-    style M1 fill:#87CEEB
-    style M2 fill:#87CEEB
-    style M3 fill:#87CEEB
 ```
 
 ## 実装: Wide層の作成
@@ -904,8 +897,6 @@ graph TB
     STG --> WIDE
     WIDE --> MARTS
 
-    style WIDE fill:#90EE90
-    style MARTS fill:#87CEEB
 ```
 
 ### プロジェクト構造
