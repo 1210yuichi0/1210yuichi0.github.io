@@ -186,32 +186,38 @@ unit testsは、dbt 1.8+で導入された機能で...
 
 **基本ルール**:
 
-- `content/Tech/` までは標準構造（必須）
-- `Tech/` 以降は**内容に応じてフォルダ作成OK**
-- ただし**過度なネスト（3階層以上）は避ける**
+- `content/` 直下に**機能別フォルダを作成**
+- フォルダは**1階層まで**（content/xxx/ のみ）
+- 2階層以上のネストは禁止
 
 **✅ 推奨される構造**:
 
 ```
 content/
-├── Tech/                    # 1階層: トップカテゴリ（標準）
-│   ├── dbt/                 # 2階層: トピックフォルダ（推奨上限）
-│   │   ├── index.md
-│   │   ├── overview.md
-│   │   └── quick-reference.md
-│   └── git/                 # 2階層: 別トピック
-│       └── git-basics.md
+├── dbt-setup/              # 1階層: 環境・接続設定 (7ファイル)
+│   ├── project-basic-config.md
+│   ├── bigquery-connection.md
+│   └── performance-optimization.md
+├── dbt-models/             # 1階層: モデル・変換 (11ファイル)
+│   ├── models.md
+│   ├── models-materialization.md
+│   └── partitioning-clustering-guide.md
+├── dbt-testing/            # 1階層: テスト・品質 (2ファイル)
+│   ├── testing-config.md
+│   └── unit-tests-verification.md
+└── dbt-guides/             # 1階層: ガイド・チュートリアル (10ファイル)
+    ├── index.md
+    ├── overview.md
+    └── tutorial-01-setup.md
 ```
 
-**❌ 避けるべき構造** - 深すぎるネスト:
+**❌ 避けるべき構造** - 2階層以上のネスト:
 
 ```
 content/
-├── Tech/                    # 1階層
-│   ├── dbt/                 # 2階層 ⚠️ 推奨上限（これ以上NG）
-│   │   ├── categories/      # 3階層 ❌ 原則禁止
-│   │   │   ├── models/      # 4階層 ❌ NG
-│   │   │   │   └── materialization.md
+├── Tech/                   # 1階層
+│   ├── dbt/                # 2階層 ❌ NG
+│   │   └── models.md
 ```
 
 **理由**:
@@ -219,11 +225,13 @@ content/
 - URL が長くなりすぎる
 - ナビゲーションが複雑になる
 - ファイル管理が困難になる
+- フォルダ構造が把握しにくい
 
 **ガイドライン**:
 
-- 1-2階層: 必須（content/Tech/topic/）
-- 3階層以上: 原則禁止（別フォルダ化を検討）
+- **content/直下に機能別フォルダ作成（1階層のみ）**
+- 2階層以上は禁止
+- フォルダ名: 機能を明確に表す名前（dbt-setup, dbt-models など）
 
 ---
 
