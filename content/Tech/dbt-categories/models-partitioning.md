@@ -24,6 +24,7 @@ authorship:
 BigQueryのパーティショニングは、大規模テーブルのクエリコストとパフォーマンスを劇的に改善する重要な機能です。本記事では、dbt + BigQueryで利用可能な4種類のパーティション戦略を実際に検証し、成功パターンと失敗パターンを明らかにします。
 
 **検証環境**:
+
 - dbt 1.11.5 + dbt-bigquery 1.11.0
 - BigQueryプロジェクト: sdp-sb-yada-29d2
 - データセット: dbt_sandbox
@@ -61,6 +62,7 @@ flowchart TD
 ## DATE パーティション ✅
 
 **設定例**:
+
 ```yaml
 config:
   materialized: table
@@ -71,16 +73,19 @@ config:
 ```
 
 **検証結果**:
+
 - 実行時間: 5.10秒
 - パーティション: 日付ごとに作成
 - BigQueryコンソールでパーティション情報確認可能
 
 **ユースケース**:
+
 - ✅ 日次バッチ処理
 - ✅ 時系列分析
 - ✅ ログデータ、イベントデータ
 
 **コスト削減効果**:
+
 ```sql
 -- ✅ パーティションフィルタあり（推奨）
 SELECT * FROM partition_date_demo
@@ -96,6 +101,7 @@ WHERE customer_id = 1
 ## INT64 RANGE パーティション ✅
 
 **設定例**:
+
 ```yaml
 config:
   materialized: table
@@ -109,6 +115,7 @@ config:
 ```
 
 **BigQueryでの実装**:
+
 ```sql
 CREATE TABLE `dbt_sandbox.partition_int_demo`
 PARTITION BY RANGE_BUCKET(customer_id, GENERATE_ARRAY(0, 1000, 10))
@@ -116,15 +123,18 @@ AS (...)
 ```
 
 **検証結果**:
+
 - 実行時間: 4.16秒
 - パーティション: customer_id を 10刻みで分割（0-9, 10-19, ...）
 
 **ユースケース**:
+
 - ✅ ユーザーID範囲による分割
 - ✅ 地域コード、店舗IDなどの範囲分割
 - ✅ 時系列以外のパーティショニング
 
 **注意点**:
+
 - 範囲外の値（<0 または >=1000）は特別なパーティションに格納される
 - `interval` は均等分割のみ（カスタム境界値は `GENERATE_ARRAY` で指定）
 
@@ -133,6 +143,7 @@ AS (...)
 ## TIMESTAMP パーティション ❌
 
 **設定例（失敗）**:
+
 ```yaml
 config:
   materialized: table
@@ -155,6 +166,7 @@ TIMESTAMP_TRUNC(<timestamp_column>, DAY/HOUR/MONTH/YEAR), ...
 **正しい設定**:
 
 方法1: DATE関数でラップ
+
 ```yaml
 config:
   materialized: table
@@ -165,6 +177,7 @@ config:
 ```
 
 方法2: モデル内でDATE列を作成
+
 ```sql
 SELECT
   order_id,
@@ -175,12 +188,14 @@ FROM {{ ref('stg_orders') }}
 ```
 
 **重要な学び**:
+
 - ⚠️ TIMESTAMP列は `DATE()` または `TIMESTAMP_TRUNC()` で変換が必要
 - ⚠️ dbt-bigqueryの `data_type: timestamp` は **直接は使えない**
 
 ## Time-ingestion パーティション ❌
 
 **設定例（失敗）**:
+
 ```yaml
 config:
   materialized: table
@@ -198,6 +213,7 @@ Runtime Error: Could not parse partition config
 **原因**: dbt-bigquery 1.11.0でのTime-ingestionパーティション設定構文が不明確
 
 **BigQueryでの正しいSQL**:
+
 ```sql
 CREATE TABLE `dbt_sandbox.partition_ingestion_demo`
 PARTITION BY _PARTITIONTIME  -- 疑似列を使用
@@ -207,6 +223,7 @@ AS (...)
 **dbtでの代替方法**:
 
 方法1: post-hookで設定
+
 ```sql
 {{
   config(
@@ -219,6 +236,7 @@ AS (...)
 ```
 
 方法2: DATE列を追加してパーティション
+
 ```sql
 SELECT
   *,
@@ -227,6 +245,7 @@ FROM {{ ref('source') }}
 ```
 
 **重要な学び**:
+
 - ⚠️ Time-ingestion パーティションはdbt-bigqueryで直接サポートが不完全
 - ✅ 代替: `CURRENT_DATE()` や `CURRENT_TIMESTAMP()` を列として追加してパーティション
 
@@ -235,6 +254,7 @@ FROM {{ ref('source') }}
 ## require_partition_filter ✅
 
 **設定例**:
+
 ```yaml
 config:
   materialized: table
@@ -245,10 +265,12 @@ config:
 ```
 
 **検証結果**: ✅ **成功**
+
 - テーブル作成成功
 - パーティションフィルタなしのクエリは **エラーになる**
 
 **クエリ例**:
+
 ```sql
 -- ✅ 成功（パーティションフィルタあり）
 SELECT * FROM partition_filter_required_demo
@@ -261,17 +283,20 @@ WHERE customer_id = 1;
 ```
 
 **ユースケース**:
+
 - ✅ 大規模テーブルで意図しない全件スキャンを防止
 - ✅ コスト管理が重要なプロジェクト
 - ✅ アナリストが直接クエリする環境
 
 **推奨設定**:
+
 - 本番環境の大規模factテーブルには **必ず設定すべき**
 - 開発環境では柔軟性のため `false` も検討
 
 ## partition_expiration_days ✅
 
 **設定例**:
+
 ```yaml
 config:
   materialized: table
@@ -282,15 +307,18 @@ config:
 ```
 
 **検証結果**: ✅ **成功**
+
 - 実行時間: 5.22秒
 - 7日以上前のパーティションは自動削除される
 
 **ユースケース**:
+
 - ✅ ログデータ（保持期間: 30日、90日など）
 - ✅ 一時的な分析テーブル
 - ✅ GDPRなどの法的要件（データ削除）
 
 **コスト削減効果**:
+
 ```
 データ保持期間 7日:
 - ストレージコスト: 1/52 (365日 → 7日)
@@ -298,6 +326,7 @@ config:
 ```
 
 **注意点**:
+
 - ⚠️ 削除は **取り消せない**（バックアップ推奨）
 - ⚠️ テーブルレベルの `hours_to_expiration` とは併用できない
 
@@ -305,18 +334,19 @@ config:
 
 ## パーティション設定まとめ
 
-| パーティション方式 | 状態 | 推奨度 | ユースケース |
-|-------------------|------|--------|-------------|
-| **DATE** | ✅ | ⭐⭐⭐⭐⭐ | 日次データ、時系列分析 |
-| **TIMESTAMP** | ⚠️ | ⭐⭐ | DATE変換が必要（推奨しない） |
-| **INT64 RANGE** | ✅ | ⭐⭐⭐⭐ | ユーザーID範囲、地域コード |
-| **Time-ingestion** | ❌ | ⭐ | dbtサポート不完全（代替手段推奨） |
-| **require_partition_filter** | ✅ | ⭐⭐⭐⭐⭐ | 大規模テーブルに必須 |
-| **partition_expiration_days** | ✅ | ⭐⭐⭐⭐ | ログ、一時データ |
+| パーティション方式            | 状態 | 推奨度     | ユースケース                      |
+| ----------------------------- | ---- | ---------- | --------------------------------- |
+| **DATE**                      | ✅   | ⭐⭐⭐⭐⭐ | 日次データ、時系列分析            |
+| **TIMESTAMP**                 | ⚠️   | ⭐⭐       | DATE変換が必要（推奨しない）      |
+| **INT64 RANGE**               | ✅   | ⭐⭐⭐⭐   | ユーザーID範囲、地域コード        |
+| **Time-ingestion**            | ❌   | ⭐         | dbtサポート不完全（代替手段推奨） |
+| **require_partition_filter**  | ✅   | ⭐⭐⭐⭐⭐ | 大規模テーブルに必須              |
+| **partition_expiration_days** | ✅   | ⭐⭐⭐⭐   | ログ、一時データ                  |
 
 ## ベストプラクティス
 
 大規模テーブルの推奨設定:
+
 ```yaml
 config:
   materialized: table

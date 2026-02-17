@@ -24,6 +24,7 @@ authorship:
 dbtのスナップショット機能は、変更履歴を追跡するための重要な機能で、SCD (Slowly Changing Dimensions) Type 2パターンを実装します。本記事では、timestamp戦略とcheck戦略の両方を検証し、実務で使える変更履歴管理のベストプラクティスを明らかにします。
 
 **検証環境**:
+
 - dbtバージョン: 1.11.5
 - dbt-bigqueryバージョン: 1.11.0
 - 検証日時: 2026-02-17
