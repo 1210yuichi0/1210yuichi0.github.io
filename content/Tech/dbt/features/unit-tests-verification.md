@@ -12,8 +12,6 @@ authorship:
   reviewed: false
 ---
 
-
-
 ## 検証概要
 
 **検証日時**: 2026-02-17  
@@ -27,6 +25,7 @@ authorship:
 ### 実測検証結果
 
 ✅ **全9個のunit testsが成功**
+
 - 実行時間: **10.76秒**
 - 並列実行: 24スレッド
 - seeds: 3テーブル（312行）
@@ -39,10 +38,10 @@ dbt 1.8+で導入されたunit testsは、**モックデータ**を使ってSQL�
 
 **従来のテストとの違い**:
 
-| テスト種類 | データ | 目的 | 実行速度 | コスト |
-|-----------|--------|------|---------|--------|
-| Schema Tests | 実データ | データ品質検証 | 遅い | 高い |
-| Unit Tests | モックデータ | ロジック検証 | 高速 | なし |
+| テスト種類   | データ       | 目的           | 実行速度 | コスト |
+| ------------ | ------------ | -------------- | -------- | ------ |
+| Schema Tests | 実データ     | データ品質検証 | 遅い     | 高い   |
+| Unit Tests   | モックデータ | ロジック検証   | 高速     | なし   |
 
 ---
 
@@ -81,26 +80,26 @@ flowchart LR
 unit_tests:
   - name: test_customer_aggregation
     description: "顧客別の注文集計ロジックを検証"
-    model: customers  # テスト対象モデル
+    model: customers # テスト対象モデル
 
     given:
       # 入力データ（モック）
       - input: ref('stg_customers')
         rows:
-          - {customer_id: 1, first_name: 'Alice'}
-          - {customer_id: 2, first_name: 'Bob'}
+          - { customer_id: 1, first_name: "Alice" }
+          - { customer_id: 2, first_name: "Bob" }
 
       - input: ref('stg_orders')
         rows:
-          - {order_id: 100, customer_id: 1, order_amount: 50.00}
-          - {order_id: 101, customer_id: 1, order_amount: 30.00}
-          - {order_id: 102, customer_id: 2, order_amount: 100.00}
+          - { order_id: 100, customer_id: 1, order_amount: 50.00 }
+          - { order_id: 101, customer_id: 1, order_amount: 30.00 }
+          - { order_id: 102, customer_id: 2, order_amount: 100.00 }
 
     expect:
       # 期待される出力
       rows:
-        - {customer_id: 1, first_name: 'Alice', order_count: 2, total_amount: 80.00}
-        - {customer_id: 2, first_name: 'Bob', order_count: 1, total_amount: 100.00}
+        - { customer_id: 1, first_name: "Alice", order_count: 2, total_amount: 80.00 }
+        - { customer_id: 2, first_name: "Bob", order_count: 1, total_amount: 100.00 }
 ```
 
 ### 1.3 実行方法
@@ -157,20 +156,22 @@ unit_tests:
     given:
       - input: ref('stg_customers')
         rows:
-          - {customer_id: 1, first_name: 'Alice', last_name: 'Smith'}
-          - {customer_id: 2, first_name: 'Bob', last_name: 'Jones'}
+          - { customer_id: 1, first_name: "Alice", last_name: "Smith" }
+          - { customer_id: 2, first_name: "Bob", last_name: "Jones" }
 
     expect:
       rows:
-        - {customer_id: 1, first_name: 'Alice', order_count: 0}
-        - {customer_id: 2, first_name: 'Bob', order_count: 0}
+        - { customer_id: 1, first_name: "Alice", order_count: 0 }
+        - { customer_id: 2, first_name: "Bob", order_count: 0 }
 ```
 
 **メリット**:
+
 - ✅ 最も簡潔
 - ✅ 学習コスト低い
 
 **デメリット**:
+
 - ❌ 型推論の精度が低い
 - ❌ 複雑なデータ構造に不向き
 
@@ -203,10 +204,12 @@ unit_tests:
 ```
 
 **メリット**:
+
 - ✅ 高い可読性
 - ✅ Excelからコピペ可能
 
 **デメリット**:
+
 - ❌ やや冗長
 - ❌ 型推論に依存
 
@@ -249,11 +252,13 @@ unit_tests:
 ```
 
 **メリット**:
+
 - ✅ 完全な型制御（CAST使用）
 - ✅ 複雑なデータ構造対応
 - ✅ 標準SQL
 
 **デメリット**:
+
 - ❌ 最も冗長
 - ❌ 記述量が多い
 
@@ -296,11 +301,13 @@ unit_tests:
 ```
 
 **メリット**:
+
 - ✅ 型安全（明示的な型指定）
 - ✅ 簡潔（SQL形式より短い）
 - ✅ BigQueryネイティブ
 
 **デメリット**:
+
 - ❌ BigQuery専用（移植性低）
 - ❌ 学習コスト
 
@@ -352,11 +359,13 @@ unit_tests:
 ```
 
 **メリット**:
+
 - ✅ 最高の保守性
 - ✅ モックデータ再利用
 - ✅ 一元管理
 
 **デメリット**:
+
 - ❌ 初期セットアップが必要
 - ❌ マクロの学習コスト
 
@@ -364,13 +373,13 @@ unit_tests:
 
 ### 2.7 形式の比較表（実測結果付き）
 
-| 形式 | 実行時間 | 簡潔性 | 型安全性 | 可読性 | 保守性 | 推奨ケース |
-|------|---------|--------|---------|--------|--------|----------|
-| Dict | **3.30s** ⚡ | ⭐⭐⭐⭐⭐ | ⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐ | シンプルなテスト（1-3行） |
-| CSV | **9.66s** 🐢 | ⭐⭐⭐⭐ | ⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | 中規模データ（4-10行） |
-| SQL | **3.75s** | ⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐ | 複雑なデータ構造 |
-| UNNEST | **3.59s** ⚡ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐ | BigQuery専用、型重視 |
-| Macro | 未計測 | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | 大量テスト、再利用 |
+| 形式   | 実行時間     | 簡潔性     | 型安全性   | 可読性     | 保守性     | 推奨ケース                |
+| ------ | ------------ | ---------- | ---------- | ---------- | ---------- | ------------------------- |
+| Dict   | **3.30s** ⚡ | ⭐⭐⭐⭐⭐ | ⭐⭐       | ⭐⭐⭐⭐   | ⭐⭐       | シンプルなテスト（1-3行） |
+| CSV    | **9.66s** 🐢 | ⭐⭐⭐⭐   | ⭐⭐       | ⭐⭐⭐⭐⭐ | ⭐⭐⭐     | 中規模データ（4-10行）    |
+| SQL    | **3.75s**    | ⭐⭐       | ⭐⭐⭐⭐⭐ | ⭐⭐⭐     | ⭐⭐⭐     | 複雑なデータ構造          |
+| UNNEST | **3.59s** ⚡ | ⭐⭐⭐⭐   | ⭐⭐⭐⭐⭐ | ⭐⭐⭐     | ⭐⭐⭐     | BigQuery専用、型重視      |
+| Macro  | 未計測       | ⭐⭐⭐     | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐   | ⭐⭐⭐⭐⭐ | 大量テスト、再利用        |
 
 **重要な発見**: CSV形式は全ての値を文字列として扱うため、型変換コストが高く約3倍遅い！
 
@@ -403,7 +412,7 @@ models:
     description: "日次売上ファクト"
     config:
       contract:
-        enforced: true  # スキーマ保証
+        enforced: true # スキーマ保証
 
     columns:
       - name: revenue_date
@@ -468,6 +477,7 @@ unit_tests:
 ```
 
 **効果**:
+
 1. **Contract**: 出力が`date`, `string`, `int64`, `numeric(15,2)`であることを保証
 2. **Unit Test**: 集計ロジック（GROUP BY, SUM, COUNT）の正確性を検証
 3. **型安全性**: テストデータでもCAST/structで明示的に型指定
@@ -487,10 +497,10 @@ unit_tests:
     given:
       - input: ref('stg_customers')
         rows:
-          - {customer_id: 1, first_name: 'Alice', last_name: 'Smith'}
+          - { customer_id: 1, first_name: "Alice", last_name: "Smith" }
 
       - input: ref('stg_orders')
-        rows: []  # 注文なし
+        rows: [] # 注文なし
 
       - input: ref('stg_payments')
         rows: []
@@ -499,9 +509,9 @@ unit_tests:
       rows:
         - {
             customer_id: 1,
-            first_name: 'Alice',
-            order_count: 0,  # NULLではなく0
-            total_amount: 0.0
+            first_name: "Alice",
+            order_count: 0, # NULLではなく0
+            total_amount: 0.0,
           }
 ```
 
@@ -516,7 +526,7 @@ unit_tests:
     given:
       - input: ref('stg_orders')
         rows:
-          - {order_id: 100, customer_id: 1, order_date: '2026-01-01'}
+          - { order_id: 100, customer_id: 1, order_date: "2026-01-01" }
 
       - input: ref('stg_payments')
         format: sql
@@ -552,7 +562,7 @@ unit_tests:
     given:
       - input: ref('stg_customers')
         rows:
-          - {customer_id: 1, first_name: 'Alice'}
+          - { customer_id: 1, first_name: "Alice" }
 
       - input: ref('stg_orders')
         format: sql
@@ -599,9 +609,9 @@ name: dbt unit tests
 on:
   pull_request:
     paths:
-      - 'models/**'
-      - 'macros/**'
-      - 'tests/**'
+      - "models/**"
+      - "macros/**"
+      - "tests/**"
 
 jobs:
   unit-tests:
@@ -613,7 +623,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.12'
+          python-version: "3.12"
 
       - name: Install dbt
         run: pip install dbt-bigquery
@@ -754,14 +764,14 @@ mindmap
 
 ### 推奨設定まとめ
 
-| 項目 | 推奨 |
-|------|------|
-| **データ形式** | シンプル: Dict / 型安全: UNNEST / 再利用: Macro |
-| **Contract併用** | 必須（特にincremental） |
-| **CI統合** | PR時にunit tests実行 |
-| **pre-commit** | compile checkのみ（高速化） |
-| **命名規則** | `test_<model>_<scenario>` |
-| **description** | 日本語で詳細に |
+| 項目             | 推奨                                            |
+| ---------------- | ----------------------------------------------- |
+| **データ形式**   | シンプル: Dict / 型安全: UNNEST / 再利用: Macro |
+| **Contract併用** | 必須（特にincremental）                         |
+| **CI統合**       | PR時にunit tests実行                            |
+| **pre-commit**   | compile checkのみ（高速化）                     |
+| **命名規則**     | `test_<model>_<scenario>`                       |
+| **description**  | 日本語で詳細に                                  |
 
 ### 重要な学び
 

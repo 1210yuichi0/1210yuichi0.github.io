@@ -12,9 +12,8 @@ authorship:
   reviewed: false
 ---
 
-
-
 ## 目次
+
 - [概要](#概要)
 - [検証環境](#検証環境)
 - [検証項目一覧](#検証項目一覧)
@@ -66,6 +65,7 @@ graph TB
 ⚠️ **このプロジェクト（jaffle_shop）では、Snapshotsは定義されていません。**
 
 **実行結果**:
+
 ```bash
 $ dbt snapshot --profiles-dir . --target sandbox
 
@@ -76,6 +76,7 @@ $ dbt snapshot --profiles-dir . --target sandbox
 ```
 
 **確認内容**:
+
 - ✅ snapshots/ディレクトリは存在しない
 - ✅ dbt_project.ymlにsnapshot設定なし
 - ✅ dbt snapshotコマンド実行: "Nothing to do"
@@ -84,26 +85,27 @@ $ dbt snapshot --profiles-dir . --target sandbox
 
 ## 検証項目一覧
 
-| # | 検証項目 | 優先度 | 状態 |
-|---|---------|--------|------|
-| 1 | timestamp戦略 | 高 | ✅ |
-| 2 | check戦略 | 高 | ✅ |
-| 3 | check_cols設定 | 中 | ✅ |
-| 4 | updated_at使用 | 高 | ✅ |
-| 5 | invalidate_hard_deletes | 中 | ✅ |
-| 6 | unique_key設定 | 高 | ✅ |
-| 7 | target_schema設定 | 中 | ✅ |
-| 8 | SCD Type 2実装 | 高 | ✅ |
-| 9 | スナップショットの更新 | 高 | ✅ |
-| 10 | 削除レコードの処理 | 中 | ✅ |
-| 11 | パーティション設定 | 中 | ✅ |
-| 12 | スナップショットのテスト | 中 | ✅ |
+| #   | 検証項目                 | 優先度 | 状態 |
+| --- | ------------------------ | ------ | ---- |
+| 1   | timestamp戦略            | 高     | ✅   |
+| 2   | check戦略                | 高     | ✅   |
+| 3   | check_cols設定           | 中     | ✅   |
+| 4   | updated_at使用           | 高     | ✅   |
+| 5   | invalidate_hard_deletes  | 中     | ✅   |
+| 6   | unique_key設定           | 高     | ✅   |
+| 7   | target_schema設定        | 中     | ✅   |
+| 8   | SCD Type 2実装           | 高     | ✅   |
+| 9   | スナップショットの更新   | 高     | ✅   |
+| 10  | 削除レコードの処理       | 中     | ✅   |
+| 11  | パーティション設定       | 中     | ✅   |
+| 12  | スナップショットのテスト | 中     | ✅   |
 
 ## 詳細な検証結果
 
 ### 検証1: timestamp戦略
 
 #### 概要
+
 updated_atカラムを使用して変更を検出するtimestamp戦略を検証します。
 
 #### Timestamp戦略のフロー
@@ -174,12 +176,12 @@ from {{ source('raw', 'customers') }}
 
 スナップショット実行後、以下のメタデータカラムが自動的に追加されます：
 
-| カラム名 | 型 | 説明 |
-|---------|-----|------|
-| dbt_scd_id | STRING | 各バージョンの一意識別子 |
-| dbt_updated_at | TIMESTAMP | レコードが更新された時刻 |
-| dbt_valid_from | TIMESTAMP | このバージョンが有効になった時刻 |
-| dbt_valid_to | TIMESTAMP | このバージョンが無効になった時刻（NULL=現在有効） |
+| カラム名       | 型        | 説明                                              |
+| -------------- | --------- | ------------------------------------------------- |
+| dbt_scd_id     | STRING    | 各バージョンの一意識別子                          |
+| dbt_updated_at | TIMESTAMP | レコードが更新された時刻                          |
+| dbt_valid_from | TIMESTAMP | このバージョンが有効になった時刻                  |
+| dbt_valid_to   | TIMESTAMP | このバージョンが無効になった時刻（NULL=現在有効） |
 
 #### 実行とクエリ例
 
@@ -230,6 +232,7 @@ WHERE '2026-01-15 00:00:00' BETWEEN dbt_valid_from AND COALESCE(dbt_valid_to, TI
 </details>
 
 #### 検証結果
+
 - ✅ updated_atカラムで変更が検出される
 - ✅ 変更時に古いレコードが無効化される（dbt_valid_toが設定される）
 - ✅ 新しいレコードが追加される
@@ -240,6 +243,7 @@ WHERE '2026-01-15 00:00:00' BETWEEN dbt_valid_from AND COALESCE(dbt_valid_to, TI
 ### 検証2: check戦略
 
 #### 概要
+
 指定したカラムの値を比較して変更を検出するcheck戦略を検証します。
 
 #### Check戦略のフロー
@@ -354,6 +358,7 @@ graph TB
 ```
 
 #### 検証結果
+
 - ✅ check_cols='all'で全カラム比較が動作
 - ✅ check_cols=['col1', 'col2']で特定カラムのみ比較
 - ✅ updated_atカラムがなくても動作
@@ -364,15 +369,16 @@ graph TB
 ### 検証3: check_cols設定
 
 #### 概要
+
 check_cols設定のバリエーションを検証します。
 
 #### check_cols設定パターン
 
-| 設定 | 意味 | 用途 |
-|------|------|------|
-| `check_cols='all'` | 全カラム比較 | デフォルト、確実な変更検出 |
-| `check_cols=['col1', 'col2']` | 特定カラムのみ | パフォーマンス重視 |
-| 設定なし（timestamp戦略） | updated_at使用 | 最も効率的 |
+| 設定                          | 意味           | 用途                       |
+| ----------------------------- | -------------- | -------------------------- |
+| `check_cols='all'`            | 全カラム比較   | デフォルト、確実な変更検出 |
+| `check_cols=['col1', 'col2']` | 特定カラムのみ | パフォーマンス重視         |
+| 設定なし（timestamp戦略）     | updated_at使用 | 最も効率的                 |
 
 #### 使用例: ビジネスクリティカルなカラムのみ追跡
 
@@ -451,6 +457,7 @@ WHERE order_id = 1;
 ```
 
 #### 検証結果
+
 - ✅ check_colsに指定したカラムの変更のみ検出される
 - ✅ 指定外カラムの変更は無視される
 - ✅ パフォーマンスが向上する（比較カラムが少ない場合）
@@ -460,6 +467,7 @@ WHERE order_id = 1;
 ### 検証4: updated_at使用
 
 #### 概要
+
 updated_atカラムを使用したtimestamp戦略の詳細を検証します。
 
 #### updated_atカラムの要件
@@ -587,6 +595,7 @@ from {{ source('raw', 'customers') }}
 ```
 
 #### 検証結果
+
 - ✅ updated_atカラムで効率的に変更検出
 - ✅ COALESCE()でNULL処理が機能
 - ✅ タイムスタンプ精度が保たれる
@@ -596,6 +605,7 @@ from {{ source('raw', 'customers') }}
 ### 検証5: invalidate_hard_deletes
 
 #### 概要
+
 ソーステーブルから削除されたレコードをスナップショットで無効化する設定を検証します。
 
 #### Hard Deletes処理フロー
@@ -697,6 +707,7 @@ WHERE customer_id = 1;
 ```
 
 #### 検証結果
+
 - ✅ invalidate_hard_deletes=trueで削除レコードが無効化される
 - ✅ dbt_valid_toに削除時刻が設定される
 - ✅ invalidate_hard_deletes=falseでは削除レコードが有効のまま
@@ -707,6 +718,7 @@ WHERE customer_id = 1;
 ### 検証6: unique_key設定
 
 #### 概要
+
 unique_keyの設定と複合キーの使用方法を検証します。
 
 #### unique_keyの役割
@@ -811,14 +823,15 @@ from {{ source('raw', 'order_items') }}
 
 #### unique_keyのベストプラクティス
 
-| パターン | 例 | 推奨度 |
-|---------|-----|--------|
-| 自然キー | `customer_id` | ⭐⭐⭐ |
-| 複合キー（連結） | `order_id || "-" || product_id` | ⭐⭐ |
-| サロゲートキー | `generate_surrogate_key(['col1', 'col2'])` | ⭐⭐⭐ |
-| UUIDv4 | `uuid` | ⭐⭐⭐ |
+| パターン         | 例                                         | 推奨度 |
+| ---------------- | ------------------------------------------ | ------ | --- | --- | ----------- | ---- |
+| 自然キー         | `customer_id`                              | ⭐⭐⭐ |
+| 複合キー（連結） | `order_id                                  |        | "-" |     | product_id` | ⭐⭐ |
+| サロゲートキー   | `generate_surrogate_key(['col1', 'col2'])` | ⭐⭐⭐ |
+| UUIDv4           | `uuid`                                     | ⭐⭐⭐ |
 
 #### 検証結果
+
 - ✅ 単一カラムのunique_keyが正しく動作
 - ✅ 複合キー（連結）が機能する
 - ✅ dbt_utils.generate_surrogate_keyが使用できる
@@ -829,6 +842,7 @@ from {{ source('raw', 'order_items') }}
 ### 検証7: target_schema設定
 
 #### 概要
+
 スナップショットの保存先スキーマを設定します。
 
 #### target_schema設定パターン
@@ -928,6 +942,7 @@ snapshots:
 ```
 
 #### 検証結果
+
 - ✅ target_schema設定が反映される
 - ✅ 動的スキーマ名が生成される
 - ✅ カスタムマクロが機能する
@@ -938,6 +953,7 @@ snapshots:
 ### 検証8: SCD Type 2実装
 
 #### 概要
+
 Slowly Changing Dimensions (SCD) Type 2パターンの完全な実装を検証します。
 
 #### SCD Type 2の概念
@@ -1113,6 +1129,7 @@ INNER JOIN {{ ref('dim_customers_scd') }} cs
 </details>
 
 #### 検証結果
+
 - ✅ SCD Type 2パターンが正しく実装される
 - ✅ 時点一致JOINが機能する
 - ✅ 変更履歴が正確に記録される
@@ -1123,6 +1140,7 @@ INNER JOIN {{ ref('dim_customers_scd') }} cs
 ### 検証9: スナップショットの更新
 
 #### 概要
+
 スナップショットの更新プロセスと増分実行を検証します。
 
 #### スナップショット更新フロー
@@ -1226,6 +1244,7 @@ ORDER BY dbt_updated_at DESC;
 </details>
 
 #### 検証結果
+
 - ✅ スナップショット増分更新が正しく動作
 - ✅ 新規レコードがINSERTされる
 - ✅ 更新レコードが適切に処理される（古いレコード無効化 + 新レコードINSERT）
@@ -1236,6 +1255,7 @@ ORDER BY dbt_updated_at DESC;
 ### 検証10: 削除レコードの処理
 
 #### 概要
+
 ソーステーブルから削除されたレコードの様々な処理方法を検証します。
 
 #### 削除レコード処理の選択肢
@@ -1369,6 +1389,7 @@ WHERE is_deleted = FALSE
 </details>
 
 #### 検証結果
+
 - ✅ invalidate_hard_deletes=trueでハードデリートが検出される
 - ✅ ソフトデリートフラグの変更が追跡される
 - ✅ 削除レコードの分析が可能
@@ -1379,6 +1400,7 @@ WHERE is_deleted = FALSE
 ### 検証11: パーティション設定
 
 #### 概要
+
 スナップショットテーブルのパーティション設定でパフォーマンスを最適化します。
 
 #### パーティション戦略
@@ -1471,6 +1493,7 @@ LIMIT 30;
 </details>
 
 #### 検証結果
+
 - ✅ パーティション設定が適用される
 - ✅ パーティションフィルタ使用時にスキャン量が削減される
 - ✅ クラスタリングと併用でさらに効率化
@@ -1481,6 +1504,7 @@ LIMIT 30;
 ### 検証12: スナップショットのテスト
 
 #### 概要
+
 スナップショットに対するデータ品質テストを実装します。
 
 #### テスト戦略
@@ -1535,7 +1559,7 @@ snapshots:
       - name: email
         tests:
           - not_null
-          - dbt_utils.email  # dbt_utils必要
+          - dbt_utils.email # dbt_utils必要
 
   - name: products_snapshot
     tests:
@@ -1644,6 +1668,7 @@ dbt test --select assert_snapshot_integrity
 ```
 
 #### 検証結果
+
 - ✅ unique/not_nullテストが機能する
 - ✅ カスタム整合性テストが動作する
 - ✅ 現在レコードの一意性が検証される
@@ -1682,7 +1707,7 @@ snapshots:
       field: dbt_valid_from
       data_type: timestamp
       granularity: day
-    +cluster_by: ['unique_key列']
+    +cluster_by: ["unique_key列"]
 ```
 
 ### 3. 命名規則
@@ -1717,7 +1742,7 @@ snapshots:
 jobs:
   - name: daily_snapshots
     description: 日次スナップショット更新
-    schedule: "0 2 * * *"  # 毎日2時
+    schedule: "0 2 * * *" # 毎日2時
     steps:
       - dbt snapshot
       - dbt test --resource-type snapshot
@@ -1732,10 +1757,12 @@ jobs:
 **症状**: 大規模テーブルでスナップショット実行に時間がかかる
 
 **原因**:
+
 - パーティション/クラスタリング未設定
 - invalidate_hard_deletes=trueで全レコードスキャン
 
 **解決策**:
+
 ```sql
 {{
     config(
@@ -1752,10 +1779,12 @@ jobs:
 **症状**: `Snapshot target has multiple rows for unique_key`
 
 **原因**:
+
 - unique_keyが実際には一意でない
 - 複合キーが必要
 
 **解決策**:
+
 ```sql
 -- 複合キーを使用
 {{
@@ -1770,9 +1799,11 @@ jobs:
 **症状**: ソーステーブルにカラムを追加/削除したらエラー
 
 **原因**:
+
 - スナップショットテーブルのスキーマが古い
 
 **解決策**:
+
 ```bash
 # フルリフレッシュで再構築
 dbt snapshot --select customers_snapshot --full-refresh
@@ -1787,9 +1818,11 @@ ADD COLUMN new_column STRING;
 **症状**: `dbt_valid_from`などのカラムが既に存在する
 
 **原因**:
+
 - ソーステーブルにdbt予約カラム名が存在
 
 **解決策**:
+
 ```sql
 -- ソーステーブルのカラム名を変更
 select
@@ -1805,10 +1838,12 @@ from {{ source('raw', 'customers') }}
 **症状**: レコードが更新されてもスナップショットに反映されない
 
 **原因**:
+
 - updated_atが更新されていない
 - タイムゾーンの不一致
 
 **解決策**:
+
 ```sql
 -- updated_atの確実な更新（アプリケーション側）
 UPDATE customers
@@ -1831,15 +1866,18 @@ WHERE customer_id = 123;
 ## 参考資料
 
 ### 公式ドキュメント
+
 - [dbt Snapshots](https://docs.getdbt.com/docs/build/snapshots)
 - [Snapshot Strategies](https://docs.getdbt.com/reference/snapshot-configs)
 - [SCD Type 2](https://en.wikipedia.org/wiki/Slowly_changing_dimension#Type_2:_add_new_row)
 
 ### サンプルコード
+
 - [dbt Learn: Snapshots](https://courses.getdbt.com/courses/fundamentals)
 - [Discourse: Snapshot Best Practices](https://discourse.getdbt.com/)
 
 ### 推奨リソース
+
 - [The Kimball Group: SCD Types](https://www.kimballgroup.com/data-warehouse-business-intelligence-resources/kimball-techniques/dimensional-modeling-techniques/)
 
 ---

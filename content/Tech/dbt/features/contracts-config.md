@@ -12,8 +12,6 @@ authorship:
   reviewed: false
 ---
 
-
-
 ## 検証概要
 
 **検証日時**: 2026-02-17 22:30-22:35 JST  
@@ -28,13 +26,14 @@ authorship:
 
 ✅ **Contract正常動作**: 5行、4.01秒  
 ❌ **Contract違反エラー**: Compilation Error（BigQuery実行前に検出）  
-✅ **unit test + Contract**: PASS、4.18秒  
+✅ **unit test + Contract**: PASS、4.18秒
 
 ### Contractsとは
 
 dbt Contractsは、モデルの出力スキーマ（列名・データ型）をYAML定義と完全に一致させる機能です。
 
 **目的**:
+
 - スキーマ変更による下流クエリの破綻を防止
 - データ型の暗黙的変換を検出
 - データ品質の事前保証
@@ -84,7 +83,7 @@ models:
     description: "顧客ディメンション"
     config:
       contract:
-        enforced: true  # Contract有効化
+        enforced: true # Contract有効化
 
     columns:
       - name: customer_id
@@ -167,7 +166,7 @@ models:
     description: "注文サマリーファクト"
     config:
       contract:
-        enforced: true  # スキーマ保証
+        enforced: true # スキーマ保証
 
     columns:
       - name: order_date
@@ -212,6 +211,7 @@ unit_tests:
 ```
 
 **効果**:
+
 1. **Contract**: YAMLで定義した型（date, int64, numeric）を強制
 2. **Unit Test**: ロジックの正確性（集計処理）を検証
 3. **型安全性**: unit testでもCASTで明示的に型指定
@@ -248,13 +248,14 @@ models:
         data_type: string
 
       - name: is_active
-        data_type: int64  # ❌ 実際はboolだがint64と定義
+        data_type: int64 # ❌ 実際はboolだがint64と定義
 
       - name: created_at
         data_type: timestamp
 ```
 
 **Contractなしの場合**:
+
 ```
 ✅ モデル実行成功
    → is_activeがbool→int64に暗黙変換される
@@ -262,6 +263,7 @@ models:
 ```
 
 **Contractありの場合**:
+
 ```
 ❌ モデル実行失敗（契約違反）
    → エラーメッセージ:
@@ -309,6 +311,7 @@ unit_tests:
 ```
 
 **効果**:
+
 - unit testで型をCASTで明示
 - Contractで出力スキーマを保証
 - 型変換の問題を開発段階で発見
@@ -326,13 +329,13 @@ dbtは汎用型名（`string`, `int`, `float`）をプラットフォーム固�
 ```yaml
 columns:
   - name: customer_name
-    data_type: string  # → BigQuery: STRING
+    data_type: string # → BigQuery: STRING
 
   - name: age
-    data_type: int  # → BigQuery: INT64
+    data_type: int # → BigQuery: INT64
 
   - name: score
-    data_type: float  # → BigQuery: FLOAT64
+    data_type: float # → BigQuery: FLOAT64
 ```
 
 #### エイリアス無効化
@@ -343,11 +346,11 @@ models:
     config:
       contract:
         enforced: true
-        alias_types: false  # エイリアス無効化
+        alias_types: false # エイリアス無効化
 
     columns:
       - name: customer_name
-        data_type: STRING  # BigQuery固有の型名を使用
+        data_type: STRING # BigQuery固有の型名を使用
 
       - name: age
         data_type: INT64
@@ -363,11 +366,11 @@ models:
 ```yaml
 columns:
   - name: price
-    data_type: numeric(10, 2)  # 精度10、スケール2
+    data_type: numeric(10, 2) # 精度10、スケール2
     # 例: 12345678.90（10桁、小数点以下2桁）
 
   - name: tax_rate
-    data_type: numeric(5, 4)  # 精度5、スケール4
+    data_type: numeric(5, 4) # 精度5、スケール4
     # 例: 0.0825（5桁、小数点以下4桁）
 ```
 
@@ -515,7 +518,7 @@ models:
         enforced: true
       materialized: incremental
       unique_key: order_id
-      on_schema_change: append_new_columns  # または fail
+      on_schema_change: append_new_columns # または fail
 
     columns:
       - name: order_id
@@ -531,10 +534,10 @@ models:
 
 **推奨設定**:
 
-| on_schema_change | 動作 | 推奨ケース |
-|-----------------|------|-----------|
-| `append_new_columns` | 新列を追加 | 開発環境 |
-| `fail` | エラーで停止 | 本番環境（慎重な変更） |
+| on_schema_change     | 動作         | 推奨ケース             |
+| -------------------- | ------------ | ---------------------- |
+| `append_new_columns` | 新列を追加   | 開発環境               |
+| `fail`               | エラーで停止 | 本番環境（慎重な変更） |
 
 ---
 
@@ -596,7 +599,7 @@ from {{ ref('stg_customers') }}
 limit 5
 ```
 
-**Contract定義**: [_contract_test.yml](models/_contract_test.yml)
+**Contract定義**: [\_contract_test.yml](models/_contract_test.yml)
 
 ```yaml
 models:
@@ -607,7 +610,7 @@ models:
         enforced: true
     columns:
       - name: customer_id
-        data_type: int64  # INT64を期待（SQLではSTRINGを返す）
+        data_type: int64 # INT64を期待（SQLではSTRINGを返す）
       - name: first_name
         data_type: string
       - name: last_name
@@ -774,6 +777,7 @@ Done. PASS=1 WARN=0 ERROR=0 SKIP=0 NO-OP=0 TOTAL=1
 </details>
 
 **実測データ**:
+
 - ✅ **実行成功**: 5行作成
 - ✅ **実行時間**: 4.01秒
 - ✅ **データ処理量**: 1.9 KiB
@@ -783,7 +787,7 @@ Done. PASS=1 WARN=0 ERROR=0 SKIP=0 NO-OP=0 TOTAL=1
 
 ### 検証3: unit test + Contract組み合わせ
 
-**unit test定義**: [_contract_unit_test.yml](models/_contract_unit_test.yml)
+**unit test定義**: [\_contract_unit_test.yml](models/_contract_unit_test.yml)
 
 ```yaml
 unit_tests:
@@ -793,12 +797,12 @@ unit_tests:
     given:
       - input: ref('stg_customers')
         rows:
-          - {customer_id: 1, first_name: 'Alice', last_name: 'Smith'}
-          - {customer_id: 2, first_name: 'Bob', last_name: 'Jones'}
+          - { customer_id: 1, first_name: "Alice", last_name: "Smith" }
+          - { customer_id: 2, first_name: "Bob", last_name: "Jones" }
     expect:
       rows:
-        - {customer_id: 1, first_name: 'Alice', last_name: 'Smith'}
-        - {customer_id: 2, first_name: 'Bob', last_name: 'Jones'}
+        - { customer_id: 1, first_name: "Alice", last_name: "Smith" }
+        - { customer_id: 2, first_name: "Bob", last_name: "Jones" }
 ```
 
 **実行コマンド**:
@@ -844,17 +848,18 @@ Done. PASS=1 WARN=0 ERROR=0 SKIP=0 NO-OP=0 TOTAL=1
 </details>
 
 **実測データ**:
+
 - ✅ **unit test成功**: PASS
 - ✅ **実行時間**: 4.18秒
 - ✅ **Contract検証**: unit test実行時もContract enforcedが有効
 
 **効果の確認**:
 
-| 検証項目 | 結果 | 実行時間 | コスト |
-|---------|------|---------|--------|
-| Contract違反エラー | ❌ Compilation Error | 1.67s | **0円**（実行前検出） |
-| Contract正常動作 | ✅ CREATE TABLE | 4.01s | ~0.001円 |
-| unit test + Contract | ✅ PASS | 4.18s | ~0.001円 |
+| 検証項目             | 結果                 | 実行時間 | コスト                |
+| -------------------- | -------------------- | -------- | --------------------- |
+| Contract違反エラー   | ❌ Compilation Error | 1.67s    | **0円**（実行前検出） |
+| Contract正常動作     | ✅ CREATE TABLE      | 4.01s    | ~0.001円              |
+| unit test + Contract | ✅ PASS              | 4.18s    | ~0.001円              |
 
 ---
 
@@ -913,13 +918,13 @@ flowchart LR
 
 #### 推奨設定一覧
 
-| チェックポイント | 実行内容 | 目的 | 実行時間目安 | BigQueryコスト |
-|-----------------|---------|------|-------------|---------------|
-| **ローカル開発** | `dbt run --select <model>` | 即座のフィードバック | 5-10秒/モデル | 小（開発環境） |
-| **pre-commit** | `dbt compile` | SQL構文＋Contract検証 | 3-5秒 | **0円**（コンパイルのみ） |
-| **CI: PR作成** | `dbt test --select state:modified+` | 変更されたモデルのみ | 30秒-2分 | 小（必要最小限） |
-| **CI: mainマージ前** | `dbt test --select test_type:unit` + `dbt run --select state:modified+` | 全unit tests + 変更モデル実行 | 2-5分 | 中（unit testsは小データ） |
-| **定期実行（毎日）** | `dbt test` + `dbt run` | 全tests + 全モデル | 10-30分 | 大（本番規模データ） |
+| チェックポイント     | 実行内容                                                                | 目的                          | 実行時間目安  | BigQueryコスト             |
+| -------------------- | ----------------------------------------------------------------------- | ----------------------------- | ------------- | -------------------------- |
+| **ローカル開発**     | `dbt run --select <model>`                                              | 即座のフィードバック          | 5-10秒/モデル | 小（開発環境）             |
+| **pre-commit**       | `dbt compile`                                                           | SQL構文＋Contract検証         | 3-5秒         | **0円**（コンパイルのみ）  |
+| **CI: PR作成**       | `dbt test --select state:modified+`                                     | 変更されたモデルのみ          | 30秒-2分      | 小（必要最小限）           |
+| **CI: mainマージ前** | `dbt test --select test_type:unit` + `dbt run --select state:modified+` | 全unit tests + 変更モデル実行 | 2-5分         | 中（unit testsは小データ） |
+| **定期実行（毎日）** | `dbt test` + `dbt run`                                                  | 全tests + 全モデル            | 10-30分       | 大（本番規模データ）       |
 
 ---
 
@@ -968,6 +973,7 @@ dbt compile + Contract validation......................................Passed
 ```
 
 **効果**:
+
 - ✅ Contract違反を**コミット前に検出**
 - ✅ BigQueryコスト0円（コンパイルのみ）
 - ✅ 実行時間: 3-5秒（高速）
@@ -987,9 +993,9 @@ name: dbt PR Check
 on:
   pull_request:
     paths:
-      - 'models/**'
-      - 'macros/**'
-      - 'dbt_project.yml'
+      - "models/**"
+      - "macros/**"
+      - "dbt_project.yml"
 
 jobs:
   dbt-contract-unit-tests:
@@ -1001,7 +1007,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.12'
+          python-version: "3.12"
 
       - name: Install dbt
         run: pip install dbt-bigquery
@@ -1015,7 +1021,7 @@ jobs:
       - name: dbt compile (Contract validation)
         run: |
           dbt compile --profiles-dir . --target ci
-        continue-on-error: false  # Contract違反で即座に失敗
+        continue-on-error: false # Contract違反で即座に失敗
 
       # ステップ2: unit tests実行
       - name: dbt unit tests
@@ -1047,35 +1053,39 @@ jobs:
 
 ##### パターンA: コスト重視（推奨）
 
-| チェックポイント | 実行内容 | 理由 |
-|-----------------|---------|------|
-| **pre-commit** | `dbt compile` のみ | コスト0円、高速 |
-| **CI: PR作成** | `dbt compile` + unit tests | 軽量、必要最小限 |
-| **CI: mainマージ前** | 全tests + 変更モデル実行 | 完全検証 |
+| チェックポイント     | 実行内容                   | 理由             |
+| -------------------- | -------------------------- | ---------------- |
+| **pre-commit**       | `dbt compile` のみ         | コスト0円、高速  |
+| **CI: PR作成**       | `dbt compile` + unit tests | 軽量、必要最小限 |
+| **CI: mainマージ前** | 全tests + 変更モデル実行   | 完全検証         |
 
 **メリット**:
+
 - ✅ BigQueryコストを最小化
 - ✅ 高速フィードバック（pre-commit: 3秒）
 - ✅ Contract違反を早期発見
 
 **デメリット**:
+
 - ⚠️ 実データでの検証は後回し
 
 ---
 
 ##### パターンB: 品質重視
 
-| チェックポイント | 実行内容 | 理由 |
-|-----------------|---------|------|
-| **pre-commit** | `dbt compile` + unit tests | 完全検証 |
-| **CI: PR作成** | 全tests + 変更モデル実行 | 実データでも検証 |
-| **CI: mainマージ前** | 全tests + 全モデル実行 | 完全な品質保証 |
+| チェックポイント     | 実行内容                   | 理由             |
+| -------------------- | -------------------------- | ---------------- |
+| **pre-commit**       | `dbt compile` + unit tests | 完全検証         |
+| **CI: PR作成**       | 全tests + 変更モデル実行   | 実データでも検証 |
+| **CI: mainマージ前** | 全tests + 全モデル実行     | 完全な品質保証   |
 
 **メリット**:
+
 - ✅ 最高の品質保証
 - ✅ 実データでの検証も早期に実施
 
 **デメリット**:
+
 - ⚠️ BigQueryコスト増加
 - ⚠️ 実行時間長い（pre-commit: 10-30秒）
 
@@ -1114,11 +1124,13 @@ flowchart TD
 ```
 
 **特徴**:
+
 - **pre-commit**: コンパイルのみ（高速、コスト0円）
 - **CI PR作成**: compile + unit tests（軽量）
 - **CI mainマージ前**: 完全検証（品質保証）
 
 **推奨理由**:
+
 1. ✅ **開発速度を維持**: pre-commitは高速（3秒）
 2. ✅ **コストを抑制**: 早期段階はBigQueryアクセス最小限
 3. ✅ **品質を保証**: mainマージ前は完全検証
@@ -1154,29 +1166,29 @@ flowchart TD
 
 #### 数値型の選択
 
-| 用途 | 推奨型 | 理由 |
-|------|--------|------|
-| ID（主キー） | `int64` | 整数、範囲広い |
-| カウント | `int64` | 整数、負数なし |
-| 金額 | `numeric(15, 2)` | 精度重視 |
-| 割合・率 | `numeric(5, 4)` | 小数点以下精度 |
-| 科学計算 | `float64` | 範囲広い、精度は低い |
+| 用途         | 推奨型           | 理由                 |
+| ------------ | ---------------- | -------------------- |
+| ID（主キー） | `int64`          | 整数、範囲広い       |
+| カウント     | `int64`          | 整数、負数なし       |
+| 金額         | `numeric(15, 2)` | 精度重視             |
+| 割合・率     | `numeric(5, 4)`  | 小数点以下精度       |
+| 科学計算     | `float64`        | 範囲広い、精度は低い |
 
 #### 文字列型の選択
 
-| 用途 | 推奨型 | 理由 |
-|------|--------|------|
-| 名前・タイトル | `string` | 可変長 |
-| 固定長コード | `string(10)` | 長さ制限明示 |
-| 大量テキスト | `string` | 制限なし |
+| 用途           | 推奨型       | 理由         |
+| -------------- | ------------ | ------------ |
+| 名前・タイトル | `string`     | 可変長       |
+| 固定長コード   | `string(10)` | 長さ制限明示 |
+| 大量テキスト   | `string`     | 制限なし     |
 
 #### 日付・時刻型の選択
 
-| 用途 | 推奨型 | 理由 |
-|------|--------|------|
-| 日付のみ | `date` | タイムゾーン不要 |
-| 日時（UTC） | `timestamp` | タイムゾーン対応 |
-| 日時（ローカル） | `datetime` | タイムゾーンなし |
+| 用途             | 推奨型      | 理由             |
+| ---------------- | ----------- | ---------------- |
+| 日付のみ         | `date`      | タイムゾーン不要 |
+| 日時（UTC）      | `timestamp` | タイムゾーン対応 |
+| 日時（ローカル） | `datetime`  | タイムゾーンなし |
 
 ### 5.3 契約記述のテンプレート
 
@@ -1190,7 +1202,7 @@ models:
         enforced: true
       materialized: incremental
       unique_key: <primary_key>
-      on_schema_change: fail  # 本番は慎重に
+      on_schema_change: fail # 本番は慎重に
 
     columns:
       # 主キー
@@ -1257,6 +1269,7 @@ unit_tests:
 ### 問題1: 型不一致エラー
 
 **症状**:
+
 ```
 Contract Error: Column 'amount' has type FLOAT64 but contract expects NUMERIC
 ```
@@ -1264,6 +1277,7 @@ Contract Error: Column 'amount' has type FLOAT64 but contract expects NUMERIC
 **原因**: 計算結果が予期しない型になる
 
 **解決策**:
+
 ```sql
 -- ❌ Bad
 select quantity * price as amount
@@ -1277,6 +1291,7 @@ select cast(quantity * price as numeric) as amount
 ### 問題2: 列の順序不一致
 
 **症状**:
+
 ```
 Contract Error: Column order mismatch
 ```
@@ -1284,6 +1299,7 @@ Contract Error: Column order mismatch
 **原因**: YAML定義とSELECT文の列順序が異なる
 
 **解決策**:
+
 ```yaml
 # YAML定義順
 columns:
@@ -1306,17 +1322,19 @@ from source
 ### 問題3: Incremental + Contract のスキーマ変更
 
 **症状**:
+
 ```
 on_schema_change config must be set when using contracts with incremental models
 ```
 
 **解決策**:
+
 ```yaml
 config:
   contract:
     enforced: true
   materialized: incremental
-  on_schema_change: append_new_columns  # 必須
+  on_schema_change: append_new_columns # 必須
 ```
 
 ---
@@ -1326,6 +1344,7 @@ config:
 **症状**: Unit testでNULLが期待通りに扱われない
 
 **解決策**:
+
 ```yaml
 expect:
   format: sql
@@ -1356,11 +1375,11 @@ graph TB
 
 ### 推奨設定まとめ
 
-| 環境 | Contract | on_schema_change | Unit Tests |
-|------|----------|------------------|------------|
-| 開発 | `enforced: true` | `append_new_columns` | 必須 |
-| ステージング | `enforced: true` | `append_new_columns` | 必須 |
-| 本番 | `enforced: true` | `fail` | 必須 |
+| 環境         | Contract         | on_schema_change     | Unit Tests |
+| ------------ | ---------------- | -------------------- | ---------- |
+| 開発         | `enforced: true` | `append_new_columns` | 必須       |
+| ステージング | `enforced: true` | `append_new_columns` | 必須       |
+| 本番         | `enforced: true` | `fail`               | 必須       |
 
 ### 重要な学び
 
