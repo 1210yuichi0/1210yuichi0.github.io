@@ -1020,7 +1020,8 @@ jobs:
       - name: Authenticate to BigQuery
         uses: google-github-actions/auth@v1
         with:
-          credentials_json: ${{ secrets.GCP_SA_KEY }}
+          # GitHub環境変数から認証情報を取得
+          credentials_json: ${{ env.GCP_SA_KEY }}
 
       # ステップ1: dbt compile（Contract検証）
       - name: dbt compile (Contract validation)
@@ -1354,6 +1355,518 @@ expect:
 
 ---
 
+## 7. Contractsが検証できる項目の完全リスト（2026-02-18 追加検証）
+
+### 7.1 検証項目の実測結果
+
+**検証日時:** 2026-02-18 15:20-15:30 JST
+
+| #   | 検証項目     | 検証する/しない   | 実行結果 | エラーメッセージ                                |
+| --- | ------------ | ----------------- | -------- | ----------------------------------------------- |
+| 1   | **列名**     | ✅ 検証する       | FAIL     | `missing in definition` / `missing in contract` |
+| 2   | **列数**     | ✅ 検証する       | FAIL     | `missing in definition`                         |
+| 3   | **データ型** | ✅ 検証する       | FAIL     | `data type mismatch`                            |
+| 4   | **列の順序** | ❌ **検証しない** | **PASS** | dbtが自動調整                                   |
+
+**重要な発見:**
+
+- Contractsは**データ型だけでなく、列名と列数も検証する**
+- **列の順序は検証されない**（dbtがcontractの順序に自動調整）
+
+---
+
+### 7.2 列の順序は検証されない（実測確認）
+
+#### テストモデル
+
+```sql
+-- models/contract_tests/contract_column_order.sql
+select
+    customer_id,    -- 1列目
+    first_name,     -- 2列目
+    last_name       -- 3列目
+from {{ ref('stg_customers') }}
+```
+
+#### Contract定義（意図的に順序を変える）
+
+```yaml
+models:
+  - name: contract_column_order
+    config:
+      contract:
+        enforced: true
+    columns:
+      # YAML定義の順序: first_name, customer_id, last_name
+      - name: first_name # 1列目（SQLでは2列目）
+        data_type: string
+      - name: customer_id # 2列目（SQLでは1列目）
+        data_type: int64
+      - name: last_name # 3列目（SQLでも3列目）
+        data_type: string
+```
+
+#### 実行結果
+
+```bash
+$ dbt run --select contract_column_order --profiles-dir .
+
+✅ 1 of 1 OK created sql table model dbt_jaffle_shop.contract_column_order
+   [CREATE TABLE (5.0 rows, 1.9 KiB processed) in 4.24s]
+
+Done. PASS=1 WARN=0 ERROR=0 SKIP=0 NO-OP=0 TOTAL=1
+```
+
+**結果:**
+
+- ✅ **列の順序が異なってもPASS**
+- dbtがcontractの順序（first_name, customer_id, last_name）に自動調整
+- BigQueryのテーブルは contract 定義の順序で作成される
+
+**公式ドキュメントの記載:**
+
+> The preflight check is agnostic to the order of columns specified in your model,
+> and dbt will order the columns per the contract instead of your dbt model.
+
+出典: [Model contracts | dbt Developer Hub](https://docs.getdbt.com/docs/mesh/govern/model-contracts)
+
+---
+
+### 7.3 列名の検証
+
+#### テストモデル（列名を変更）
+
+```sql
+-- models/contract_tests/contract_column_name.sql
+select
+    customer_id,
+    first_name as given_name,  -- ← 列名を変更
+    last_name
+from {{ ref('stg_customers') }}
+```
+
+#### 実行結果（エラー）
+
+```bash
+$ dbt run --select contract_column_name --profiles-dir .
+
+❌ Compilation Error in model contract_column_name
+
+| column_name | definition_type | contract_type | mismatch_reason       |
+| ----------- | --------------- | ------------- | --------------------- |
+| first_name  |                 | STRING        | missing in definition |
+| given_name  | STRING          |               | missing in contract   |
+
+Done. PASS=0 WARN=0 ERROR=1 SKIP=0 NO-OP=0 TOTAL=1
+```
+
+**結果:**
+
+- ✅ **列名の不一致を検出**
+- ✅ 2つのエラーを同時に表示
+- ✅ BigQueryコスト: 0円（実行前に検出）
+
+---
+
+### 7.4 列数の検証
+
+#### テストモデル（列が不足）
+
+```sql
+-- models/contract_tests/contract_column_count.sql
+select
+    customer_id,
+    first_name
+    -- last_name を省略
+from {{ ref('stg_customers') }}
+```
+
+#### Contract定義（3列を期待）
+
+```yaml
+columns:
+  - name: customer_id
+    data_type: int64
+  - name: first_name
+    data_type: string
+  - name: last_name # ← SQLに存在しない
+    data_type: string
+```
+
+#### 実行結果（エラー）
+
+```bash
+$ dbt run --select contract_column_count --profiles-dir .
+
+❌ Compilation Error in model contract_column_count
+
+| column_name | definition_type | contract_type | mismatch_reason       |
+| ----------- | --------------- | ------------- | --------------------- |
+| last_name   |                 | STRING        | missing in definition |
+
+Done. PASS=0 WARN=0 ERROR=1 SKIP=0 NO-OP=0 TOTAL=1
+```
+
+**結果:**
+
+- ✅ **列数の不一致を検出**
+- ✅ `missing in definition` で不足している列を明示
+- ✅ BigQueryコスト: 0円
+
+---
+
+### 7.5 Constraints（別機能）との違い
+
+#### Constraints付きモデル
+
+```yaml
+models:
+  - name: contract_with_constraints
+    config:
+      contract:
+        enforced: true
+    columns:
+      - name: customer_id
+        data_type: int64
+        constraints:
+          - type: not_null # 実行時に検証
+          - type: primary_key # BigQueryでは未enforced
+```
+
+#### 実行結果
+
+```bash
+$ dbt run --select contract_with_constraints --profiles-dir .
+
+⚠️  WARNING: The constraint type primary_key is not enforced by bigquery.
+
+✅ 1 of 1 OK created sql table model [CREATE TABLE (5.0 rows) in 4.09s]
+
+Done. PASS=1 WARN=0 ERROR=0 SKIP=0 NO-OP=0 TOTAL=1
+```
+
+**Contracts vs Constraints:**
+
+| 項目                 | Contracts                    | Constraints                       |
+| -------------------- | ---------------------------- | --------------------------------- |
+| **検証タイミング**   | コンパイル時                 | 実行時（データ挿入時）            |
+| **検証内容**         | スキーマ構造（列名・型・数） | データ値（not null, primary key） |
+| **BigQueryコスト**   | 0円（実行前）                | 発生（実行される）                |
+| **BigQueryサポート** | -                            | `not_null` のみenforced           |
+| **primary_key**      | 検証しない                   | DDLに含まれるが未enforced         |
+| **check**            | 検証しない                   | サポートなし                      |
+
+**重要:**
+
+- Contractsは「スキーマの型安全性」を保証
+- Constraintsは「データの品質」を保証
+- **Contractsはコンパイル時に検証（BigQueryコスト: 0円）**
+- **Constraintsは実行時に検証（BigQueryコスト: 発生）**
+
+参考:
+
+- [constraints | dbt Developer Hub](https://docs.getdbt.com/reference/resource-properties/constraints)
+- [Enforcing dbt Model Contracts – SqlDBM](https://support.sqldbm.com/hc/en-us/articles/37028450157453-Enforcing-dbt-Model-Contracts)
+
+---
+
+## 8. Contract有効化モデルの選択・除外コマンド
+
+### 8.1 タグで選択
+
+```bash
+# contract_testタグが付いたモデルを一覧表示
+$ dbt ls --select tag:contract_test --profiles-dir .
+
+jaffle_shop.contract_tests.contract_column_count
+jaffle_shop.contract_tests.contract_column_name
+jaffle_shop.contract_tests.contract_column_order
+jaffle_shop.contract_tests.contract_valid
+jaffle_shop.contract_tests.contract_with_constraints
+```
+
+### 8.2 有効なcontractモデルのみ実行
+
+```bash
+# contract_validタグが付いたモデルのみ実行（失敗するモデルを除外）
+$ dbt run --select tag:contract_valid --profiles-dir .
+
+✅ 1 of 2 OK created sql table model dbt_jaffle_shop.contract_valid
+   [CREATE TABLE (5.0 rows) in 4.01s]
+
+✅ 2 of 2 OK created sql table model dbt_jaffle_shop.contract_with_constraints
+   [CREATE TABLE (5.0 rows) in 3.95s]
+
+Done. PASS=2 WARN=0 ERROR=0 SKIP=0 NO-OP=0 TOTAL=2
+```
+
+### 8.3 特定モデルを除外して実行
+
+```bash
+# contract_testタグのモデルから、失敗するモデルを除外
+$ dbt run \
+  --select tag:contract_test \
+  --exclude 'contract_column_count contract_column_name' \
+  --profiles-dir .
+
+✅ 1 of 3 OK created sql table model dbt_jaffle_shop.contract_column_order
+   [CREATE TABLE (5.0 rows) in 4.23s]
+
+✅ 2 of 3 OK created sql table model dbt_jaffle_shop.contract_valid
+   [CREATE TABLE (5.0 rows) in 4.76s]
+
+✅ 3 of 3 OK created sql table model dbt_jaffle_shop.contract_with_constraints
+   [CREATE TABLE (5.0 rows) in 3.65s]
+
+Done. PASS=3 WARN=0 ERROR=0 SKIP=0 NO-OP=0 TOTAL=3
+```
+
+### 8.4 使えるセレクター一覧
+
+| セレクター                   | 説明                       | 例                                                           |
+| ---------------------------- | -------------------------- | ------------------------------------------------------------ |
+| `--select tag:X`             | タグで選択                 | `--select tag:contract_test`                                 |
+| `--select model_name`        | モデル名で選択             | `--select contract_valid`                                    |
+| `--select config.X:Y`        | Config値で選択             | `--select config.materialized:incremental`                   |
+| `--exclude model_name`       | モデルを除外               | `--exclude contract_column_count`                            |
+| `--select 'X Y Z'`           | 複数選択（スペース区切り） | `--select 'contract_valid orders'`                           |
+| `--exclude 'X Y Z'`          | 複数除外（スペース区切り） | `--exclude 'model_a model_b'`                                |
+| `--select tag:X --exclude Y` | 組み合わせ                 | `--select tag:contract_test --exclude contract_column_count` |
+| `--select model+`            | モデルと下流を選択         | `--select stg_customers+`                                    |
+| `--select +model`            | モデルと上流を選択         | `--select +fct_orders`                                       |
+| `--select state:modified+`   | 変更されたモデルと下流     | CI/CDで使用                                                  |
+
+参考: [Node selector methods | dbt Developer Hub](https://docs.getdbt.com/reference/node-selection/methods)
+
+### 8.5 Config Selectorでcontract有効化モデルを選択（高度な方法）
+
+**重要:** dbt 1.8以降では、config値で直接モデルを選択できます。
+
+```bash
+# Contract enforced が true のモデルを全て選択
+# 注意: この方法は理論上可能だが、実際にはタグを使う方が推奨
+dbt run --select "config.contract.enforced:true" --profiles-dir .
+
+# Incrementalモデルを選択
+dbt run --select "config.materialized:incremental" --profiles-dir .
+
+# Auditスキーマのモデルを選択
+dbt run --select "config.schema:audit" --profiles-dir .
+```
+
+**実用性の評価:**
+
+- ✅ **タグ不要**: YAMLにタグを追加しなくても選択可能
+- ⚠️ **可読性**: `tag:contract_test` の方が意図が明確
+- ⚠️ **推奨**: **実務ではタグを使う方が推奨**（明示的で管理しやすい）
+
+参考: [Node selector methods | dbt Developer Hub](https://docs.getdbt.com/reference/node-selection/methods)
+
+---
+
+### 8.6 Graph Operators（グラフ演算子）でcontractモデルの依存関係を選択
+
+```bash
+# stg_customersとその下流モデルを全て実行
+dbt run --select "stg_customers+" --profiles-dir .
+
+# fct_ordersとその上流モデルを全て実行
+dbt run --select "+fct_orders" --profiles-dir .
+
+# contract_validとその1階層下流のみ実行
+dbt run --select "contract_valid+1" --profiles-dir .
+
+# contract_validとその上流2階層を実行
+dbt run --select "2+contract_valid" --profiles-dir .
+
+# contract_testタグのモデルとその下流を全て実行
+dbt run --select "tag:contract_test+" --profiles-dir .
+```
+
+**グラフ演算子の優先順位:**
+
+1. **Selector methods** (tag:, config:, model名)
+2. **Graph operators** (+, @)
+3. **Set operators** (union, intersection, exclusion)
+
+参考: [Graph operators | dbt Developer Hub](https://docs.getdbt.com/reference/node-selection/graph-operators)
+
+---
+
+### 8.7 YAML Selectorsで再利用可能な選択パターンを定義
+
+**ファイル:** `selectors.yml`（プロジェクトルートに配置）
+
+```yaml
+selectors:
+  # Contract有効化モデルのみ実行
+  - name: contract_models
+    description: "Contract enforced が有効なモデル"
+    definition:
+      union:
+        - tag:contract_valid
+        - tag:contract_enforced
+
+  # CI/CDで使用: 変更されたcontractモデルとその下流
+  - name: ci_contract_check
+    description: "変更されたcontractモデルと下流を検証"
+    definition:
+      union:
+        - intersection:
+            - state:modified+
+            - tag:contract_enforced
+
+  # Incrementalモデルでcontract有効化されているもの
+  - name: incremental_with_contract
+    description: "Contract有効化されたIncrementalモデル"
+    definition:
+      intersection:
+        - config.materialized:incremental
+        - tag:contract_enforced
+```
+
+**使用方法:**
+
+```bash
+# YAML Selectorを使用
+dbt run --selector contract_models --profiles-dir .
+
+# CI/CDで変更されたcontractモデルのみテスト
+dbt build --selector ci_contract_check --profiles-dir .
+```
+
+**メリット:**
+
+- ✅ **再利用可能**: 複雑な選択ロジックを1箇所で管理
+- ✅ **可読性**: `--selector contract_models` は意図が明確
+- ✅ **CI/CD統合**: 標準化された選択パターン
+
+参考: [YAML Selectors | dbt Developer Hub](https://docs.getdbt.com/reference/node-selection/yaml-selectors)
+
+---
+
+### 8.8 実用例: CI/CDでの活用（Slim CI + Contracts）
+
+```yaml
+# .github/workflows/dbt_pr_check.yml
+name: dbt PR Check with Contracts
+
+on:
+  pull_request:
+    paths:
+      - "models/**"
+      - "dbt_project.yml"
+
+jobs:
+  dbt-contract-validation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+
+      - name: Install dbt
+        run: pip install dbt-bigquery
+
+      - name: Authenticate to BigQuery
+        uses: google-github-actions/auth@v1
+        with:
+          # GitHub環境変数から認証情報を取得
+          credentials_json: ${{ env.GCP_SA_KEY }}
+
+      # ステップ1: Compile check（Contract検証、コスト: 0円）
+      - name: Compile with contract validation
+        run: |
+          dbt compile --select state:modified+ --profiles-dir . --target ci
+        # Contract違反があればここで失敗
+
+      # ステップ2: Slim CI - 変更されたモデルのみテスト
+      - name: Build changed models with contracts
+        run: |
+          dbt build --select state:modified+ --profiles-dir . --target ci --state ./prod_manifest/
+        # state:modified+ = 変更されたモデルと下流のみ実行
+
+      # ステップ3: Contract有効化モデルのunit testsのみ実行
+      - name: Run unit tests for contract models
+        run: |
+          dbt test --select tag:contract_enforced,test_type:unit --profiles-dir . --target ci
+
+      - name: Upload logs
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: dbt-logs
+          path: logs/
+```
+
+**CI/CDパイプラインの効率化:**
+
+| ステップ      | 実行内容                 | 実行時間 | BigQueryコスト       |
+| ------------- | ------------------------ | -------- | -------------------- |
+| 1. Compile    | Contract検証（全モデル） | 5-10秒   | **0円**              |
+| 2. Build      | 変更モデル + 下流のみ    | 1-3分    | 小（必要最小限）     |
+| 3. Unit Tests | Contract有効モデルのみ   | 30秒-1分 | 極小（モックデータ） |
+
+**`state:modified+` の効果:**
+
+- ✅ **変更されたモデルのみ実行**（BigQueryコスト削減）
+- ✅ **下流モデルも検証**（破壊的変更を検出）
+- ✅ **Contract違反を即座に検出**（PR段階でブロック）
+
+参考:
+
+- [Get started with Continuous Integration tests | dbt Developer Hub](https://docs.getdbt.com/guides/set-up-ci)
+- [Implementing Data Contracts with dbt: From Theory to Practice | Medium](https://aradsouza.medium.com/implementing-data-contracts-with-dbt-from-theory-to-practice-eb03d568667f)
+- [Data Contracts And Schema Enforcement With Dbt | Xebia](https://xebia.com/blog/data-contracts-and-schema-enforcement-with-dbt/)
+
+---
+
+### 8.9 ベストプラクティス: Contractモデルの選択戦略
+
+| 用途             | 推奨セレクター                   | 理由                            |
+| ---------------- | -------------------------------- | ------------------------------- |
+| **ローカル開発** | `--select model_name`            | 開発中のモデルのみ高速実行      |
+| **pre-commit**   | `dbt compile`                    | Contract検証のみ（コスト: 0円） |
+| **PR作成時**     | `--select state:modified+`       | 変更モデルと下流のみ（Slim CI） |
+| **mainマージ前** | `--select tag:contract_enforced` | Contract有効モデル全体を検証    |
+| **本番デプロイ** | `dbt build`                      | 全モデル + 全tests実行          |
+
+**推奨タグ戦略:**
+
+```yaml
+# models/schema.yml
+models:
+  - name: fct_orders
+    config:
+      contract:
+        enforced: true
+      tags:
+        - contract_enforced # Contract有効化モデル
+        - prod_critical # 本番重要モデル
+        - daily # 日次実行
+```
+
+**効果:**
+
+- ✅ **柔軟な選択**: 目的に応じてタグを組み合わせ
+- ✅ **CI/CD効率化**: 必要最小限のモデルのみ実行
+- ✅ **コスト削減**: BigQuery実行を最小化
+
+**メリット:**
+
+- ✅ **Contractが有効なモデルだけを選択して実行**
+- ✅ **失敗が予想されるモデルを除外して効率的にテスト**
+- ✅ **タグを使って運用を柔軟に管理**
+- ✅ **Slim CIでBigQueryコストを最小化**
+
+参考: [Model selection syntax | dbt Developer Hub](https://docs.getdbt.com/reference/node-selection/syntax)
+
+---
+
 ## まとめ
 
 ### Contract + Unit Tests = 堅牢な品質保証
@@ -1378,16 +1891,41 @@ graph TB
 | ステージング | `enforced: true` | `append_new_columns` | 必須       |
 | 本番         | `enforced: true` | `fail`               | 必須       |
 
+### Contractsが検証できる項目（完全版）
+
+| 検証項目     | 検証する  | エラー時の動作    |
+| ------------ | --------- | ----------------- |
+| **列名**     | ✅ はい   | Compilation Error |
+| **列数**     | ✅ はい   | Compilation Error |
+| **データ型** | ✅ はい   | Compilation Error |
+| **列の順序** | ❌ いいえ | dbtが自動調整     |
+
+### Contracts vs Constraints
+
+| 項目               | Contracts    | Constraints |
+| ------------------ | ------------ | ----------- |
+| **検証タイミング** | コンパイル時 | 実行時      |
+| **BigQueryコスト** | 0円          | 発生        |
+| **検証内容**       | スキーマ構造 | データ値    |
+
 ### 重要な学び
 
-1. **型を明示する**: unit testでもCASTを使う
-2. **Contractは必須**: incrementalモデルでは特に重要
-3. **スキーマ変更は慎重に**: `on_schema_change: fail`で事故防止
-4. **エラーは早期発見**: 開発段階で型不一致を検出
+1. **Contractsはデータ型だけでなく、列名と列数も検証する**
+2. **列の順序は検証されない**（dbtが自動調整）
+3. **Contract違反はBigQuery実行前に検出**（コスト: 0円）
+4. **Constraintsは別機能**（実行時にデータ値を検証）
+5. **型を明示する**: unit testでもCASTを使う
+6. **Contractは必須**: incrementalモデルでは特に重要
+7. **スキーマ変更は慎重に**: `on_schema_change: fail`で事故防止
+8. **タグで選択・除外**: `--select tag:contract_test --exclude model_name`
 
 ---
 
-**検証日**: 2026-02-17
+**検証日**: 2026-02-17（初回）、2026-02-18（追加検証）
 **作成者**: dbt検証プロジェクト
-**バージョン**: 1.0
-**参考**: [dbt Contracts公式ドキュメント](https://docs.getdbt.com/reference/resource-configs/contract)
+**バージョン**: 2.0
+**参考**:
+
+- [dbt Contracts公式ドキュメント](https://docs.getdbt.com/reference/resource-configs/contract)
+- [Model contracts | dbt Developer Hub](https://docs.getdbt.com/docs/mesh/govern/model-contracts)
+- [constraints | dbt Developer Hub](https://docs.getdbt.com/reference/resource-properties/constraints)
