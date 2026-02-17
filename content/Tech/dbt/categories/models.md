@@ -42,11 +42,11 @@ dbt + BigQueryのモデル設定30項目を実際に検証し、以下を明ら�
 
 | カテゴリ        | 検証項目数 | 成功 | 失敗 | 成功率 | 詳細 |
 | --------------- | ---------- | ---- | ---- | ------ | ---- |
-| Materialization | 5          | 5    | 0    | 100%   | [詳細](materialization.md) |
-| パーティション  | 6          | 4    | 2    | 67%    | [詳細](partitioning.md) |
-| クラスタリング  | 3          | 3    | 0    | 100%   | [詳細](clustering.md) |
-| 増分戦略        | 3          | 2    | 1    | 67%    | [詳細](incremental-strategies.md) |
-| その他の設定    | 2          | 2    | 0    | 100%   | [詳細](advanced-settings.md) |
+| Materialization | 5          | 5    | 0    | 100%   | [詳細](models-materialization.md) |
+| パーティション  | 6          | 4    | 2    | 67%    | [詳細](models-partitioning.md) |
+| クラスタリング  | 3          | 3    | 0    | 100%   | [詳細](models-clustering.md) |
+| 増分戦略        | 3          | 2    | 1    | 67%    | [詳細](models-incremental-strategies.md) |
+| その他の設定    | 2          | 2    | 0    | 100%   | [詳細](models-advanced-settings.md) |
 
 ---
 
@@ -54,7 +54,7 @@ dbt + BigQueryのモデル設定30項目を実際に検証し、以下を明ら�
 
 ### 🔴 必須スキル
 
-#### [Materialization（実体化方式）](materialization.md)
+#### [Materialization（実体化方式）](models-materialization.md)
 
 **5種類のマテリアライゼーション全検証**
 
@@ -69,7 +69,7 @@ dbt + BigQueryのモデル設定30項目を実際に検証し、以下を明ら�
 
 ---
 
-#### [Partitioning（パーティション設定）](partitioning.md)
+#### [Partitioning（パーティション設定）](models-partitioning.md)
 
 **4種類のパーティション戦略**
 
@@ -87,7 +87,7 @@ dbt + BigQueryのモデル設定30項目を実際に検証し、以下を明ら�
 
 ---
 
-#### [Clustering（クラスタリング設定）](clustering.md)
+#### [Clustering（クラスタリング設定）](models-clustering.md)
 
 **クラスタリング最適化**
 
@@ -102,7 +102,7 @@ dbt + BigQueryのモデル設定30項目を実際に検証し、以下を明ら�
 
 ### 🟡 中級スキル
 
-#### [Incremental Strategies（増分戦略）](incremental-strategies.md)
+#### [Incremental Strategies（増分戦略）](models-incremental-strategies.md)
 
 **3種類の増分更新戦略**
 
@@ -120,7 +120,7 @@ dbt + BigQueryのモデル設定30項目を実際に検証し、以下を明ら�
 
 ### 🟢 その他
 
-#### [Advanced Settings（高度な設定）](advanced-settings.md)
+#### [Advanced Settings（高度な設定）](models-advanced-settings.md)
 
 **その他のモデル設定とベストプラクティス**
 
@@ -139,22 +139,22 @@ dbt + BigQueryのモデル設定30項目を実際に検証し、以下を明ら�
 
 ### 初級者向け (2日間)
 
-1. [Materialization](materialization.md) - table, view の理解
-2. [Partitioning](partitioning.md) 基本 - DATE パーティション
-3. [Clustering](clustering.md) 基本 - 単一列クラスタ
+1. [Materialization](models-materialization.md) - table, view の理解
+2. [Partitioning](models-partitioning.md) 基本 - DATE パーティション
+3. [Clustering](models-clustering.md) 基本 - 単一列クラスタ
 
 ### 中級者向け (3日間)
 
-1. [Materialization](materialization.md) - incremental, ephemeral
-2. [Partitioning](partitioning.md) 応用 - INT64 range, Time-ingestion
-3. [Clustering](clustering.md) 応用 - 複数列、パーティション併用
-4. [Incremental Strategies](incremental-strategies.md) - merge, insert_overwrite
+1. [Materialization](models-materialization.md) - incremental, ephemeral
+2. [Partitioning](models-partitioning.md) 応用 - INT64 range, Time-ingestion
+3. [Clustering](models-clustering.md) 応用 - 複数列、パーティション併用
+4. [Incremental Strategies](models-incremental-strategies.md) - merge, insert_overwrite
 
 ### 上級者向け (2日間)
 
 1. [Materialized View](materialization.md#materialized-view) - 自動リフレッシュ
 2. [Microbatch Strategy](incremental-strategies.md#microbatch) - 大規模データ処理
-3. [Advanced Settings](advanced-settings.md) - 暗号化、権限、最適化
+3. [Advanced Settings](models-advanced-settings.md) - 暗号化、権限、最適化
 
 ---
 

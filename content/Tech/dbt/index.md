@@ -58,7 +58,7 @@ dbt core + BigQueryの全設定項目（130項目）を**実際に検証**し、
 
 - [プロジェクト基本設定](categories/project-basic-config.md) - dbt_project.yml の全設定
 - [BigQuery接続設定](categories/bigquery-connection.md) - 認証方法、接続設定
-- [Models](categories/models/) - マテリアライゼーション、パーティショニング、クラスタリング
+- [Models](categories/models.md) - マテリアライゼーション、パーティショニング、クラスタリング
 - **[パーティショニング＆クラスタリング](features/partitioning-clustering-guide.md)** - 順番・数・使い分けの決定版（GCP公式参照）
 - **[BigQuery設定リファレンス](features/bigquery-configs-complete.md)** - 詳細ガイド（暗号化、Python、マテビュー等）
 

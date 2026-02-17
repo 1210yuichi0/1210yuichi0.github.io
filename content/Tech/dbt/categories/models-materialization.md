@@ -290,7 +290,7 @@ AS (
 - [dbt Materialization公式ドキュメント](https://docs.getdbt.com/docs/build/materializations)
 - [BigQuery Materialized Views](https://cloud.google.com/bigquery/docs/materialized-views-intro)
 - [dbt-bigquery Configuration](https://docs.getdbt.com/reference/resource-configs/bigquery-configs)
-- [Models Index](index.md) - カテゴリ全体の概要
+- [Models Index](models.md) - カテゴリ全体の概要
 
 ---
 

@@ -242,7 +242,7 @@ config:
 
 - [BigQuery Clustered Tables](https://cloud.google.com/bigquery/docs/clustered-tables)
 - [dbt-bigquery Clustering Configuration](https://docs.getdbt.com/reference/resource-configs/bigquery-configs#clustering-clause)
-- [Models Index](index.md) - カテゴリ全体の概要
+- [Models Index](models.md) - カテゴリ全体の概要
 - [パーティショニング＆クラスタリングガイド](../../features/partitioning-clustering-guide.md) - 専門ガイド
 
 ---
