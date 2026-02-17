@@ -49,6 +49,7 @@ dbt core + BigQueryの全設定項目（130項目）を**実際に検証**し、
 ## 📑 ドキュメント
 
 - [プロジェクト概要](overview.md) - 検証環境、カテゴリ一覧
+- **[スキルマップ](guides/skills-map.md)** - レベル別学習パス、進捗管理
 - [学習ガイド](guides/learning-guide.md) - 学習パス、クイックスタート、使い方
 - [再実行ガイド](guides/execution-guide.md) - 検証の再現手順
 
