@@ -161,7 +161,6 @@ dbt + BigQueryのモデル設定30項目を実際に検証し、以下を明ら�
 ## 📖 関連ドキュメント
 
 - [クイックリファレンス](../../guides/quick-reference.md) - 全検証項目の逆引き
-- [スキルマップ](../../guides/skills-map.md) - レベル別学習パス
 - [パーティショニング＆クラスタリングガイド](../../features/partitioning-clustering-guide.md) - 専門ガイド
 
 ---

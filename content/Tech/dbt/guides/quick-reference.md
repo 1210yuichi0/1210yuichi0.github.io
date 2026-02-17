@@ -408,8 +408,7 @@ authorship:
 ## 🔗 関連ドキュメント
 
 - [プロジェクト概要](../overview.md) - 検証結果サマリー
-- [スキルマップ](skills-map.md) - レベル別学習パス
-- [学習ガイド](learning-guide.md) - 詳細な学習手順
+- [再実行ガイド](execution-guide.md) - 検証の再現手順
 
 ---
 
