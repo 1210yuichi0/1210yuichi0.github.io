@@ -1,10 +1,10 @@
 ---
-title: "dbt + BigQuery"
+title: "dbt"
 date: 2026-02-17
 tags: ["dbt", "bigquery", "data-engineering", "best-practices"]
 categories: ["検証"]
 draft: false
-description: "dbt + BigQueryの全130設定項目を10カテゴリに分けて検証。実行ログ、ベストプラクティス、トラブルシューティングを含む包括的ガイド。"
+description: "dbt + BigQueryの全130設定項目を10カテゴリに分けて検証"
 weight: 1
 authorship:
   type: ai-assisted
@@ -13,38 +13,7 @@ authorship:
   reviewed: false
 ---
 
-✅ **実測検証完了 - 全130設定項目の挙動を実際に確認**
-
-dbt core + BigQueryの全設定項目（130項目）を**実際に検証**し、実運用で使えるベストプラクティスをまとめたプロジェクトです。
-
-## 🎯 実測検証結果サマリー
-
-**検証日**: 2026-02-17
-**環境**: dbt 1.11.5 + dbt-bigquery 1.11.0
-**BigQueryプロジェクト**: sdp-sb-yada-29d2  
-**データセット**: dbt_sandbox  
-**リージョン**: asia-northeast1
-
-### 主要指標
-
-| 項目           | 実行結果                     | 実行時間 | 並列度     |
-| -------------- | ---------------------------- | -------- | ---------- |
-| **Models**     | 27モデル（21成功、6エラー）  | 9.91秒   | 24スレッド |
-| **Seeds**      | 3ファイル、312行             | 約5秒    | -          |
-| **Tests**      | 31テスト（30 PASS、1 FAIL）  | 11.53秒  | 24スレッド |
-| **Unit Tests** | 9テスト（全PASS）            | 10.76秒  | 24スレッド |
-| **Docs生成**   | catalog.json + manifest.json | 約10秒   | -          |
-
-### 検証内容
-
-- ✅ **パーティショニング**: DATE、INT64 range、TIMESTAMP（エラー検証含む）
-- ✅ **クラスタリング**: 単一列、複数列、パーティションとの組み合わせ
-- ✅ **増分戦略**: merge、insert_overwrite
-- ✅ **Contract**: 型エラー検出（コンパイル時）
-- ✅ **全テスト種別**: Schema Tests、Singular Tests、Unit Tests
-- ✅ **未実装確認**: Hooks未使用、Snapshots未定義、vars/packages未使用
-
----
+dbt + BigQueryの全130設定項目検証プロジェクト
 
 ## 📑 ドキュメント
 
