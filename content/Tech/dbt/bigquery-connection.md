@@ -16,10 +16,10 @@ authorship:
 
 ## 検証概要
 
-**検証日時**: 2026-02-17
-**dbtバージョン**: 1.11.5
-**dbt-bigqueryバージョン**: 1.11.0
-**検証環境**: macOS (Darwin 24.6.0)
+**検証日時**: 2026-02-17  
+**dbtバージョン**: 1.11.5  
+**dbt-bigqueryバージョン**: 1.11.0  
+**検証環境**: macOS (Darwin 24.6.0)  
 **対象設定ファイル**: `profiles.yml`
 
 ### 検証目的
@@ -42,12 +42,12 @@ dbt-bigqueryの接続設定（`profiles.yml`）には、5種類の認証方法�
 
 ### 実測検証結果
 
-✅ **認証方法**: OAuth (gcloud application-default login)
-✅ **BigQueryプロジェクト**: sdp-sb-yada-29d2
-✅ **データセット**: dbt_sandbox
-✅ **リージョン**: asia-northeast1
-✅ **並列スレッド数**: 24
-✅ **接続テスト**: PASS（dbt debug成功）
+✅ **認証方法**: OAuth (gcloud application-default login)  
+✅ **BigQueryプロジェクト**: sdp-sb-yada-29d2  
+✅ **データセット**: dbt_sandbox  
+✅ **リージョン**: asia-northeast1  
+✅ **並列スレッド数**: 24  
+✅ **接続テスト**: PASS（dbt debug成功）  
 
 ---
 
