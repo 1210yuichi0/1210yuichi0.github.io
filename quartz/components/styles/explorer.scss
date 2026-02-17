@@ -130,7 +130,6 @@ button.desktop-explorer {
       color: var(--dark);
       opacity: 0.75;
       pointer-events: all;
-      font-size: 0.95rem;
 
       &.active {
         opacity: 1;
@@ -170,7 +169,6 @@ button.desktop-explorer {
   & div > a {
     color: var(--secondary);
     font-family: var(--headerFont);
-    font-size: 0.95rem;
     font-weight: $semiBoldWeight;
     line-height: 1.5rem;
     display: inline-block;
@@ -193,7 +191,6 @@ button.desktop-explorer {
     font-family: var(--headerFont);
 
     & span {
-      font-size: 0.95rem;
       display: inline-block;
       color: var(--secondary);
       font-weight: $semiBoldWeight;
