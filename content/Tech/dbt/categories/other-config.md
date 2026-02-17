@@ -12,9 +12,8 @@ authorship:
   reviewed: false
 ---
 
-
-
 ## 目次
+
 - [概要](#概要)
 - [検証環境](#検証環境)
 - [検証項目一覧](#検証項目一覧)
@@ -62,12 +61,14 @@ graph TB
 ### 検証プロジェクトの実装状況
 
 **実装済み:**
+
 - ✅ **Seeds**: 3ファイル（raw_customers.csv、raw_orders.csv、raw_payments.csv）、合計312行
 - ✅ **Models**: 27モデル（staging: view、marts: table）
 - ✅ **Tests**: Schema Tests（unique, not_null, accepted_values, relationships）+ Singular Tests
 - ✅ **Unit Tests**: 9個（6種類のデータ形式）
 
 **未実装（理論的な説明のみ）:**
+
 - ⚠️ **vars**: dbt_project.ymlに変数定義なし
 - ⚠️ **packages**: packages.ymlなし（dbt_utilsなどのパッケージ未使用）
 - ⚠️ **macros**: macros/ディレクトリは空（カスタムマクロなし）
@@ -78,24 +79,25 @@ graph TB
 
 ## 検証項目一覧
 
-| # | 検証項目 | 優先度 | 状態 |
-|---|---------|--------|------|
-| 1 | vars（変数）設定 | 高 | ✅ |
-| 2 | packages（パッケージ）管理 | 高 | ✅ |
-| 3 | dispatch（マクロディスパッチ） | 中 | ✅ |
-| 4 | analysis（分析クエリ） | 中 | ✅ |
-| 5 | macros（カスタムマクロ） | 高 | ✅ |
-| 6 | quoting（識別子クォート） | 中 | ✅ |
-| 7 | query-comment | 中 | ✅ |
-| 8 | docs（ドキュメント設定） | 中 | ✅ |
-| 9 | tests（カスタムテスト） | 高 | ✅ |
-| 10 | exposures（エクスポージャー） | 中 | ✅ |
+| #   | 検証項目                       | 優先度 | 状態 |
+| --- | ------------------------------ | ------ | ---- |
+| 1   | vars（変数）設定               | 高     | ✅   |
+| 2   | packages（パッケージ）管理     | 高     | ✅   |
+| 3   | dispatch（マクロディスパッチ） | 中     | ✅   |
+| 4   | analysis（分析クエリ）         | 中     | ✅   |
+| 5   | macros（カスタムマクロ）       | 高     | ✅   |
+| 6   | quoting（識別子クォート）      | 中     | ✅   |
+| 7   | query-comment                  | 中     | ✅   |
+| 8   | docs（ドキュメント設定）       | 中     | ✅   |
+| 9   | tests（カスタムテスト）        | 高     | ✅   |
+| 10  | exposures（エクスポージャー）  | 中     | ✅   |
 
 ## 詳細な検証結果
 
 ### 検証1: vars（変数）設定
 
 #### 概要
+
 プロジェクト全体で使用できる変数を定義し、環境やモデルで動的に値を切り替えます。
 
 #### varsの使用フロー
@@ -123,11 +125,11 @@ flowchart LR
 # dbt_project.yml
 vars:
   # グローバル変数
-  start_date: '2020-01-01'
-  end_date: '2026-12-31'
+  start_date: "2020-01-01"
+  end_date: "2026-12-31"
 
   # 環境変数
-  database_name: 'analytics'
+  database_name: "analytics"
 
   # ビジネスロジック変数
   revenue_threshold: 1000
@@ -138,13 +140,13 @@ vars:
   use_experimental_models: false
 
   # リスト
-  excluded_customer_segments: ['test', 'internal', 'fraud']
+  excluded_customer_segments: ["test", "internal", "fraud"]
 
   # ネストした変数
   currency_config:
-    default: 'USD'
-    conversion_rate_table: 'ref_exchange_rates'
-    supported_currencies: ['USD', 'EUR', 'GBP', 'JPY']
+    default: "USD"
+    conversion_rate_table: "ref_exchange_rates"
+    supported_currencies: ["USD", "EUR", "GBP", "JPY"]
 ```
 
 #### モデルでのvars使用
@@ -230,16 +232,16 @@ jaffle_shop:
       project: dev-project
       dataset: dbt_dev
       vars:
-        start_date: '2026-01-01'
-        revenue_threshold: 100  # 開発環境は低い閾値
+        start_date: "2026-01-01"
+        revenue_threshold: 100 # 開発環境は低い閾値
 
     prod:
       type: bigquery
       project: prod-project
       dataset: dbt_prod
       vars:
-        start_date: '2020-01-01'
-        revenue_threshold: 1000  # 本番環境は高い閾値
+        start_date: "2020-01-01"
+        revenue_threshold: 1000 # 本番環境は高い閾値
 ```
 
 </details>
@@ -278,6 +280,7 @@ where currency = 'EUR'
 </details>
 
 #### 検証結果
+
 - ✅ dbt_project.ymlでvarsが定義できる
 - ✅ var()関数で変数にアクセスできる
 - ✅ コマンドラインで変数を上書きできる
@@ -289,6 +292,7 @@ where currency = 'EUR'
 ### 検証2: packages（パッケージ）管理
 
 #### 概要
+
 dbtパッケージをインストールして、コミュニティが提供するマクロやモデルを利用します。
 
 #### パッケージ管理フロー
@@ -430,6 +434,7 @@ dbt run-operation generate_model_yaml --args '{model_names: [stg_customers, stg_
 ```
 
 出力例:
+
 ```yaml
 version: 2
 
@@ -518,6 +523,7 @@ packages:
 ```
 
 #### 検証結果
+
 - ✅ packages.ymlでパッケージが定義できる
 - ✅ dbt depsでパッケージがインストールされる
 - ✅ パッケージのマクロが使用できる
@@ -529,6 +535,7 @@ packages:
 ### 検証3: dispatch（マクロディスパッチ）
 
 #### 概要
+
 データベースアダプター別にマクロの実装を切り替えるdispatch機能を検証します。
 
 #### dispatchの仕組み
@@ -650,8 +657,8 @@ from {{ ref('stg_customers') }}
 dispatch:
   - macro_namespace: dbt_utils
     search_order:
-      - jaffle_shop  # 自プロジェクトを優先
-      - dbt_utils     # パッケージ
+      - jaffle_shop # 自プロジェクトを優先
+      - dbt_utils # パッケージ
 
   - macro_namespace: dbt_expectations
     search_order:
@@ -679,13 +686,14 @@ dispatch:
 dispatch:
   - macro_namespace: dbt_utils
     search_order:
-      - jaffle_shop  # 自プロジェクトのマクロを優先
+      - jaffle_shop # 自プロジェクトのマクロを優先
       - dbt_utils
 ```
 
 </details>
 
 #### 検証結果
+
 - ✅ adapter.dispatch()でDB別実装が切り替わる
 - ✅ search_orderで優先順位が設定できる
 - ✅ パッケージマクロをオーバーライドできる
@@ -696,6 +704,7 @@ dispatch:
 ### 検証4: analysis（分析クエリ）
 
 #### 概要
+
 dbtモデルとして管理しないアドホック分析クエリを定義します。
 
 #### analysisの位置づけ
@@ -917,6 +926,7 @@ analyses:
    - dbtモデルを参照してデータ系譜を維持
 
 #### 検証結果
+
 - ✅ analysis/フォルダでクエリが管理できる
 - ✅ dbt compileでコンパイルされる
 - ✅ ref()とsource()が使用できる
@@ -928,6 +938,7 @@ analyses:
 ### 検証5: macros（カスタムマクロ）
 
 #### 概要
+
 プロジェクト固有のロジックを再利用可能なマクロとして定義します。
 
 #### マクロの分類
@@ -1169,6 +1180,7 @@ dbt run-operation test_cents_to_dollars
 </details>
 
 #### 検証結果
+
 - ✅ macros/フォルダでマクロが定義できる
 - ✅ 引数付きマクロが機能する
 - ✅ モデルからマクロを呼び出せる
@@ -1180,6 +1192,7 @@ dbt run-operation test_cents_to_dollars
 ### 検証6: quoting（識別子クォート）
 
 #### 概要
+
 テーブル名、カラム名、スキーマ名のクォート設定を管理します。
 
 #### quotingの設定レベル
@@ -1204,9 +1217,9 @@ flowchart TD
 ```yaml
 # dbt_project.yml
 quoting:
-  database: false    # データベース名をクォートしない
-  schema: false      # スキーマ名をクォートしない
-  identifier: false  # テーブル名をクォートしない
+  database: false # データベース名をクォートしない
+  schema: false # スキーマ名をクォートしない
+  identifier: false # テーブル名をクォートしない
 
 models:
   jaffle_shop:
@@ -1215,7 +1228,7 @@ models:
     special_models:
       # 特定フォルダのみクォート有効化
       +quoting:
-        identifier: true  # テーブル名をクォート
+        identifier: true # テーブル名をクォート
 ```
 
 #### BigQueryでのquoting動作
@@ -1329,19 +1342,20 @@ sources:
     quoting:
       database: false
       schema: false
-      identifier: true  # ソーステーブル名をクォート
+      identifier: true # ソーステーブル名をクォート
 
     tables:
-      - name: Orders  # 大文字小文字を区別
+      - name: Orders # 大文字小文字を区別
         quoting:
           identifier: true
 
-      - name: select  # 予約語
+      - name: select # 予約語
         quoting:
           identifier: true
 ```
 
 #### 検証結果
+
 - ✅ quoting設定が正しく適用される
 - ✅ database/schema/identifierの個別設定が可能
 - ✅ 予約語を含む識別子が処理できる
@@ -1353,6 +1367,7 @@ sources:
 ### 検証7: query-comment
 
 #### 概要
+
 dbtが実行するすべてのクエリにコメントを追加します。
 
 #### query-commentの用途
@@ -1384,7 +1399,7 @@ query-comment:
     dbt_target: {{ target.name }}
     dbt_version: {{ dbt_version }}
     invocation_id: {{ invocation_id }}
-  append: true  # クエリの最後にコメント追加
+  append: true # クエリの最後にコメント追加
 ```
 
 #### 生成されるSQL例
@@ -1460,6 +1475,7 @@ query-comment:
 ```
 
 #### 検証結果
+
 - ✅ query-commentがすべてのクエリに追加される
 - ✅ Jinja変数が展開される
 - ✅ BigQueryログで追跡できる
@@ -1470,6 +1486,7 @@ query-comment:
 ### 検証8: docs（ドキュメント設定）
 
 #### 概要
+
 dbt docsの生成と設定を管理します。
 
 #### docsの構成
@@ -1511,21 +1528,22 @@ Jaffle Shopは、架空のeコマース企業のデータウェアハウスで�
 - **raw.payments**: 支払い情報
 
 ### モデル構成
-
 ```
+
 models/
-├── staging/          # ソースデータのクリーニング
-│   ├── stg_customers.sql
-│   ├── stg_orders.sql
-│   └── stg_payments.sql
-├── intermediate/     # 中間加工
-│   └── int_customer_orders.sql
-└── marts/           # ビジネスロジック
-    ├── core/
-    │   ├── dim_customers.sql
-    │   └── fct_orders.sql
-    └── finance/
-        └── fct_revenue.sql
+├── staging/ # ソースデータのクリーニング
+│ ├── stg_customers.sql
+│ ├── stg_orders.sql
+│ └── stg_payments.sql
+├── intermediate/ # 中間加工
+│ └── int_customer_orders.sql
+└── marts/ # ビジネスロジック
+├── core/
+│ ├── dim_customers.sql
+│ └── fct_orders.sql
+└── finance/
+└── fct_revenue.sql
+
 ```
 
 ### 更新頻度
@@ -1548,7 +1566,7 @@ models/
 <details>
 <summary>models/schema.yml（クリックで展開）</summary>
 
-```yaml
+````yaml
 version: 2
 
 models:
@@ -1605,7 +1623,7 @@ models:
           注文金額（USD、税込み）
 
           計算式: 商品価格 + 送料 + 税金 - 割引
-```
+````
 
 </details>
 
@@ -1625,6 +1643,7 @@ models:
 - **生成方法**: 自動インクリメント
 
 **関連テーブル**:
+
 - {{ ref('dim_customers') }}
 - {{ ref('fct_orders') }}
 
@@ -1635,10 +1654,12 @@ models:
 ### 収益の定義
 
 **含まれるもの**:
+
 - 商品売上
 - 送料
 
 **含まれないもの**:
+
 - 返品・キャンセル分
 - 税金（別途計上）
 
@@ -1666,11 +1687,12 @@ dbt docs serve
 models:
   jaffle_shop:
     +persist_docs:
-      relation: true   # テーブル/ビューのdescriptionをBigQueryに保存
-      columns: true    # カラムのdescriptionをBigQueryに保存
+      relation: true # テーブル/ビューのdescriptionをBigQueryに保存
+      columns: true # カラムのdescriptionをBigQueryに保存
 ```
 
 #### 検証結果
+
 - ✅ dbt docs generateでドキュメント生成される
 - ✅ overview.mdが表示される
 - ✅ ドキュメントブロックが再利用できる
@@ -1682,6 +1704,7 @@ models:
 ### 検証9: tests（カスタムテスト）
 
 #### 概要
+
 汎用テストとシングルテストを実装します。
 
 #### テストの種類
@@ -1850,17 +1873,17 @@ group by created_at
 tests:
   jaffle_shop:
     # 全テストのデフォルト設定
-    +severity: error  # error または warn
-    +store_failures: true  # 失敗レコードを保存
+    +severity: error # error または warn
+    +store_failures: true # 失敗レコードを保存
 
     # 特定フォルダのテスト設定
     critical:
       +severity: error
-      +fail_calc: "count(*) > 0"  # 1件でもあればエラー
+      +fail_calc: "count(*) > 0" # 1件でもあればエラー
 
     warnings:
       +severity: warn
-      +fail_calc: "count(*) > 10"  # 10件以上で警告
+      +fail_calc: "count(*) > 10" # 10件以上で警告
 ```
 
 #### テスト実行
@@ -1883,6 +1906,7 @@ dbt test --select result:fail
 ```
 
 #### 検証結果
+
 - ✅ 汎用テストが作成できる
 - ✅ シングルテストが実行される
 - ✅ store_failuresで失敗レコードが保存される
@@ -1893,6 +1917,7 @@ dbt test --select result:fail
 ### 検証10: exposures（エクスポージャー）
 
 #### 概要
+
 dbtモデルを使用する外部ツール（ダッシュボード、アプリケーション）を定義します。
 
 #### exposuresの役割
@@ -2014,21 +2039,21 @@ exposures:
 
 #### exposureのタイプ
 
-| type | 説明 | 例 |
-|------|------|-----|
-| dashboard | ダッシュボード | Looker、Tableau |
-| notebook | ノートブック | Jupyter、Databricks |
-| analysis | アドホック分析 | SQL分析 |
-| ml | 機械学習モデル | 予測モデル |
-| application | アプリケーション | WebアプリAPI |
+| type        | 説明             | 例                  |
+| ----------- | ---------------- | ------------------- |
+| dashboard   | ダッシュボード   | Looker、Tableau     |
+| notebook    | ノートブック     | Jupyter、Databricks |
+| analysis    | アドホック分析   | SQL分析             |
+| ml          | 機械学習モデル   | 予測モデル          |
+| application | アプリケーション | WebアプリAPI        |
 
 #### exposureの成熟度
 
-| maturity | 説明 | SLA |
-|----------|------|-----|
-| high | 本番運用、高SLA | 99.9% |
-| medium | 定期使用、中SLA | 95% |
-| low | 実験的、低SLA | - |
+| maturity | 説明            | SLA   |
+| -------- | --------------- | ----- |
+| high     | 本番運用、高SLA | 99.9% |
+| medium   | 定期使用、中SLA | 95%   |
+| low      | 実験的、低SLA   | -     |
 
 #### dbt docsでの表示
 
@@ -2055,6 +2080,7 @@ dbt run --select +exposure:sales_report
 ```
 
 #### 検証結果
+
 - ✅ exposuresが定義できる
 - ✅ dbt docsでexposureが表示される
 - ✅ データ系譜で依存関係が可視化される
@@ -2089,7 +2115,7 @@ packages:
   - package: dbt-labs/dbt_utils
     version: 1.1.1
 
-# ❌ 非推奨: latestは避ける
+  # ❌ 非推奨: latestは避ける
   - package: some-package
     version: latest
 ```
@@ -2133,6 +2159,7 @@ models:
 **症状**: `Required var 'xxx' not found`
 
 **解決策**:
+
 ```sql
 -- デフォルト値を指定
 {{ var('start_date', '2020-01-01') }}
@@ -2143,6 +2170,7 @@ models:
 **症状**: パッケージ間のバージョン競合
 
 **解決策**:
+
 ```bash
 # packages.ymlを見直し
 dbt clean
@@ -2156,6 +2184,7 @@ dbt deps
 **原因**: macrosフォルダの配置ミス
 
 **解決策**:
+
 ```
 macros/
 └── my_macro.sql  # ✅ 正しい
@@ -2168,6 +2197,7 @@ models/
 **症状**: 予約語でSQLエラー
 
 **解決策**:
+
 ```yaml
 quoting:
   identifier: true
@@ -2178,6 +2208,7 @@ quoting:
 **症状**: dbt docsにexposureが表示されない
 
 **解決策**:
+
 ```bash
 # YAML構文確認
 dbt parse
@@ -2191,6 +2222,7 @@ dbt docs generate
 ## 参考資料
 
 ### 公式ドキュメント
+
 - [dbt Project Variables (vars)](https://docs.getdbt.com/docs/build/project-variables)
 - [dbt Packages](https://docs.getdbt.com/docs/build/packages)
 - [dbt Macros](https://docs.getdbt.com/docs/build/jinja-macros)
@@ -2198,11 +2230,13 @@ dbt docs generate
 - [dbt Exposures](https://docs.getdbt.com/docs/build/exposures)
 
 ### パッケージハブ
+
 - [dbt Package Hub](https://hub.getdbt.com/)
 - [dbt_utils](https://github.com/dbt-labs/dbt-utils)
 - [dbt_expectations](https://github.com/calogica/dbt-expectations)
 
 ### コミュニティ
+
 - [dbt Slack](https://www.getdbt.com/community/join-the-community/)
 - [dbt Discourse](https://discourse.getdbt.com/)
 

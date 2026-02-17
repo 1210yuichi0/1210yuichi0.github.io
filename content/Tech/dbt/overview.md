@@ -13,8 +13,6 @@ authorship:
   reviewed: false
 ---
 
-
-
 ## プロジェクト情報
 
 ✅ **実測検証完了**
@@ -28,7 +26,7 @@ authorship:
 **リージョン**: asia-northeast1  
 **並列スレッド数**: 24  
 **総検証項目数**: 130項目  
-**カテゴリ数**: 10カテゴリ  
+**カテゴリ数**: 10カテゴリ
 
 このプロジェクトは、dbt core + BigQueryの**全設定項目（130項目）を実際に検証**し、実運用で使えるベストプラクティスをまとめたものです。
 
@@ -46,13 +44,14 @@ authorship:
 
 ### 🔴 必須カテゴリ（本番運用に必須）
 
-| # | カテゴリ | 検証項目数 | 所要時間 | 状態 |
-|---|---------|----------|---------|------|
-| [](project-basic-config.md) | **プロジェクト基本設定** | 15項目 | 2時間 | ✅ 完了 |
-| [](bigquery-connection.md) | **BigQuery接続設定** | 20項目 | 2時間 | ✅ 完了 |
-| [](model-config.md) | **Models** | 30項目 | 4時間 | ✅ 完了 |
+| #                                      | カテゴリ                 | 検証項目数 | 所要時間 | 状態    |
+| -------------------------------------- | ------------------------ | ---------- | -------- | ------- |
+| [](categories/project-basic-config.md) | **プロジェクト基本設定** | 15項目     | 2時間    | ✅ 完了 |
+| [](categories/bigquery-connection.md)  | **BigQuery接続設定**     | 20項目     | 2時間    | ✅ 完了 |
+| [](categories/model-config.md)         | **Models**               | 30項目     | 4時間    | ✅ 完了 |
 
 **カテゴリ1-3の主な内容**:
+
 - dbt_project.yml の全設定項目
 - profiles.yml の5種類の認証方法（OAuth, Service Account等）
 - マテリアライゼーション（table, view, incremental, ephemeral, materialized_view）
@@ -64,13 +63,14 @@ authorship:
 
 ### 🟡 重要カテゴリ（データ品質・運用効率の向上）
 
-| # | カテゴリ | 検証項目数 | 所要時間 | 状態 |
-|---|---------|----------|---------|------|
-| [](testing-config.md) | **Tests** | 15項目 | 3時間 | ✅ 完了 |
-| [](documentation-config.md) | **ドキュメント設定** | 5項目 | 1時間 | ✅ 完了 |
-| [](performance-optimization.md) | **パフォーマンス最適化** | 10項目 | 2時間 | ✅ 完了 |
+| #                                          | カテゴリ                 | 検証項目数 | 所要時間 | 状態    |
+| ------------------------------------------ | ------------------------ | ---------- | -------- | ------- |
+| [](categories/testing-config.md)           | **Tests**                | 15項目     | 3時間    | ✅ 完了 |
+| [](categories/documentation-config.md)     | **ドキュメント設定**     | 5項目      | 1時間    | ✅ 完了 |
+| [](categories/performance-optimization.md) | **パフォーマンス最適化** | 10項目     | 2時間    | ✅ 完了 |
 
 **カテゴリ4-6の主な内容**:
+
 - Schema Tests（unique, not_null, accepted_values, relationships）
 - Singular Tests（カスタムSQLテスト）
 - Unit Tests（モックデータでのロジック検証）
@@ -84,14 +84,15 @@ authorship:
 
 ### 🟢 任意カテゴリ（高度な機能・特殊用途）
 
-| # | カテゴリ | 検証項目数 | 所要時間 | 状態 |
-|---|---------|----------|---------|------|
-| [](snapshot-config.md) | **Snapshots** | 12項目 | 2時間 | ✅ 完了 |
-| [](seed-config.md) | **Seeds** | 5項目 | 1時間 | ✅ 完了 |
-| [](hooks-config.md) | **Hooks** | 8項目 | 1.5時間 | ✅ 完了 |
-| [](other-config.md) | **その他の設定** | 10項目 | 1.5時間 | ✅ 完了 |
+| #                                 | カテゴリ         | 検証項目数 | 所要時間 | 状態    |
+| --------------------------------- | ---------------- | ---------- | -------- | ------- |
+| [](categories/snapshot-config.md) | **Snapshots**    | 12項目     | 2時間    | ✅ 完了 |
+| [](categories/seed-config.md)     | **Seeds**        | 5項目      | 1時間    | ✅ 完了 |
+| [](categories/hooks-config.md)    | **Hooks**        | 8項目      | 1.5時間  | ✅ 完了 |
+| [](categories/other-config.md)    | **その他の設定** | 10項目     | 1.5時間  | ✅ 完了 |
 
 **カテゴリ7-10の主な内容**:
+
 - SCD Type 2実装（timestamp戦略、check戦略）
 - dbt seed（CSVファイルのロード）
 - column_types、quote_columns、delimiter

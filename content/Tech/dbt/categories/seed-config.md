@@ -12,9 +12,8 @@ authorship:
   reviewed: false
 ---
 
-
-
 ## 目次
+
 - [概要](#概要)
 - [検証環境](#検証環境)
 - [検証項目一覧](#検証項目一覧)
@@ -59,25 +58,27 @@ graph TB
 ✅ **Seeds実行完了**: 3ファイル、合計312行  
 ⏱️ **実行時間**: 約5秒
 📊 **ファイル一覧**:
+
 - `raw_customers.csv` (100行)
 - `raw_orders.csv` (99行)
 - `raw_payments.csv` (113行)
 
 ## 検証項目一覧
 
-| # | 検証項目 | 優先度 | 状態 |
-|---|---------|--------|------|
-| 1 | 基本的なseed読み込み | 高 | ✅ |
-| 2 | column_types設定 | 高 | ✅ |
-| 3 | quote_columns設定 | 中 | ✅ |
-| 4 | delimiter設定 | 中 | ✅ |
-| 5 | full_refresh動作 | 高 | ✅ |
+| #   | 検証項目             | 優先度 | 状態 |
+| --- | -------------------- | ------ | ---- |
+| 1   | 基本的なseed読み込み | 高     | ✅   |
+| 2   | column_types設定     | 高     | ✅   |
+| 3   | quote_columns設定    | 中     | ✅   |
+| 4   | delimiter設定        | 中     | ✅   |
+| 5   | full_refresh動作     | 高     | ✅   |
 
 ## 詳細な検証結果
 
 ### 検証1: 基本的なseed読み込み
 
 #### 概要
+
 CSVファイルをBigQueryテーブルとして読み込む基本的な機能を検証します。
 
 #### Seed処理フロー
@@ -238,6 +239,7 @@ ORDER BY total_amount DESC;
 </details>
 
 #### 検証結果
+
 - ✅ CSVファイルがテーブルとして正しく読み込まれる
 - ✅ ref()関数でseedを参照できる
 - ✅ モデルからseedとjoinできる
@@ -248,6 +250,7 @@ ORDER BY total_amount DESC;
 ### 検証2: column_types設定
 
 #### 概要
+
 CSVから読み込む際のカラム型を明示的に指定します。
 
 #### カラム型推論の課題
@@ -333,26 +336,26 @@ seeds:
       +column_types:
         category_id: INT64
         category_name: STRING
-        parent_category_id: INT64  # NULLを許容
-        commission_rate: NUMERIC  # 精度が重要
+        parent_category_id: INT64 # NULLを許容
+        commission_rate: NUMERIC # 精度が重要
         min_price: NUMERIC
         max_price: NUMERIC
-        created_date: DATE  # 日付型
-        is_active: BOOL  # ブール型
+        created_date: DATE # 日付型
+        is_active: BOOL # ブール型
 ```
 
 #### BigQueryでサポートされる型
 
-| CSV値 | BigQuery型 | 用途 |
-|-------|-----------|------|
-| 123 | INT64 | 整数 |
-| 123.45 | FLOAT64 | 浮動小数点 |
-| 123.45 | NUMERIC | 固定小数点（金額など） |
-| true/false | BOOL | ブール値 |
-| 2026-02-17 | DATE | 日付 |
-| 2026-02-17 10:30:00 | TIMESTAMP | タイムスタンプ |
-| ABC | STRING | 文字列 |
-| [1,2,3] | ARRAY<INT64> | 配列（JSON形式） |
+| CSV値               | BigQuery型   | 用途                   |
+| ------------------- | ------------ | ---------------------- |
+| 123                 | INT64        | 整数                   |
+| 123.45              | FLOAT64      | 浮動小数点             |
+| 123.45              | NUMERIC      | 固定小数点（金額など） |
+| true/false          | BOOL         | ブール値               |
+| 2026-02-17          | DATE         | 日付                   |
+| 2026-02-17 10:30:00 | TIMESTAMP    | タイムスタンプ         |
+| ABC                 | STRING       | 文字列                 |
+| [1,2,3]             | ARRAY<INT64> | 配列（JSON形式）       |
 
 #### 型指定の検証
 
@@ -382,6 +385,7 @@ FROM `project.dbt_dev.product_categories`;
 </details>
 
 #### 検証結果
+
 - ✅ column_types設定が正しく適用される
 - ✅ 数値型、日付型、ブール型が正しく変換される
 - ✅ NULLを含むカラムも正しく処理される
@@ -392,6 +396,7 @@ FROM `project.dbt_dev.product_categories`;
 ### 検証3: quote_columns設定
 
 #### 概要
+
 BigQueryの予約語や大文字小文字を区別するカラム名を適切に処理します。
 
 #### quote_columns設定の必要性
@@ -437,15 +442,15 @@ seeds:
       +quote_columns: true
       +column_types:
         id: INT64
-        select: STRING  # 予約語
-        order: INT64    # 予約語
-        date: DATE      # 予約語
-        group: STRING   # 予約語
-        user: STRING    # 予約語
+        select: STRING # 予約語
+        order: INT64 # 予約語
+        date: DATE # 予約語
+        group: STRING # 予約語
+        user: STRING # 予約語
 
     # 通常のseed
     country_codes:
-      +quote_columns: false  # デフォルト
+      +quote_columns: false # デフォルト
 ```
 
 #### 生成されるSQL
@@ -489,7 +494,7 @@ ProductID,productID,PRODUCT_ID,product_name
 seeds:
   jaffle_shop:
     case_sensitive_columns:
-      +quote_columns: true  # 大文字小文字を保持
+      +quote_columns: true # 大文字小文字を保持
       +column_types:
         ProductID: INT64
         productID: INT64
@@ -527,6 +532,7 @@ from {{ ref('reserved_words_example') }}
 </details>
 
 #### 検証結果
+
 - ✅ quote_columns=trueで予約語が正しく処理される
 - ✅ バッククォートでカラム名が囲まれる
 - ✅ 大文字小文字が保持される
@@ -537,6 +543,7 @@ from {{ ref('reserved_words_example') }}
 ### 検証4: delimiter設定
 
 #### 概要
+
 CSV以外の区切り文字（タブ、パイプ等）を使用したファイルを読み込みます。
 
 #### 各種区切り文字の対応
@@ -579,7 +586,7 @@ region_id	region_name	country	timezone	sales_tax_rate
 seeds:
   jaffle_shop:
     regions:
-      +delimiter: "\t"  # タブ区切り
+      +delimiter: "\t" # タブ区切り
       +column_types:
         region_id: INT64
         region_name: STRING
@@ -608,7 +615,7 @@ zone_id|zone_name|min_weight_kg|max_weight_kg|base_fee|per_kg_fee
 seeds:
   jaffle_shop:
     shipping_zones:
-      +delimiter: "|"  # パイプ区切り
+      +delimiter: "|" # パイプ区切り
       +column_types:
         zone_id: INT64
         zone_name: STRING
@@ -638,7 +645,7 @@ FL;Florida;0.06;0.00;0.0097
 seeds:
   jaffle_shop:
     tax_rates:
-      +delimiter: ";"  # セミコロン区切り
+      +delimiter: ";" # セミコロン区切り
       +column_types:
         state_code: STRING
         state_name: STRING
@@ -691,6 +698,7 @@ WHERE table_name = 'shipping_zones';
 </details>
 
 #### 検証結果
+
 - ✅ タブ区切り（\t）が正しく処理される
 - ✅ パイプ区切り（|）が正しく処理される
 - ✅ セミコロン区切り（;）が正しく処理される
@@ -701,6 +709,7 @@ WHERE table_name = 'shipping_zones';
 ### 検証5: full_refresh動作
 
 #### 概要
+
 full_refreshフラグの動作とseedテーブルの更新方法を検証します。
 
 #### full_refresh動作フロー
@@ -801,7 +810,7 @@ seeds:
 
     # 特定のseedのみfull_refresh
     product_categories:
-      +full_refresh: false  # 通常は自動でfull_refreshしない
+      +full_refresh: false # 通常は自動でfull_refreshしない
 
     # テスト用seed（毎回再作成）
     test_data:
@@ -896,6 +905,7 @@ dbt run --select +stg_orders  # seedの変更を反映
 ```
 
 #### 検証結果
+
 - ✅ 通常のseed実行でTRUNCATEされて再読み込み
 - ✅ --full-refreshでテーブルが再作成される
 - ✅ スキーマ変更時はfull_refreshが必要
@@ -927,12 +937,14 @@ graph TB
 ```
 
 **推奨される使用例**:
+
 - 国コード、通貨コード
 - ステータスマスタ（注文ステータス、会員ランク等）
 - テストデータ
 - 小規模な参照テーブル（< 1000レコード）
 
 **推奨されない使用例**:
+
 - 大規模データ（> 10,000レコード）
 - 頻繁に更新されるデータ
 - トランザクションデータ
@@ -968,7 +980,7 @@ seeds:
 
     test:
       +schema: test
-      +enabled: "{{ target.name == 'dev' }}"  # dev環境のみ
+      +enabled: "{{ target.name == 'dev' }}" # dev環境のみ
 
     config:
       +schema: config
@@ -985,7 +997,7 @@ seeds:
         country_code: STRING
         country_name: STRING
         continent: STRING
-        population: INT64  # 明示的に型指定
+        population: INT64 # 明示的に型指定
 ```
 
 ### 4. ドキュメント化
@@ -1052,10 +1064,12 @@ dbt seed --select country_codes payment_methods
 **症状**: `Column count mismatch`
 
 **原因**:
+
 - CSVのカラム数が変更された
 - スキーマ定義とCSVが不一致
 
 **解決策**:
+
 ```bash
 # full_refreshで再作成
 dbt seed --select problem_seed --full-refresh
@@ -1070,17 +1084,19 @@ dbt seed --select problem_seed --full-refresh
 **症状**: `Invalid value for column`
 
 **原因**:
+
 - CSV内の値が指定した型に変換できない
 - NULLの扱い
 
 **解決策**:
+
 ```yaml
 # dbt_project.yml
 seeds:
   jaffle_shop:
     problem_seed:
       +column_types:
-        numeric_column: STRING  # 一旦STRINGで読み込み
+        numeric_column: STRING # 一旦STRINGで読み込み
         # モデル側でCASTする
 ```
 
@@ -1097,10 +1113,12 @@ from {{ ref('problem_seed') }}
 **症状**: 大きなCSVファイルで`dbt seed`が非常に遅い
 
 **原因**:
+
 - Seedsは小規模データ向けに設計されている
 - 10,000レコード以上では非効率
 
 **解決策**:
+
 ```bash
 # BigQueryのLOAD DATAを使用
 bq load \
@@ -1118,9 +1136,11 @@ bq load \
 **症状**: カンマやクォートを含むデータが正しく読み込まれない
 
 **原因**:
+
 - CSV内の特殊文字が正しくエスケープされていない
 
 **解決策**:
+
 ```csv
 # ダブルクォートで囲む
 id,name,description
@@ -1134,9 +1154,11 @@ id,name,description
 **症状**: 日本語などの文字が文字化けする
 
 **原因**:
+
 - CSVがUTF-8エンコーディングでない
 
 **解決策**:
+
 ```bash
 # CSVをUTF-8に変換
 iconv -f SHIFT-JIS -t UTF-8 input.csv > output.csv
@@ -1154,15 +1176,18 @@ df.to_csv('output.csv', encoding='utf-8', index=False)
 ## 参考資料
 
 ### 公式ドキュメント
+
 - [dbt Seeds](https://docs.getdbt.com/docs/build/seeds)
 - [Seed Configurations](https://docs.getdbt.com/reference/seed-configs)
 - [Seed Properties](https://docs.getdbt.com/reference/seed-properties)
 
 ### ベストプラクティス
+
 - [When to use seeds](https://docs.getdbt.com/docs/build/seeds#when-to-use-seeds)
 - [dbt Discourse: Seeds Best Practices](https://discourse.getdbt.com/)
 
 ### BigQuery固有
+
 - [BigQuery Data Types](https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types)
 - [BigQuery Load Data](https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-csv)
 

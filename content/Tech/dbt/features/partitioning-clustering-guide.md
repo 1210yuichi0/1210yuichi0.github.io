@@ -12,8 +12,6 @@ authorship:
   reviewed: false
 ---
 
-
-
 > **いつも設定に迷う方へ**: パーティショニングとクラスタリングの順番、数、使い分けを実測検証とGCP公式ドキュメントで解説
 
 ## 検証概要
@@ -26,15 +24,15 @@ authorship:
 
 ### 実測検証結果
 
-| 設定タイプ | 実行結果 | 詳細 |
-|----------|---------|------|
-| ✅ **DATE型パーティション** | CREATE TABLE | 99行、5.00秒 |
-| ✅ **整数範囲パーティション** | CREATE TABLE | 99行、4.27秒 |
-| ❌ **TIMESTAMP型パーティション** | ERROR | PARTITION BY式エラー |
-| ❌ **取り込み時刻パーティション** | ERROR | パース失敗 |
-| ✅ **単一クラスタリング** | CREATE TABLE | 99行、3.96秒 |
-| ✅ **複数クラスタリング** | CREATE TABLE | 99行、2.59秒 |
-| ✅ **パーティション+クラスタリング** | CREATE TABLE | 99行、4.83秒 |
+| 設定タイプ                           | 実行結果     | 詳細                 |
+| ------------------------------------ | ------------ | -------------------- |
+| ✅ **DATE型パーティション**          | CREATE TABLE | 99行、5.00秒         |
+| ✅ **整数範囲パーティション**        | CREATE TABLE | 99行、4.27秒         |
+| ❌ **TIMESTAMP型パーティション**     | ERROR        | PARTITION BY式エラー |
+| ❌ **取り込み時刻パーティション**    | ERROR        | パース失敗           |
+| ✅ **単一クラスタリング**            | CREATE TABLE | 99行、3.96秒         |
+| ✅ **複数クラスタリング**            | CREATE TABLE | 99行、2.59秒         |
+| ✅ **パーティション+クラスタリング** | CREATE TABLE | 99行、4.83秒         |
 
 ---
 
@@ -113,7 +111,7 @@ models:
       partition_by:
         field: order_date
         data_type: date
-        granularity: day  # day, month, year
+        granularity: day # day, month, year
 ```
 
 **実測結果**:
@@ -134,11 +132,13 @@ AS (
 ```
 
 **メリット**:
+
 - ✅ 最もシンプルな設定
 - ✅ クエリコスト見積もり可能
 - ✅ パーティション単位での有効期限設定可能
 
 **デメリット**:
+
 - ⚠️ 時刻情報が失われる（DATEのみ）
 
 ---
@@ -155,7 +155,7 @@ models:
       partition_by:
         field: event_timestamp
         data_type: timestamp
-        granularity: hour  # hour, day, month, year
+        granularity: hour # hour, day, month, year
 ```
 
 **⚠️ 重要な制約**: BigQueryでは`PARTITION BY event_timestamp`は**エラー**になります。
@@ -166,7 +166,7 @@ models:
 partition_by:
   field: event_timestamp
   data_type: timestamp
-  granularity: day  # TIMESTAMPをDAYに丸める
+  granularity: day # TIMESTAMPをDAYに丸める
 ```
 
 **実測エラー**:
@@ -193,21 +193,22 @@ AS (...)
 partition_by:
   field: event_timestamp
   data_type: timestamp
-  granularity: day  # dbtが自動的にTIMESTAMP_TRUNC()を生成
+  granularity: day # dbtが自動的にTIMESTAMP_TRUNC()を生成
 ```
 
 ---
 
 #### 2.1.3 パーティション粒度（Granularity）の選択
 
-| Granularity | 用途 | パーティション数（1年） | クエリコスト削減効果 |
-|------------|------|---------------------|------------------|
-| **hour** | リアルタイム分析、ログデータ | 8,760 | ⭐⭐⭐⭐⭐ |
-| **day** | 日次レポート、通常のファクトテーブル | 365 | ⭐⭐⭐⭐ |
-| **month** | 月次集計、長期保存データ | 12 | ⭐⭐⭐ |
-| **year** | 年次レポート、アーカイブデータ | 1-10 | ⭐⭐ |
+| Granularity | 用途                                 | パーティション数（1年） | クエリコスト削減効果 |
+| ----------- | ------------------------------------ | ----------------------- | -------------------- |
+| **hour**    | リアルタイム分析、ログデータ         | 8,760                   | ⭐⭐⭐⭐⭐           |
+| **day**     | 日次レポート、通常のファクトテーブル | 365                     | ⭐⭐⭐⭐             |
+| **month**   | 月次集計、長期保存データ             | 12                      | ⭐⭐⭐               |
+| **year**    | 年次レポート、アーカイブデータ       | 1-10                    | ⭐⭐                 |
 
 **推奨**:
+
 - **hourly**: ログ、イベントストリーム（1日のデータ量が大きい場合）
 - **daily**: 通常のファクトテーブル（99%のケースで推奨）
 - **monthly**: 長期保存データ（5年以上）
@@ -251,10 +252,12 @@ partition_by:
 ```
 
 **メリット**:
+
 - ✅ テーブルにDATE/TIMESTAMP列が不要
 - ✅ ストリーミング挿入時に自動分割
 
 **デメリット**:
+
 - ⚠️ ビジネス上の時刻とズレる可能性
 - ⚠️ dbtでのサポートが限定的
 
@@ -279,7 +282,7 @@ models:
         range:
           start: 1
           end: 10000
-          interval: 100  # 1-100, 101-200, ..., 9901-10000
+          interval: 100 # 1-100, 101-200, ..., 9901-10000
 ```
 
 **実測結果**:
@@ -297,14 +300,17 @@ AS (...)
 ```
 
 **メリット**:
+
 - ✅ 店舗ID、ユーザーIDなど連続する整数で分割可能
 - ✅ 時系列データ以外でもパーティション化
 
 **デメリット**:
+
 - ⚠️ 範囲を超える値はNULLパーティションに入る
 - ⚠️ 値の分布が偏るとパーティションサイズが不均等
 
 **推奨ケース**:
+
 - 店舗ID（1-10000店舗）
 - 地域コード（1-300地域）
 - ユーザーID範囲（サービス規模による）
@@ -315,12 +321,12 @@ AS (...)
 
 #### 制限事項（GCP公式）
 
-| 項目 | 制限 | 対処法 |
-|------|------|--------|
-| **最大パーティション数** | 10,000個 | hourlyではなくdailyを使用 |
-| **パーティション変更回数/日** | 制限あり（引き上げ不可） | バッチ処理をまとめる |
-| **STRINGクラスタリング長** | 先頭1,024文字のみ | 長い文字列は避ける |
-| **パーティション列の変更** | 不可 | テーブル再作成が必要 |
+| 項目                          | 制限                     | 対処法                    |
+| ----------------------------- | ------------------------ | ------------------------- |
+| **最大パーティション数**      | 10,000個                 | hourlyではなくdailyを使用 |
+| **パーティション変更回数/日** | 制限あり（引き上げ不可） | バッチ処理をまとめる      |
+| **STRINGクラスタリング長**    | 先頭1,024文字のみ        | 長い文字列は避ける        |
+| **パーティション列の変更**    | 不可                     | テーブル再作成が必要      |
 
 #### パーティションフィルタ必須設定
 
@@ -337,7 +343,7 @@ models:
         field: order_date
         data_type: date
         granularity: day
-        require_partition_filter: true  # WHERE order_date IS NOT NULL必須
+        require_partition_filter: true # WHERE order_date IS NOT NULL必須
 ```
 
 **実測結果**:
@@ -347,6 +353,7 @@ models:
 ```
 
 **効果**:
+
 - ✅ 全スキャンクエリを防止（コスト削減）
 - ✅ 開発者に安全なクエリ習慣を強制
 
@@ -377,7 +384,7 @@ models:
         field: event_date
         data_type: date
         granularity: day
-      partition_expiration_days: 90  # 90日後に自動削除
+      partition_expiration_days: 90 # 90日後に自動削除
 ```
 
 **実測結果**:
@@ -387,6 +394,7 @@ models:
 ```
 
 **メリット**:
+
 - ✅ ストレージコスト削減
 - ✅ GDPR等のコンプライアンス対応
 
@@ -414,14 +422,14 @@ cluster_by: ["col1", "col2", "col3", "col4", "col5"]
 
 #### サポート対象データ型
 
-| データ型 | サポート | 注意点 |
-|---------|---------|--------|
-| **INT64, BIGNUMERIC, NUMERIC** | ✅ | 推奨 |
-| **STRING** | ✅ | 先頭1,024文字のみ |
-| **DATE, DATETIME, TIMESTAMP** | ✅ | 推奨 |
-| **BOOL** | ✅ | カーディナリティ低い |
-| **GEOGRAPHY, RANGE** | ✅ | 高度な用途 |
-| **ARRAY, STRUCT** | ❌ | トップレベルのみサポート |
+| データ型                       | サポート | 注意点                   |
+| ------------------------------ | -------- | ------------------------ |
+| **INT64, BIGNUMERIC, NUMERIC** | ✅       | 推奨                     |
+| **STRING**                     | ✅       | 先頭1,024文字のみ        |
+| **DATE, DATETIME, TIMESTAMP**  | ✅       | 推奨                     |
+| **BOOL**                       | ✅       | カーディナリティ低い     |
+| **GEOGRAPHY, RANGE**           | ✅       | 高度な用途               |
+| **ARRAY, STRUCT**              | ❌       | トップレベルのみサポート |
 
 ---
 
@@ -456,12 +464,12 @@ cluster_by: ["customer_id", "order_date", "product_category"]
 
 ### 3.4 カーディナリティ（値の種類数）の考慮
 
-| カーディナリティ | 列の例 | クラスタリング効果 | 推奨順位 |
-|---------------|--------|----------------|---------|
-| **高** | customer_id (100万種類) | ⭐⭐⭐⭐⭐ | 1番目 |
-| **中** | product_id (10万種類) | ⭐⭐⭐⭐ | 2番目 |
-| **低** | category (10種類) | ⭐⭐ | 3-4番目 |
-| **極低** | is_active (2種類) | ⭐ | 使わない |
+| カーディナリティ | 列の例                  | クラスタリング効果 | 推奨順位 |
+| ---------------- | ----------------------- | ------------------ | -------- |
+| **高**           | customer_id (100万種類) | ⭐⭐⭐⭐⭐         | 1番目    |
+| **中**           | product_id (10万種類)   | ⭐⭐⭐⭐           | 2番目    |
+| **低**           | category (10種類)       | ⭐⭐               | 3-4番目  |
+| **極低**         | is_active (2種類)       | ⭐                 | 使わない |
 
 **推奨順序**:
 
@@ -605,12 +613,12 @@ WHERE order_date = '2026-01-01'  -- パーティションプルーニング
 
 ### 4.2 組み合わせの決定ガイド
 
-| テーブルの特徴 | 推奨設定 | 理由 |
-|-------------|---------|------|
-| **時系列 + よく絞り込む列** | パーティション + クラスタリング | 最大のコスト削減 |
-| **時系列データのみ** | パーティションのみ | シンプル、十分効果的 |
-| **高カーディナリティ列のみ** | クラスタリングのみ | パーティションより柔軟 |
-| **64MB未満** | 最適化不要 | オーバーヘッドが大きい |
+| テーブルの特徴               | 推奨設定                        | 理由                   |
+| ---------------------------- | ------------------------------- | ---------------------- |
+| **時系列 + よく絞り込む列**  | パーティション + クラスタリング | 最大のコスト削減       |
+| **時系列データのみ**         | パーティションのみ              | シンプル、十分効果的   |
+| **高カーディナリティ列のみ** | クラスタリングのみ              | パーティションより柔軟 |
+| **64MB未満**                 | 最適化不要                      | オーバーヘッドが大きい |
 
 ---
 
@@ -633,10 +641,10 @@ models:
         field: order_date
         data_type: date
         granularity: day
-        require_partition_filter: true  # 安全性確保
+        require_partition_filter: true # 安全性確保
 
       # パーティション有効期限（オプション）
-      partition_expiration_days: 730  # 2年後に自動削除
+      partition_expiration_days: 730 # 2年後に自動削除
 
       # クラスタリング設定（最大4列）
       cluster_by: ["customer_id", "product_id", "order_status"]
@@ -670,7 +678,7 @@ models:
         description: "注文ステータス（クラスタリングキー3）"
         tests:
           - accepted_values:
-              values: ['pending', 'processing', 'shipped', 'delivered', 'cancelled']
+              values: ["pending", "processing", "shipped", "delivered", "cancelled"]
 ```
 
 ```sql
@@ -734,7 +742,7 @@ models:
         data_type: timestamp
         granularity: hour
       cluster_by: ["user_id", "event_type"]
-      partition_expiration_days: 30  # ログは30日で削除
+      partition_expiration_days: 30 # ログは30日で削除
 ```
 
 ---
@@ -799,7 +807,7 @@ PARTITION BY event_timestamp
 partition_by:
   field: event_timestamp
   data_type: timestamp
-  granularity: day  # dbtがTIMESTAMP_TRUNC()を生成
+  granularity: day # dbtがTIMESTAMP_TRUNC()を生成
 ```
 
 ---
@@ -812,10 +820,11 @@ partition_by:
 partition_by:
   field: event_timestamp
   data_type: timestamp
-  granularity: hour  # 1年で8,760パーティション！
+  granularity: hour # 1年で8,760パーティション！
 ```
 
 **問題**:
+
 - 10,000パーティション制限に近い
 - メタデータ管理のオーバーヘッド
 
@@ -825,7 +834,7 @@ partition_by:
 partition_by:
   field: event_timestamp
   data_type: timestamp
-  granularity: day  # 1年で365パーティション
+  granularity: day # 1年で365パーティション
 ```
 
 ---
@@ -836,7 +845,7 @@ partition_by:
 
 ```yaml
 # テーブルサイズ: 10MB
-cluster_by: ["customer_id"]  # 効果なし、むしろ遅くなる
+cluster_by: ["customer_id"] # 効果なし、むしろ遅くなる
 ```
 
 **✅ 解決策**: 64MB以上のテーブルのみ最適化
@@ -847,12 +856,12 @@ cluster_by: ["customer_id"]  # 効果なし、むしろ遅くなる
 
 ### 7.1 実測パフォーマンス比較
 
-| 設定 | スキャン量 | クエリ時間 | コスト削減 |
-|------|----------|----------|----------|
-| **最適化なし** | 10 GB | 5.0秒 | - |
-| **パーティションのみ** | 300 MB | 1.5秒 | 97% |
-| **クラスタリングのみ** | 2 GB | 3.0秒 | 80% |
-| **パーティション+クラスタリング** | 50 MB | 0.5秒 | 99.5% |
+| 設定                              | スキャン量 | クエリ時間 | コスト削減 |
+| --------------------------------- | ---------- | ---------- | ---------- |
+| **最適化なし**                    | 10 GB      | 5.0秒      | -          |
+| **パーティションのみ**            | 300 MB     | 1.5秒      | 97%        |
+| **クラスタリングのみ**            | 2 GB       | 3.0秒      | 80%        |
+| **パーティション+クラスタリング** | 50 MB      | 0.5秒      | 99.5%      |
 
 ---
 
@@ -902,7 +911,7 @@ models:
         granularity: day
         require_partition_filter: true
       cluster_by: ["high_cardinality_col1", "high_cardinality_col2"]
-      partition_expiration_days: 365  # オプション
+      partition_expiration_days: 365 # オプション
 ```
 
 ---

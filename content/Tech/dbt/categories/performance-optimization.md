@@ -12,9 +12,8 @@ authorship:
   reviewed: false
 ---
 
-
-
 ## 目次
+
 - [概要](#概要)
 - [検証環境](#検証環境)
 - [検証項目一覧](#検証項目一覧)
@@ -65,6 +64,7 @@ graph TB
 ⏱️ **全テスト実行時間**: 11.53秒（31テスト、30 PASS）
 ⏱️ **unit tests実行時間**: 10.76秒（9テスト、全PASS）
 📊 **パフォーマンス比較**:
+
 - 最速モデル: cluster_multi_demo (2.59秒)
 - 最遅モデル: incr_insert_overwrite_demo (7.18秒)
 - 平均: 約4秒/モデル
@@ -75,24 +75,25 @@ graph TB
 
 ## 検証項目一覧
 
-| # | 検証項目 | 優先度 | 状態 |
-|---|---------|--------|------|
-| 1 | スロット最適化設定 | 高 | ✅ |
-| 2 | クエリパフォーマンス監視 | 高 | ✅ |
-| 3 | 並列実行設定 | 高 | ✅ |
-| 4 | キャッシュ戦略 | 中 | ✅ |
-| 5 | マテリアライゼーション戦略 | 高 | ✅ |
-| 6 | パーティション最適化 | 高 | ✅ |
-| 7 | クラスタリング最適化 | 中 | ✅ |
-| 8 | インクリメンタル戦略 | 高 | ✅ |
-| 9 | ビュー vs テーブル選択 | 中 | ✅ |
-| 10 | クエリ最適化パターン | 高 | ✅ |
+| #   | 検証項目                   | 優先度 | 状態 |
+| --- | -------------------------- | ------ | ---- |
+| 1   | スロット最適化設定         | 高     | ✅   |
+| 2   | クエリパフォーマンス監視   | 高     | ✅   |
+| 3   | 並列実行設定               | 高     | ✅   |
+| 4   | キャッシュ戦略             | 中     | ✅   |
+| 5   | マテリアライゼーション戦略 | 高     | ✅   |
+| 6   | パーティション最適化       | 高     | ✅   |
+| 7   | クラスタリング最適化       | 中     | ✅   |
+| 8   | インクリメンタル戦略       | 高     | ✅   |
+| 9   | ビュー vs テーブル選択     | 中     | ✅   |
+| 10  | クエリ最適化パターン       | 高     | ✅   |
 
 ## 詳細な検証結果
 
 ### 検証1: スロット最適化設定
 
 #### 概要
+
 BigQueryのスロット使用量を最適化し、コストとパフォーマンスのバランスを取る設定を検証します。
 
 #### 設定方法のフロー
@@ -120,15 +121,15 @@ flowchart LR
 ```yaml
 models:
   jaffle_shop:
-    +maximum_bytes_billed: 10000000000  # 10GB上限
+    +maximum_bytes_billed: 10000000000 # 10GB上限
 
     staging:
       +materialized: view
-      +maximum_bytes_billed: 1000000000  # 1GB上限
+      +maximum_bytes_billed: 1000000000 # 1GB上限
 
     marts:
       +materialized: table
-      +maximum_bytes_billed: 5000000000  # 5GB上限
+      +maximum_bytes_billed: 5000000000 # 5GB上限
 ```
 
 #### 個別モデル設定
@@ -190,6 +191,7 @@ LIMIT 20;
 </details>
 
 #### 検証結果
+
 - ✅ maximum_bytes_billed設定が正しく適用される
 - ✅ 上限超過時にエラーが発生する
 - ✅ スロット使用量が監視できる
@@ -200,6 +202,7 @@ LIMIT 20;
 ### 検証2: クエリパフォーマンス監視
 
 #### 概要
+
 dbt実行時のクエリパフォーマンスを監視し、ボトルネックを特定します。
 
 #### パフォーマンス監視フロー
@@ -310,6 +313,7 @@ LIMIT 50;
 </details>
 
 #### 検証結果
+
 - ✅ クエリ実行時間が測定できる
 - ✅ スキャンバイト数が記録される
 - ✅ キャッシュヒット率が確認できる
@@ -320,6 +324,7 @@ LIMIT 50;
 ### 検証3: 並列実行設定
 
 #### 概要
+
 dbtの並列実行（threads）設定を最適化し、実行時間を短縮します。
 
 #### 並列実行の仕組み
@@ -358,7 +363,7 @@ jaffle_shop:
       method: oauth
       project: your-project-id
       dataset: dbt_dev
-      threads: 4  # 並列実行数
+      threads: 4 # 並列実行数
       timeout_seconds: 300
       location: US
       priority: interactive
@@ -368,7 +373,7 @@ jaffle_shop:
       method: service-account
       project: your-project-id
       dataset: dbt_prod
-      threads: 8  # 本番環境ではより多くのスレッド
+      threads: 8 # 本番環境ではより多くのスレッド
       timeout_seconds: 600
       location: US
       priority: batch
@@ -404,6 +409,7 @@ done
 </details>
 
 #### 検証結果
+
 - ✅ threads設定が適用される
 - ✅ 並列実行により実行時間が短縮される
 - ✅ スレッド数とパフォーマンスの関係が確認できる
@@ -414,6 +420,7 @@ done
 ### 検証4: キャッシュ戦略
 
 #### 概要
+
 BigQueryのクエリキャッシュを活用し、コストとパフォーマンスを最適化します。
 
 #### キャッシュ戦略フロー
@@ -528,6 +535,7 @@ ORDER BY execution_date DESC;
 </details>
 
 #### 検証結果
+
 - ✅ use_query_cache設定が反映される
 - ✅ キャッシュヒット時にコストが発生しない
 - ✅ キャッシュヒット率が測定できる
@@ -538,6 +546,7 @@ ORDER BY execution_date DESC;
 ### 検証5: マテリアライゼーション戦略
 
 #### 概要
+
 モデルの用途に応じて最適なマテリアライゼーション（view, table, incremental, ephemeral）を選択します。
 
 #### マテリアライゼーション選択フロー
@@ -569,12 +578,12 @@ flowchart TD
 
 #### マテリアライゼーション比較
 
-| 種類 | 用途 | メリット | デメリット | コスト |
-|------|------|----------|-----------|--------|
-| view | ステージング、頻繁に変更 | ストレージ不要、常に最新 | クエリ毎にスキャン | 高 |
-| table | マート、集計結果 | 高速クエリ | ストレージコスト | 中 |
-| incremental | 大量データ、履歴 | 効率的更新 | 複雑な処理 | 低 |
-| ephemeral | 中間処理 | ストレージ不要 | CTEとして展開 | 低 |
+| 種類        | 用途                     | メリット                 | デメリット         | コスト |
+| ----------- | ------------------------ | ------------------------ | ------------------ | ------ |
+| view        | ステージング、頻繁に変更 | ストレージ不要、常に最新 | クエリ毎にスキャン | 高     |
+| table       | マート、集計結果         | 高速クエリ               | ストレージコスト   | 中     |
+| incremental | 大量データ、履歴         | 効率的更新               | 複雑な処理         | 低     |
+| ephemeral   | 中間処理                 | ストレージ不要           | CTEとして展開      | 低     |
 
 #### 設定例
 
@@ -719,6 +728,7 @@ inner join {{ ref('stg_products') }} p
 </details>
 
 #### 検証結果
+
 - ✅ 各マテリアライゼーションが正しく動作する
 - ✅ viewは常に最新データを返す
 - ✅ tableは高速にクエリできる
@@ -730,6 +740,7 @@ inner join {{ ref('stg_products') }} p
 ### 検証6: パーティション最適化
 
 #### 概要
+
 BigQueryのパーティショニング機能を活用し、クエリパフォーマンスとコストを最適化します。
 
 #### パーティション戦略
@@ -882,6 +893,7 @@ LIMIT 30;
 </details>
 
 #### 検証結果
+
 - ✅ パーティション設定が正しく適用される
 - ✅ パーティションフィルタ使用時にスキャン量が削減される
 - ✅ require_partition_filterが機能する
@@ -892,6 +904,7 @@ LIMIT 30;
 ### 検証7: クラスタリング最適化
 
 #### 概要
+
 BigQueryのクラスタリング機能を使用してクエリパフォーマンスを向上させます。
 
 #### クラスタリング戦略
@@ -1012,6 +1025,7 @@ WHERE table_name = 'fct_customer_orders';
 </details>
 
 #### 検証結果
+
 - ✅ クラスタリング設定が適用される
 - ✅ クラスタリングカラムでのフィルタ時にスキャン量が削減される
 - ✅ 複数カラムのクラスタリングが機能する
@@ -1022,6 +1036,7 @@ WHERE table_name = 'fct_customer_orders';
 ### 検証8: インクリメンタル戦略
 
 #### 概要
+
 incrementalモデルの各種戦略（merge, insert_overwrite, delete+insert）を検証します。
 
 #### インクリメンタル戦略の選択
@@ -1193,6 +1208,7 @@ LIMIT 10;
 </details>
 
 #### 検証結果
+
 - ✅ merge戦略でUPSERTが正しく動作する
 - ✅ insert_overwrite戦略でパーティション置換が機能する
 - ✅ delete+insert戦略が正常に動作する
@@ -1203,6 +1219,7 @@ LIMIT 10;
 ### 検証9: View vs Table選択
 
 #### 概要
+
 ViewとTableのパフォーマンス特性を理解し、適切に使い分けます。
 
 #### View vs Table比較
@@ -1290,15 +1307,15 @@ group by order_date, customer_id
 
 #### 使い分けガイドライン
 
-| 条件 | 推奨 | 理由 |
-|------|------|------|
-| データ量が小さい（< 1GB） | View | ストレージ不要 |
-| データ量が大きい（> 10GB） | Table | クエリ高速化 |
-| 頻繁に更新される | View | 常に最新 |
-| 更新頻度が低い | Table | 再計算コスト削減 |
-| 複雑な集計・JOIN | Table | 事前計算 |
-| シンプルなフィルタ | View | オーバーヘッド小 |
-| 多数のモデルから参照 | Table | 参照毎のスキャン回避 |
+| 条件                       | 推奨  | 理由                 |
+| -------------------------- | ----- | -------------------- |
+| データ量が小さい（< 1GB）  | View  | ストレージ不要       |
+| データ量が大きい（> 10GB） | Table | クエリ高速化         |
+| 頻繁に更新される           | View  | 常に最新             |
+| 更新頻度が低い             | Table | 再計算コスト削減     |
+| 複雑な集計・JOIN           | Table | 事前計算             |
+| シンプルなフィルタ         | View  | オーバーヘッド小     |
+| 多数のモデルから参照       | Table | 参照毎のスキャン回避 |
 
 #### パフォーマンス比較テスト
 
@@ -1339,6 +1356,7 @@ WHERE customer_id = 123;
 </details>
 
 #### 検証結果
+
 - ✅ Viewは常に最新データを返す
 - ✅ Tableはクエリが高速
 - ✅ 大規模データではTableが有利
@@ -1349,6 +1367,7 @@ WHERE customer_id = 123;
 ### 検証10: クエリ最適化パターン
 
 #### 概要
+
 BigQueryで効率的なSQLクエリを書くためのベストプラクティスを検証します。
 
 #### クエリ最適化のフロー
@@ -1378,7 +1397,7 @@ flowchart TD
     style M fill:#e8f5e9
 ```
 
-#### アンチパターン1: SELECT *の使用
+#### アンチパターン1: SELECT \*の使用
 
 ```sql
 -- ❌ Bad: 不要なカラムもスキャン
@@ -1562,30 +1581,36 @@ group by month
 ## クエリ最適化チェックリスト
 
 ### カラム選択
-- [ ] SELECT *を避け、必要なカラムのみ選択
+
+- [ ] SELECT \*を避け、必要なカラムのみ選択
 - [ ] 集計関数で不要なカラムを含めない
 
 ### フィルタリング
+
 - [ ] WHERE句でパーティションカラムをフィルタ
 - [ ] JOIN前にデータを絞り込む
 - [ ] インデックス（クラスタリング）カラムを活用
 
 ### JOIN
+
 - [ ] 小さいテーブルを先にJOIN
 - [ ] 不要なJOINを削除
 - [ ] LEFT JOINが本当に必要か確認（INNER JOINで十分？）
 
 ### 集計
+
 - [ ] サブクエリの繰り返し実行を避ける
 - [ ] WITH句で中間結果を再利用
 - [ ] 大規模データにはAPPROX関数を検討
 
 ### パーティション/クラスタリング
+
 - [ ] パーティションフィルタを必ず含める
 - [ ] クラスタリングカラムでフィルタ
 - [ ] DATE()関数でパーティションプルーニングを妨げない
 
 ### その他
+
 - [ ] ウィンドウ関数のPARTITION BYを適切に設定
 - [ ] UNIONよりUNION ALLを使用（重複排除が不要な場合）
 - [ ] ネストしたサブクエリを避け、WITH句を使用
@@ -1594,6 +1619,7 @@ group by month
 </details>
 
 #### 検証結果
+
 - ✅ カラム選択の最適化でスキャン量が削減される
 - ✅ 早期フィルタリングでパフォーマンスが向上する
 - ✅ JOIN順序の最適化が有効
@@ -1640,11 +1666,11 @@ graph LR
 
 ### 4. 環境別の最適化戦略
 
-| 環境 | threads | priority | キャッシュ | 戦略 |
-|------|---------|----------|-----------|------|
-| dev | 2-4 | INTERACTIVE | 有効 | 高速フィードバック |
-| staging | 4-8 | INTERACTIVE | 有効 | 本番相当のテスト |
-| prod | 8-16 | BATCH | 無効 | 最新データ、コスト最適化 |
+| 環境    | threads | priority    | キャッシュ | 戦略                     |
+| ------- | ------- | ----------- | ---------- | ------------------------ |
+| dev     | 2-4     | INTERACTIVE | 有効       | 高速フィードバック       |
+| staging | 4-8     | INTERACTIVE | 有効       | 本番相当のテスト         |
+| prod    | 8-16    | BATCH       | 無効       | 最新データ、コスト最適化 |
 
 ### 5. ドキュメント化
 
@@ -1675,16 +1701,18 @@ models:
 **症状**: クエリが長時間Pendingになる
 
 **原因**:
+
 - 同時実行数が多すぎる
 - 重いクエリが実行中
 
 **解決策**:
+
 ```yaml
 # profiles.yml
 outputs:
   prod:
-    threads: 4  # スレッド数を削減
-    priority: batch  # 優先度を下げる
+    threads: 4 # スレッド数を削減
+    priority: batch # 優先度を下げる
 ```
 
 ### 問題2: キャッシュが効かない
@@ -1692,11 +1720,13 @@ outputs:
 **症状**: 同じクエリでもキャッシュヒットしない
 
 **原因**:
+
 - テーブルが更新された
 - use_query_cache=falseに設定
 - クエリに非決定的関数（CURRENT_TIMESTAMP等）を使用
 
 **解決策**:
+
 ```sql
 -- ❌ Bad: CURRENT_TIMESTAMP()はキャッシュ無効化
 select *, current_timestamp() as queried_at
@@ -1712,10 +1742,12 @@ from {{ ref('stg_orders') }}
 **症状**: incrementalモデルの実行時間が長い
 
 **原因**:
+
 - パーティション数が多すぎる
 - unique_keyに適切なインデックスがない
 
 **解決策**:
+
 ```sql
 {{
   config(
@@ -1732,14 +1764,16 @@ from {{ ref('stg_orders') }}
 **症状**: `Exceeded rate limits` エラー
 
 **原因**:
+
 - API制限に到達
 
 **解決策**:
+
 ```yaml
 # profiles.yml
 outputs:
   prod:
-    threads: 4  # 8 → 4に削減
+    threads: 4 # 8 → 4に削減
     maximum_bytes_billed: 100000000000
     timeout_seconds: 600
 ```
@@ -1749,9 +1783,11 @@ outputs:
 **症状**: パーティションフィルタを指定してもスキャン量が多い
 
 **原因**:
+
 - パーティションカラムに関数を適用
 
 **解決策**:
+
 ```sql
 -- ❌ Bad: DATE()関数がプルーニングを妨げる
 where date(order_timestamp) = '2026-02-17'
@@ -1768,17 +1804,20 @@ where order_date = '2026-02-17'
 ## 参考資料
 
 ### 公式ドキュメント
+
 - [dbt Performance](https://docs.getdbt.com/docs/build/incremental-models)
 - [BigQuery Best Practices](https://cloud.google.com/bigquery/docs/best-practices-performance-overview)
 - [BigQuery Partitioning](https://cloud.google.com/bigquery/docs/partitioned-tables)
 - [BigQuery Clustering](https://cloud.google.com/bigquery/docs/clustered-tables)
 
 ### パフォーマンス監視ツール
+
 - BigQuery INFORMATION_SCHEMA
 - dbt Cloud Performance Monitoring
 - Looker System Activity
 
 ### 推奨リソース
+
 - [BigQuery Explained: Working with Joins, Nested & Repeated Data](https://cloud.google.com/blog/topics/developers-practitioners/bigquery-explained-working-joins-nested-repeated-data)
 - [dbt Incremental Models](https://docs.getdbt.com/docs/build/incremental-models)
 - [SQL Optimization Techniques](https://cloud.google.com/bigquery/docs/best-practices-performance-patterns)

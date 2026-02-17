@@ -12,8 +12,6 @@ authorship:
   reviewed: false
 ---
 
-
-
 ## 検証概要
 
 **検証日時**: 2026-02-17  
@@ -76,6 +74,7 @@ flowchart LR
 **dbt docs**は、dbtプロジェクトの自動ドキュメント生成ツールです。
 
 **主な機能**:
+
 - モデル・テーブル・カラムの説明文表示
 - モデル間の依存関係（DAG）の可視化
 - テーブルのスキーマ情報（実データから自動取得）
@@ -110,6 +109,7 @@ dbt docs generate --profiles-dir . --target sandbox
 ```
 
 **✅ 成功**:
+
 - ⏱️ 実行時間: **約10秒**
 - 📊 対象: 28モデル、3 seeds、31テスト、539マクロ、10 unit tests
 - 📁 生成ファイル: catalog.json（28KB）、manifest.json（725KB）
@@ -142,6 +142,7 @@ dbt docs serve --profiles-dir . --port 8080
 ```
 
 **ブラウザで開く**:
+
 ```bash
 # macOSの場合、自動的にブラウザが開く
 # または手動でアクセス
@@ -175,16 +176,16 @@ flowchart TB
 ```yaml
 # dbt_project.yml
 
-name: 'jaffle_shop'
-version: '1.0.0'
+name: "jaffle_shop"
+version: "1.0.0"
 
 # ドキュメント関連設定
-docs-paths: ['docs']  # doc blocksの配置場所（デフォルト）
+docs-paths: ["docs"] # doc blocksの配置場所（デフォルト）
 
 models:
   jaffle_shop:
     +docs:
-      node_color: "#8B4513"  # DAGでのノードの色
+      node_color: "#8B4513" # DAGでのノードの色
 ```
 
 ---
@@ -238,7 +239,7 @@ columns:
 
 **サポートされる記法**:
 
-```yaml
+````yaml
 description: |
   # 見出し1
   ## 見出し2
@@ -256,14 +257,15 @@ description: |
 
   ```sql
   select * from table
-  ```
+````
 
-  [リンク](https://example.com)
+[リンク](https://example.com)
 
-  | 列1 | 列2 |
-  |-----|-----|
-  | A   | B   |
-```
+| 列1 | 列2 |
+| --- | --- |
+| A   | B   |
+
+````
 
 **実際の例**:
 
@@ -293,7 +295,7 @@ models:
       ```sql
       sum(case when payment_method = 'credit_card' then amount else 0 end) as credit_card_amount
       ```
-```
+````
 
 ---
 
@@ -320,6 +322,7 @@ docs/
 顧客ID（主キー）
 
 **属性**:
+
 - データ型: INTEGER
 - NULL: 不可
 - 一意性: 保証
@@ -332,6 +335,7 @@ docs/
 注文ステータス
 
 **取りうる値**:
+
 - `placed`: 注文受付（初期状態）
 - `shipped`: 発送済み
 - `completed`: 配達完了
@@ -353,12 +357,12 @@ models:
   - name: customers
     columns:
       - name: customer_id
-        description: "{{ doc('customer_id') }}"  # doc blockを参照
+        description: "{{ doc('customer_id') }}" # doc blockを参照
 
   - name: orders
     columns:
       - name: customer_id
-        description: "{{ doc('customer_id') }}"  # 同じdoc blockを再利用
+        description: "{{ doc('customer_id') }}" # 同じdoc blockを再利用
       - name: status
         description: "{{ doc('order_status') }}"
 ```
@@ -389,30 +393,35 @@ models:
 
 - `true`: 削除済み
 - `false`: 有効（デフォルト）
-{% enddocs %}
+  {% enddocs %}
 ```
 
 **2. ビジネス用語の定義**:
 
-```markdown
+````markdown
 <!-- docs/business_terms.md -->
 
 {% docs customer_lifetime_value %}
+
 ## 顧客生涯価値（CLV: Customer Lifetime Value）
 
 顧客が生涯にわたって企業にもたらす総利益の予測値。
 
 **計算式**:
+
 ```sql
 sum(amount) as customer_lifetime_value
 ```
+````
 
 **活用方法**:
+
 - 優良顧客の特定
 - マーケティング予算の配分
 - 顧客セグメンテーション
-{% enddocs %}
-```
+  {% enddocs %}
+
+````
 
 ---
 
@@ -448,7 +457,7 @@ models:
         meta:
           pii: true
           encryption_required: true
-```
+````
 
 ---
 
@@ -472,9 +481,9 @@ models:
   - name: daily_revenue
     meta:
       sla:
-        freshness_hours: 2    # データは2時間以内に更新されるべき
-        completeness: 99.9    # 99.9%以上の完全性
-        accuracy: 99.5        # 99.5%以上の正確性
+        freshness_hours: 2 # データは2時間以内に更新されるべき
+        completeness: 99.9 # 99.9%以上の完全性
+        accuracy: 99.5 # 99.5%以上の正確性
 ```
 
 **3. 権限管理**:
@@ -579,11 +588,11 @@ exposures:
       **更新頻度**: 毎日
       **オーナー**: 営業部
 
-    type: dashboard  # dashboard / notebook / analysis / ml / application
+    type: dashboard # dashboard / notebook / analysis / ml / application
 
     url: https://tableau.example.com/sales-dashboard
 
-    maturity: high  # high / medium / low
+    maturity: high # high / medium / low
 
     owner:
       name: "Sales Team"
@@ -596,7 +605,7 @@ exposures:
 
     meta:
       tool: "Tableau"
-      refresh_schedule: "0 8 * * *"  # cron形式
+      refresh_schedule: "0 8 * * *" # cron形式
 
   - name: customer_segmentation_notebook
     description: "顧客セグメンテーション分析用Jupyter Notebook"
@@ -612,7 +621,7 @@ exposures:
       - ref('customers')
       - ref('customer_behavior')
 
-    tags: ['data_science', 'customer_analytics']
+    tags: ["data_science", "customer_analytics"]
 
   - name: revenue_api
     description: |
@@ -636,13 +645,13 @@ exposures:
 
 ### 5.3 exposureのタイプ
 
-| タイプ | 説明 | 例 |
-|-------|------|---|
-| `dashboard` | BIツールのダッシュボード | Tableau, Looker, Power BI |
-| `notebook` | 分析用Notebook | Jupyter, Databricks Notebook |
-| `analysis` | アドホック分析 | SQLクエリ、Pythonスクリプト |
-| `ml` | 機械学習モデル | 予測モデル、推薦システム |
-| `application` | アプリケーション | API、Webアプリ |
+| タイプ        | 説明                     | 例                           |
+| ------------- | ------------------------ | ---------------------------- |
+| `dashboard`   | BIツールのダッシュボード | Tableau, Looker, Power BI    |
+| `notebook`    | 分析用Notebook           | Jupyter, Databricks Notebook |
+| `analysis`    | アドホック分析           | SQLクエリ、Pythonスクリプト  |
+| `ml`          | 機械学習モデル           | 予測モデル、推薦システム     |
+| `application` | アプリケーション         | API、Webアプリ               |
 
 ---
 
@@ -729,17 +738,21 @@ flowchart TB
 # Jaffle Shop dbt Project
 
 ## 概要
+
 このプロジェクトは、架空のeコマース企業「Jaffle Shop」のデータパイプラインです。
 
 ## データソース
+
 - PostgreSQL: トランザクションデータ
 - Google Analytics: Webアクセスログ
 
 ## 更新スケジュール
+
 - Staging層: 1時間ごと
 - Marts層: 毎日午前2時（UTC）
 
 ## コンタクト
+
 - Data Team: data@jaffleshop.com
 - Slack: #data-engineering
 ```
@@ -765,19 +778,19 @@ models:
 **3. モデルレベル**:
 
 ```yaml
-  - name: customers
-    description: |
-      顧客マスタテーブル（集計済み）
+- name: customers
+  description: |
+    顧客マスタテーブル（集計済み）
 
-      各顧客の基本情報 + 注文集計値
+    各顧客の基本情報 + 注文集計値
 ```
 
 **4. カラムレベル**:
 
 ```yaml
-    columns:
-      - name: customer_id
-        description: "顧客ID（主キー）"
+columns:
+  - name: customer_id
+    description: "顧客ID（主キー）"
 ```
 
 ---

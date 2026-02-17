@@ -12,9 +12,8 @@ authorship:
   reviewed: false
 ---
 
-
-
 ## 目次
+
 - [概要](#概要)
 - [検証環境](#検証環境)
 - [検証項目一覧](#検証項目一覧)
@@ -68,6 +67,7 @@ sequenceDiagram
 ⚠️ **このプロジェクト（jaffle_shop）では、Hooksは使用していません。**
 
 `dbt_project.yml` を確認した結果:
+
 - `on-run-start`: 未定義
 - `on-run-end`: 未定義
 - `pre-hook`: 未定義（モデルレベルでも未使用）
@@ -77,22 +77,23 @@ sequenceDiagram
 
 ## 検証項目一覧
 
-| # | 検証項目 | 優先度 | 状態 |
-|---|---------|--------|------|
-| 1 | on-run-start フック | 高 | ✅ |
-| 2 | on-run-end フック | 高 | ✅ |
-| 3 | pre-hook | 高 | ✅ |
-| 4 | post-hook | 高 | ✅ |
-| 5 | operation | 中 | ✅ |
-| 6 | フックの実行順序 | 中 | ✅ |
-| 7 | 複数フックの設定 | 中 | ✅ |
-| 8 | フックでのマクロ使用 | 高 | ✅ |
+| #   | 検証項目             | 優先度 | 状態 |
+| --- | -------------------- | ------ | ---- |
+| 1   | on-run-start フック  | 高     | ✅   |
+| 2   | on-run-end フック    | 高     | ✅   |
+| 3   | pre-hook             | 高     | ✅   |
+| 4   | post-hook            | 高     | ✅   |
+| 5   | operation            | 中     | ✅   |
+| 6   | フックの実行順序     | 中     | ✅   |
+| 7   | 複数フックの設定     | 中     | ✅   |
+| 8   | フックでのマクロ使用 | 高     | ✅   |
 
 ## 詳細な検証結果
 
 ### 検証1: on-run-start フック
 
 #### 概要
+
 dbt実行開始時に一度だけ実行されるフックを検証します。
 
 #### on-run-startのユースケース
@@ -242,6 +243,7 @@ GROUP BY target_name;
 </details>
 
 #### 検証結果
+
 - ✅ on-run-startがdbt実行開始時に実行される
 - ✅ 複数のSQLステートメントが順次実行される
 - ✅ マクロが正しく展開される
@@ -252,6 +254,7 @@ GROUP BY target_name;
 ### 検証2: on-run-end フック
 
 #### 概要
+
 dbt実行終了時に一度だけ実行されるフックを検証します。
 
 #### on-run-endのフロー
@@ -438,6 +441,7 @@ on-run-end:
 </details>
 
 #### 検証結果
+
 - ✅ on-run-endが全モデル実行後に実行される
 - ✅ results変数で実行結果にアクセスできる
 - ✅ 成功/失敗の判定が可能
@@ -448,6 +452,7 @@ on-run-end:
 ### 検証3: pre-hook
 
 #### 概要
+
 各モデル実行前に実行されるフックを検証します。
 
 #### pre-hookの実行タイミング
@@ -586,6 +591,7 @@ models:
 ```
 
 #### 検証結果
+
 - ✅ pre-hookがモデル実行前に実行される
 - ✅ 複数のpre-hookが順次実行される
 - ✅ プロジェクト・フォルダ・モデルレベルで設定可能
@@ -596,6 +602,7 @@ models:
 ### 検証4: post-hook
 
 #### 概要
+
 各モデル実行後に実行されるフックを検証します。
 
 #### post-hookのユースケース
@@ -786,6 +793,7 @@ group by revenue_date, product_id
 </details>
 
 #### 検証結果
+
 - ✅ post-hookがモデル実行後に実行される
 - ✅ 権限付与が機能する
 - ✅ データ品質チェックが動作する
@@ -796,6 +804,7 @@ group by revenue_date, product_id
 ### 検証5: operation
 
 #### 概要
+
 dbt run-operationコマンドで実行するカスタム操作を検証します。
 
 #### operationの概念
@@ -981,6 +990,7 @@ dbt run-operation add_column_to_tables --args '{schema: "dbt_prod", column_name:
 </details>
 
 #### 検証結果
+
 - ✅ dbt run-operationでマクロが実行される
 - ✅ 引数（--args）が正しく渡される
 - ✅ 管理タスクが実行できる
@@ -991,6 +1001,7 @@ dbt run-operation add_column_to_tables --args '{schema: "dbt_prod", column_name:
 ### 検証6: フックの実行順序
 
 #### 概要
+
 複数のフックが定義されている場合の実行順序を検証します。
 
 #### 実行順序の図
@@ -1079,6 +1090,7 @@ $ dbt run --select test_hooks_order
 ```
 
 #### 検証結果
+
 - ✅ on-run-start → pre-hook → モデル実行 → post-hook → on-run-endの順序で実行
 - ✅ pre-hook/post-hookはプロジェクト → フォルダ → モデルの順
 - ✅ 同一レベルの複数フックは定義順に実行
@@ -1089,6 +1101,7 @@ $ dbt run --select test_hooks_order
 ### 検証7: 複数フックの設定
 
 #### 概要
+
 1つのモデルまたはプロジェクトに複数のフックを設定する方法を検証します。
 
 #### 複数フックの設定パターン
@@ -1245,6 +1258,7 @@ select * from {{ ref('stg_customers') }}
 </details>
 
 #### 検証結果
+
 - ✅ リスト形式で複数フックが設定できる
 - ✅ すべてのフックが定義順に実行される
 - ✅ 条件分岐が各フック内で機能する
@@ -1255,6 +1269,7 @@ select * from {{ ref('stg_customers') }}
 ### 検証8: フックでのマクロ使用
 
 #### 概要
+
 フック内でdbtマクロを使用する高度なパターンを検証します。
 
 #### マクロを活用したフック
@@ -1467,6 +1482,7 @@ group by revenue_date, product_id
 </details>
 
 #### 検証結果
+
 - ✅ ref()とsource()がフック内で機能する
 - ✅ run_query()で動的なクエリ実行が可能
 - ✅ adapter.dispatch()でマルチDB対応できる
@@ -1478,13 +1494,13 @@ group by revenue_date, product_id
 
 ### 1. フックの使い分け
 
-| フック種類 | 用途 | 実行回数 |
-|-----------|------|---------|
-| on-run-start | プロジェクト初期化、ログ設定 | 1回/実行 |
-| on-run-end | 結果集計、通知、クリーンアップ | 1回/実行 |
-| pre-hook | モデル固有の前処理、バックアップ | モデル数回 |
-| post-hook | 権限付与、検証、メタデータ更新 | モデル数回 |
-| operation | 管理タスク、メンテナンス | 手動実行 |
+| フック種類   | 用途                             | 実行回数   |
+| ------------ | -------------------------------- | ---------- |
+| on-run-start | プロジェクト初期化、ログ設定     | 1回/実行   |
+| on-run-end   | 結果集計、通知、クリーンアップ   | 1回/実行   |
+| pre-hook     | モデル固有の前処理、バックアップ | モデル数回 |
+| post-hook    | 権限付与、検証、メタデータ更新   | モデル数回 |
+| operation    | 管理タスク、メンテナンス         | 手動実行   |
 
 ### 2. パフォーマンス考慮
 
@@ -1492,7 +1508,7 @@ group by revenue_date, product_id
 # ❌ 避けるべき: 重い処理をpre-hookに
 models:
   +pre-hook:
-    - "SELECT * FROM huge_table"  # 毎モデル実行は非効率
+    - "SELECT * FROM huge_table" # 毎モデル実行は非効率
 
 # ✅ 推奨: on-run-startで1回だけ実行
 on-run-start:
@@ -1551,10 +1567,12 @@ models:
 **症状**: pre-hookまたはpost-hookが実行されない
 
 **原因**:
+
 - YAML構文エラー
 - インデントミス
 
 **解決策**:
+
 ```yaml
 # ❌ 間違い
 models:
@@ -1571,10 +1589,12 @@ models:
 **症状**: `Compilation Error in macro`
 
 **原因**:
+
 - executeフラグのチェック漏れ
 - 未定義の変数参照
 
 **解決策**:
+
 ```sql
 {% macro safe_macro() %}
   {% if execute %}  -- 必須
@@ -1589,10 +1609,12 @@ models:
 **症状**: `Access Denied` エラー
 
 **原因**:
+
 - BigQueryの権限不足
 - サービスアカウントの権限不足
 
 **解決策**:
+
 ```bash
 # 必要な権限を確認
 gcloud projects get-iam-policy PROJECT_ID \
@@ -1610,9 +1632,11 @@ gcloud projects add-iam-policy-binding PROJECT_ID \
 **症状**: `results`変数にアクセスできない
 
 **原因**:
+
 - executeフラグがFalse
 
 **解決策**:
+
 ```sql
 {% macro process_results(results) %}
   {% if execute and results %}  -- resultsの存在確認
@@ -1628,9 +1652,11 @@ gcloud projects add-iam-policy-binding PROJECT_ID \
 **症状**: フックが想定外の順序で実行される
 
 **原因**:
+
 - 設定の継承順序の誤解
 
 **解決策**:
+
 ```yaml
 # 実行順序: プロジェクト → フォルダ → モデル
 # プロジェクトレベル
@@ -1654,16 +1680,19 @@ config(
 ## 参考資料
 
 ### 公式ドキュメント
+
 - [dbt Hooks](https://docs.getdbt.com/docs/build/hooks-operations)
 - [on-run-start & on-run-end](https://docs.getdbt.com/reference/project-configs/on-run-start-on-run-end)
 - [pre-hook & post-hook](https://docs.getdbt.com/reference/resource-configs/pre-hook-post-hook)
 - [run-operation](https://docs.getdbt.com/reference/commands/run-operation)
 
 ### ベストプラクティス
+
 - [dbt Discourse: Hooks Best Practices](https://discourse.getdbt.com/)
 - [Effective Hooks Usage](https://docs.getdbt.com/best-practices)
 
 ### コミュニティリソース
+
 - [dbt Slack: #advice-dbt-for-beginners](https://www.getdbt.com/community/join-the-community/)
 
 ---
