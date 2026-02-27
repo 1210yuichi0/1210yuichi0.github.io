@@ -854,7 +854,197 @@ dbt build --select "state:modified+" --defer --state ./prod_state/
 - ✅ Prod環境のartifactsを`--state`で指定
 - ❌ `+model_c`のような上流選択は避ける（すべて実行される）
 
-### 6.3 ディレクトリ構造のベストプラクティス
+### 6.3 セレクター演算子の理解
+
+dbtのセレクター構文では、複数のセレクターを組み合わせる際に**演算子**の使い分けが重要です。
+
+#### 数学的な定義
+
+dbtのセレクター演算子は、集合論の概念に基づいています：
+
+| 集合論                     | 論理演算         | dbtでの記法    | 意味                                    |
+| -------------------------- | ---------------- | -------------- | --------------------------------------- |
+| **Union（和集合）**        | **OR（または）** | スペース区切り | A ∪ B = A または B に属する要素すべて   |
+| **Intersection（積集合）** | **AND（かつ）**  | カンマ区切り   | A ∩ B = A かつ B の両方に属する要素のみ |
+
+**重要:**
+
+- **Union = OR** - どちらか一方でも条件を満たせば選択される
+- **Intersection = AND** - 両方の条件を同時に満たす必要がある
+
+#### 演算子の種類
+
+| 演算子                     | 記法           | 動作 | 説明                                 |
+| -------------------------- | -------------- | ---- | ------------------------------------ |
+| **Union（和集合）**        | スペース区切り | OR   | どちらかの条件に一致するノードを選択 |
+| **Intersection（積集合）** | カンマ区切り   | AND  | 両方の条件に一致するノードのみ選択   |
+
+**Union（OR）の例:**
+
+```bash
+# body変更 OR persisted_descriptions変更 → どちらかが変更されたら実行
+dbt build --select "state:modified.body+ state:modified.persisted_descriptions"
+```
+
+```mermaid
+graph LR
+    A[state:modified.body+] --> U((Union))
+    B[state:modified.persisted_descriptions] --> U
+    U --> R[結果: A or B]
+
+    style U fill:#E8F5E9,stroke:#2E7D32,stroke-width:3px
+    style R fill:#FFF3E0,stroke:#F57C00,stroke-width:2px
+```
+
+**Intersection（AND）の例:**
+
+```bash
+# body変更 AND persisted_descriptions変更 → 両方が変更された場合のみ実行
+dbt build --select "state:modified.body+,state:modified.persisted_descriptions"
+```
+
+```mermaid
+graph LR
+    A[state:modified.body+] --> I((Intersection))
+    B[state:modified.persisted_descriptions] --> I
+    I --> R[結果: A and B]
+
+    style I fill:#E3F2FD,stroke:#1976D2,stroke-width:3px
+    style R fill:#FFF3E0,stroke:#F57C00,stroke-width:2px
+```
+
+**実例比較:**
+
+```bash
+# パターン1: Union（どちらかが変更されたら実行）
+dbt build --select "state:modified.body+ state:modified.persisted_descriptions"
+# → model_aのbodyが変更: ✅ 実行される
+# → model_aのdescriptionが変更: ✅ 実行される
+
+# パターン2: Intersection（両方が変更された場合のみ実行）
+dbt build --select "state:modified.body+,state:modified.persisted_descriptions"
+# → model_aのbodyが変更: ❌ 実行されない
+# → model_aのdescriptionが変更: ❌ 実行されない
+# → model_aのbodyとdescriptionが両方変更: ✅ 実行される
+```
+
+### 6.4 CI/CD実装パターン
+
+CI/CDジョブでの`state:modified`セレクターの推奨実装パターンを紹介します。
+
+#### パターン1: シンプル（推奨：初心者向け）
+
+```bash
+dbt build --select "state:modified+" --defer --state ./prod_artifacts/
+```
+
+**特徴:**
+
+- ✅ シンプルで理解しやすい
+- ✅ すべての変更タイプを検知（body, configs, relation, persisted_descriptions）
+- ✅ マクロ変更も自動検知
+- ⚠️ 細かい制御はできない
+
+**ユースケース:**
+
+- 小規模プロジェクト
+- CI/CDパイプラインの初期構築
+- 安全性を最優先する場合
+
+#### パターン2: 詳細制御（推奨：本番運用）
+
+```bash
+dbt build --select "state:modified.body+ state:modified.macros" --defer --state ./prod_artifacts/
+```
+
+**特徴:**
+
+- ✅ SQLコード変更とマクロ変更を明示的に検知
+- ✅ description変更では実行しない（軽微な変更を除外）
+- ✅ パフォーマンスと安全性のバランス
+
+**ユースケース:**
+
+- 中〜大規模プロジェクト
+- CI実行時間を最適化したい場合
+- description変更とロジック変更を分けたい場合
+
+#### パターン3: 完全制御（推奨：高度なユーザー）
+
+```bash
+dbt build --select "state:modified.body+ state:modified.persisted_descriptions state:modified.macros" --defer --state ./prod_artifacts/
+```
+
+**特徴:**
+
+- ✅ すべての変更タイプを明示的に指定
+- ✅ 何が実行されるか完全に把握可能
+- ⚠️ 構文が長く複雑
+
+**ユースケース:**
+
+- エンタープライズ環境
+- 監査要件が厳しい場合
+- 完全なトレーサビリティが必要な場合
+
+#### パターン4: description専用（推奨：ドキュメント更新）
+
+```bash
+dbt run --select "state:modified.persisted_descriptions" --defer --state ./prod_artifacts/
+```
+
+**特徴:**
+
+- ✅ description変更のみを対象
+- ✅ 高速実行（データ変更なし）
+- ✅ ドキュメント更新専用ジョブに適している
+
+**ユースケース:**
+
+- ドキュメント更新のみのPR
+- `dbt docs generate`前の準備
+- description変更を別ジョブで管理する場合
+
+#### 演算子の使い分け例
+
+**❌ 非推奨: Intersection（AND）の使用**
+
+```bash
+# body変更 AND persisted_descriptions変更 → 両方が必要
+dbt build --select "state:modified.body+,state:modified.persisted_descriptions"
+```
+
+- ⚠️ 両方が変更された場合のみ実行される
+- ⚠️ body変更のみでは実行されない（危険！）
+- ❌ ほとんどのケースで期待通りに動作しない
+
+**✅ 推奨: Union（OR）の使用**
+
+```bash
+# body変更 OR persisted_descriptions変更 → どちらかで実行
+dbt build --select "state:modified.body+ state:modified.persisted_descriptions"
+```
+
+- ✅ どちらかが変更されたら実行される
+- ✅ 期待通りの動作
+- ✅ CI/CDで安全に使用できる
+
+#### 推奨設定まとめ
+
+| 環境                 | 推奨パターン                 | コマンド例                                                                                                                |
+| -------------------- | ---------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| **開発環境**         | パターン1（シンプル）        | `dbt build -s "state:modified+" --defer --state ./prod/`                                                                  |
+| **CI/CD（標準）**    | パターン2（詳細制御）        | `dbt build -s "state:modified.body+ state:modified.macros" --defer --state ./prod/`                                       |
+| **CI/CD（完全）**    | パターン3（完全制御）        | `dbt build -s "state:modified.body+ state:modified.persisted_descriptions state:modified.macros" --defer --state ./prod/` |
+| **ドキュメント更新** | パターン4（description専用） | `dbt run -s "state:modified.persisted_descriptions" --defer --state ./prod/`                                              |
+
+**重要な注意点:**
+
+- 🔴 **Intersection（カンマ区切り）は通常使わない** - 両方が変更される必要があり、期待通り動作しないケースが多い
+- 🟢 **Union（スペース区切り）を使う** - どちらかが変更されたら実行される、CI/CDで安全
+- 🟡 **必ず`--defer`を組み合わせる** - 上流モデルはProdデータを参照し、変更したモデルのみ実行
+
+### 6.5 ディレクトリ構造のベストプラクティス
 
 #### ❌ 悪い例: target_pathと同じディレクトリ
 
@@ -911,7 +1101,7 @@ sequenceDiagram
     Note over dbt: ✅ 正しく差分検知できる
 ```
 
-### 6.3 GitHub Actionsでの実装例
+### 6.6 GitHub Actionsでの実装例
 
 ```yaml
 name: dbt CI
@@ -951,7 +1141,7 @@ jobs:
             target/run_results.json
 ```
 
-### 6.4 dbt Cloudでの実装
+### 6.7 dbt Cloudでの実装
 
 dbt Cloudでは自動的に前回成功したジョブのmanifest.jsonが使用されます：
 
@@ -1280,9 +1470,12 @@ models:
 3. **セクション 6.1**: フローチャート - state:modified使用フロー
 4. **セクション 6.2**: グラフ図 - パターン1の実行フロー
 5. **セクション 6.2**: ツリー図 - サブセレクターの使い分け
-6. **セクション 6.2**: フローチャート - --deferの使い方（Don't/Do比較）
-7. **セクション 6.3**: シーケンス図（問題例） - targetディレクトリの問題
-8. **セクション 6.3**: シーケンス図（正解例） - 専用ディレクトリの使用
+6. **セクション 6.2**: フローチャート（非推奨） - --deferなしパターン
+7. **セクション 6.2**: フローチャート（推奨） - --defer使用パターン
+8. **セクション 6.3**: グラフ図（Union） - セレクター演算子のOR動作
+9. **セクション 6.3**: グラフ図（Intersection） - セレクター演算子のAND動作
+10. **セクション 6.5**: シーケンス図（問題例） - targetディレクトリの問題
+11. **セクション 6.5**: シーケンス図（正解例） - 専用ディレクトリの使用
 
 **Mermaid図の表示方法:**
 
@@ -1305,8 +1498,11 @@ models:
 **更新履歴**:
 
 - 2026-02-27:
-  - Mermaid図を8つ追加（クラス図、シーケンス図、フローチャート等）
+  - セクション6.3「セレクター演算子の理解」を追加（Union/Intersection図付き）
+  - セクション6.4「CI/CD実装パターン」を追加（4つの推奨パターンと推奨設定表）
+  - Mermaid図を11個に拡充（クラス図、シーケンス図、フローチャート、グラフ図）
   - パターン6「--deferとの組み合わせ」を追加（Don't/Do比較図付き）
   - 図表索引を追加
+  - セクション番号を再構成（6.3-6.7）
   - 各図に詳細な説明を追加
 - 2026-02-26: 初版作成
