@@ -644,37 +644,67 @@ CIでキャッシュ問題が発生した場合の一時的な対処としては
 
 #### CI専用の厳格オプションはフラグ化しない
 
-dbt_project.yml の `flags:` はローカル開発を含む**全環境**に適用されます。「このCIステップだけ厳しくしたい」という場合はCLIオプションのままにしておく方が明確です。
+dbt_project.yml の `flags:` はローカル開発を含む**全環境**に適用されます。CI専用の厳格チェックはCLIオプションとして明示的に記述することで、スコープと意図を明確に保てます。
 
-| CLIオプション             | フラグ相当             | フラグ化の推奨度 | 理由                               |
-| ------------------------- | ---------------------- | ---------------- | ---------------------------------- |
-| `--warn-error`            | `warn_error: true`     | △ 条件付き       | ローカル開発でも警告がエラーになる |
-| `--no-partial-parse`      | `partial_parse: false` | × 非推奨         | 全実行が遅くなる                   |
-| `--show-all-deprecations` | なし（CLI専用）        | —                | フラグ化不可                       |
+**フラグ vs CLIオプションの比較**
 
-`warn_error_options` だけはプロジェクト全体のポリシーとして dbt_project.yml に設定する意義があります。
+| 観点                 | `dbt_project.yml flags`              | CLIオプション                              |
+| -------------------- | ------------------------------------ | ------------------------------------------ |
+| 適用範囲             | 全環境（ローカル・CI・本番）一律     | コマンド単位で制御可能                     |
+| ローカル開発への影響 | 全実行に適用される                   | CI環境のみに影響を限定できる               |
+| 意図の明示           | なぜその設定をしているか伝わりにくい | CIワークフローのコメントで意図を説明できる |
+| 段階的な厳格化       | 全て同じ厳しさになる                 | フェーズごとに異なる厳しさを設定できる     |
 
-CI で CLIオプションを使う具体例：
+たとえば `warn_error: true` をフラグ化すると、移行作業中にローカルで `DeprecatedModel` 警告が出るたびに実行がエラーで止まります。CIでのみ厳格にしたい意図がフラグからは読み取れません。
+
+`warn_error_options` だけはプロジェクト全体の品質ポリシーとして dbt_project.yml に設定する意義があります。
+
+##### チェック1：非推奨機能の警告チェック（`dbt --warn-error ls`）
+
+`ls` はモデル一覧を取得する軽量コマンドで、SQL を実行せずにグラフ全体をパースします。`--warn-error` を付けることで、`DeprecatedModel` などの非推奨APIの使用をCIで検出できます。
+
+- **`ls` を使う理由**: `run`/`build` より高速。SQL実行なしで ref・source の解決とグラフ整合性を検証できる
+- **フラグ化しない理由**: ローカルで非推奨機能の移行作業中に毎回エラーになり開発体験が悪化する
 
 ```yaml
-# GitHub Actions での非推奨チェック・コンパイル検証ステップ
-steps:
-  # 非推奨機能の警告チェック
-  # --warn-error: 警告が1つでもあればCIを失敗させる
-  # ls: モデル一覧を取得（副作用として非推奨機能をチェック）
-  - name: Check for deprecation warnings
-    run: |
-      dbt --warn-error ls
-
-  # 全モデルのコンパイル検証
-  # --show-all-deprecations: 非推奨機能の使用箇所を警告表示
-  # --no-partial-parse: キャッシュを無視して完全検証（厳密なチェック）
-  - name: Compile all models with deprecation check
-    run: |
-      dbt compile --show-all-deprecations --no-partial-parse
+- name: Check for deprecation warnings
+  run: dbt --warn-error ls
 ```
 
-`--warn-error` と `--no-partial-parse` はこのCIステップ専用の厳格設定であり、dbt_project.yml のフラグに移すと全実行（ローカル開発含む）に影響するため、CLIオプションとして明示的に記述することが適切です。
+##### チェック2：コンパイル検証（`dbt compile --show-all-deprecations --no-partial-parse`）
+
+Jinja 展開・SQL 生成まで検証し、実際のDBに接続せずにコンパイルエラーを検出します。
+
+- **`--show-all-deprecations`**: デフォルトは最初の1件のみ表示。全件表示させることで見落としを防ぐ（フラグ対応なし）
+- **`--no-partial-parse`**: キャッシュを使わず全ファイルを再パース。削除済みファイルへの参照など、キャッシュが隠す問題を検出できる
+- **フラグ化しない理由**: `partial_parse: false` を常時設定すると全ての実行が遅くなる
+
+```yaml
+- name: Compile all models
+  run: dbt compile --show-all-deprecations --no-partial-parse
+```
+
+### 6.6 CIで推奨するその他のチェック
+
+| チェック             | コマンド                       | 目的                                               |
+| -------------------- | ------------------------------ | -------------------------------------------------- |
+| 構文チェック（高速） | `dbt parse`                    | Jinja展開なし。ref/source解決もしないため最速      |
+| グラフ整合性         | `dbt ls`                       | ref/sourceが解決でき、グラフに矛盾がないことを確認 |
+| ソーステスト         | `dbt test -s source:*`         | upstream のスキーマ変更をモデル実行前に検出        |
+| Slim CI              | `dbt build -s state:modified+` | 変更モデルと下流のみ実行。全体実行より高速         |
+| ソース鮮度           | `dbt source freshness`         | データ遅延をCIで検知                               |
+| 失敗ノード再実行     | `dbt retry`                    | flaky な外部依存によるエラーを再試行で回避         |
+
+**`dbt parse` vs `dbt ls` vs `dbt compile` の使い分け**
+
+```text
+dbt parse
+  └── Jinja展開なし・依存解決なし → 最速、構文エラーのみ検出
+dbt ls
+  └── Jinja展開あり・依存解決あり → ref/source の解決を確認
+dbt compile
+  └── SQL生成まで実行 → コンパイルエラーを検出（最も重い）
+```
 
 ---
 
