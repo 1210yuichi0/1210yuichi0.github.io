@@ -33,6 +33,7 @@ authorship:
 3. [動作変更フラグ（Behavior Change Flags）](#3-動作変更フラグbehavior-change-flags)
 4. [バージョン別導入履歴](#4-バージョン別導入履歴)
 5. [実際の使用例](#5-実際の使用例)
+6. [GitHubでよく使われているフラグ設定パターン](#6-githubでよく使われているフラグ設定パターン)
 
 ---
 
@@ -506,6 +507,140 @@ flags:
   partial_parse: true
   write_json: true
 ```
+
+---
+
+## 6. GitHubでよく使われているフラグ設定パターン
+
+GitHub上のパブリックリポジトリを調査した結果をもとに、実際によく使われるフラグのパターンをまとめます。
+
+### 6.1 使用頻度ランキング
+
+| 使用頻度                | フラグ                                          | よくある設定値 | 用途                                             |
+| ----------------------- | ----------------------------------------------- | -------------- | ------------------------------------------------ |
+| ほぼ全プロジェクト      | `send_anonymous_usage_stats`                    | `false`        | プライバシー・社内ポリシー対応                   |
+| CI/CDプロジェクトの多数 | `fail_fast`                                     | `true`         | 最初のエラーで即停止してフィードバックを速くする |
+| CI/CDプロジェクトの多数 | `use_colors`                                    | `false`        | CIログを読みやすくする・ログパーサーとの互換性   |
+| CI/CDプロジェクトの多数 | `log_format`                                    | `json`         | Datadog等のログ収集ツールとの連携                |
+| 増加中（1.9.0以降）     | `skip_nodes_if_on_run_start_fails`              | `true`         | フック失敗時の安全停止                           |
+| 増加中（1.9.0以降）     | `state_modified_compare_more_unrendered_values` | `true`         | Slim CI の誤検知削減                             |
+| 専門用途                | `warn_error_options`                            | 個別設定       | 品質管理の強化                                   |
+
+### 6.2 OSSリポジトリの実例
+
+dbt Labsの公式リポジトリからの設定例です。
+
+#### dbt-utils（integration_tests）
+
+最小構成。プライバシー設定のみ設定する典型例。
+
+```yaml
+flags:
+  send_anonymous_usage_stats: false
+  use_colors: true
+```
+
+#### dbt-project-evaluator
+
+Behavior Change Flags を積極的に採用する例。
+
+```yaml
+flags:
+  require_nested_cumulative_type_params: true
+  require_yaml_configuration_for_mf_time_spines: true
+  require_generic_test_arguments_property: true
+```
+
+### 6.3 ユースケース別推奨パターン
+
+#### パターン A：最小構成（全プロジェクト共通推奨）
+
+`send_anonymous_usage_stats` はネットワーク制限や社内ポリシーに関わらず、設定しておくことが推奨されます。
+
+```yaml
+flags:
+  send_anonymous_usage_stats: false
+```
+
+#### パターン B：CI/CD 厳格モード
+
+CIログをパース可能にして、ログ収集ツール（Datadog・CloudWatch など）との連携を容易にするパターンです。
+
+```yaml
+flags:
+  send_anonymous_usage_stats: false
+  fail_fast: true
+  use_colors: false
+  log_format: json
+```
+
+#### パターン C：Slim CI（`state:modified` 活用）
+
+`state:modified` で変更モデルのみ実行する Slim CI パターン。`state_modified_compare_more_unrendered_values: true` で環境変数による誤検知を削減します。
+
+```yaml
+flags:
+  send_anonymous_usage_stats: false
+  state_modified_compare_more_unrendered_values: true
+  skip_nodes_if_on_run_start_fails: true
+  partial_parse: true
+  write_json: true
+```
+
+#### パターン D：品質管理強化モード
+
+プロジェクトのポリシーに合わせて警告を細かく制御するパターンです。
+
+```yaml
+flags:
+  send_anonymous_usage_stats: false
+  warn_error_options:
+    error:
+      - NoNodesForSelectionCriteria
+    warn:
+      - DeprecatedModel
+    silence:
+      - SpacesInResourceNameDeprecation
+```
+
+### 6.4 `warn_error_options` 詳細パターン
+
+`warn_error_options` で使えるキーとよく使われるイベント名：
+
+```yaml
+flags:
+  warn_error_options:
+    error: # 警告をエラーとして扱う（ビルドを失敗させる）
+      - NoNodesForSelectionCriteria # セレクターで対象ノードなし
+    warn: # エラーを警告として扱う（ビルドは継続）
+      - DeprecatedModel # 非推奨モデル参照
+    silence: # 完全に無視する
+      - SpacesInResourceNameDeprecation # リソース名のスペース（移行期）
+      - PackageRedirectDeprecation # パッケージのリダイレクト通知
+```
+
+### 6.5 よくある設定ミス・アンチパターン
+
+#### `warn_error_options: error: all` は避ける
+
+dbt のバージョンアップで新しい警告が追加されると自動的にビルドが失敗するリスクがあります。特定のイベント名を明示的に指定する方が安全です。
+
+```yaml
+# 避けるべき例
+flags:
+  warn_error_options:
+    error: all  # バージョンアップ時に予期せぬ失敗が発生する可能性
+
+# 推奨例
+flags:
+  warn_error_options:
+    error:
+      - NoNodesForSelectionCriteria  # 具体的なイベント名を指定
+```
+
+#### `partial_parse: false` を本番環境に常時設定しない
+
+CIでキャッシュ問題が発生した場合の一時的な対処としては有効ですが、常時 `false` にすると起動が遅くなります。
 
 ---
 
