@@ -1,0 +1,61 @@
+# CodeRabbit 設定
+# https://docs.coderabbit.ai/
+
+language: "ja"
+
+reviews:
+  # ウォークスルーの言語
+  poem: false
+
+  # レビュー対象プロファイル
+  profile: "chill"
+
+  # PRサマリーを生成する
+  request_changes_workflow: false
+
+  # CI が自動チェックする項目はスキップ
+  # （pre-commit: 禁止ワード・フォーマット・CONTRIBUTING.mdルール）
+  finishing_touches:
+    docstrings:
+      enabled: false # ドキュメントサイトのため不要
+
+  path_filters:
+    # Quartz フレームワーク本体はレビュー対象外
+    - "!quartz/**"
+    - "!node_modules/**"
+    - "!.husky/**"
+    - "!package-lock.json"
+
+  path_instructions:
+    # コンテンツファイルのレビュー指示
+    - path: "content/**/*.md"
+      instructions: |
+        このファイルは日本語技術ブログの記事です。以下の観点でレビューしてください：
+
+        **重点的にチェックすること：**
+        - 技術的な内容の正確性・最新性
+        - 説明の論理的な流れと構成
+        - 参照元リンクの妥当性
+        - 日本語表現の自然さ
+
+        **スキップすること（CI が自動チェック済み）：**
+        - ファイル名の命名規則（kebab-case チェック済み）
+        - フォルダ階層（1階層制限チェック済み）
+        - frontmatter の date フォーマット（YYYY-MM-DD チェック済み）
+        - frontmatter の tags 大文字小文字（チェック済み）
+        - frontmatter title と H1 の重複（チェック済み）
+        - Markdown フォーマット（Prettier 適用済み）
+        - 機密情報ワード（認証情報・個人名等はフック済み）
+        - コードブロックの言語指定（警告のみ、エラーにならない）
+
+    # GitHub Actions ワークフローのレビュー指示
+    - path: ".github/workflows/**"
+      instructions: |
+        GitHub Actions ワークフローです。以下を確認してください：
+        - セキュリティ（認証トークンの扱い、権限スコープ）
+        - アクションのバージョンピン留め
+        - 不要な権限の付与がないか
+
+chat:
+  # チャットで日本語対応
+  auto_reply: true
