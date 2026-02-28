@@ -654,6 +654,28 @@ dbt_project.yml の `flags:` はローカル開発を含む**全環境**に適�
 
 `warn_error_options` だけはプロジェクト全体のポリシーとして dbt_project.yml に設定する意義があります。
 
+CI で CLIオプションを使う具体例：
+
+```yaml
+# GitHub Actions での非推奨チェック・コンパイル検証ステップ
+steps:
+  # 非推奨機能の警告チェック
+  # --warn-error: 警告が1つでもあればCIを失敗させる
+  # ls: モデル一覧を取得（副作用として非推奨機能をチェック）
+  - name: Check for deprecation warnings
+    run: |
+      dbt --warn-error ls
+
+  # 全モデルのコンパイル検証
+  # --show-all-deprecations: 非推奨機能の使用箇所を警告表示
+  # --no-partial-parse: キャッシュを無視して完全検証（厳密なチェック）
+  - name: Compile all models with deprecation check
+    run: |
+      dbt compile --show-all-deprecations --no-partial-parse
+```
+
+`--warn-error` と `--no-partial-parse` はこのCIステップ専用の厳格設定であり、dbt_project.yml のフラグに移すと全実行（ローカル開発含む）に影響するため、CLIオプションとして明示的に記述することが適切です。
+
 ---
 
 ## 参照
